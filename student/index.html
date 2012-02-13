@@ -1,0 +1,240 @@
+<html>
+	<head>
+		<title>Aplicaciones Multimedia: Práctica 2</title>
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+		<link rel="SHORTCUT ICON" href="http://www.uc3m.es/favicon.ico" /> 
+		<link href="http://www.it.uc3m.es/rcrespo/docencia/asignatura.css" rel="stylesheet" type="text/css" />
+		<link href="http://www.it.uc3m.es/estilo.css" rel="stylesheet" type="text/css" />
+		<link href="css/amm.css" rel="stylesheet" type="text/css" />
+		<link href="css/classon.css" rel="stylesheet" type="text/css" />
+		<link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
+		
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery.blockUI.js"></script>
+		<!--script type="text/javascript" src="js/jquery.simplemodal-1.4.2.js"></script-->
+	</head>
+	<body>
+		
+		<!-- BEGIN ADD, 21/05/09; to comply with UC3M corporate image requirements -->
+		<div class="headerBorderUc3mblue"></div>
+		<div class="header white">
+		  <a href="http://www.uc3m.es/">
+		  	<img class="logos logoleft" src="http://www.it.uc3m.es/imag/EscudoLogoCorporativo.png" alt="Universidad Carlos III de Madrid" />
+		  </a>
+	      <a href="http://www.it.uc3m.es">
+	      	<img class="logos logoright" src="http://www.it.uc3m.es/imag/SpanishLogoIT.png" alt="Departamento de Ingeniería Telemática" />
+	      </a>
+		</div>
+		<div class="headerBorderUc3mblue"></div>
+		<!-- END ADD 21/05/09 -->
+		
+		
+		<!-- Tabla encabezado departamento -->
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+		  <tr>
+		    <td>
+		      <table width="100%" border="0" cellspacing="1" cellpadding="0">  	
+		        <tr>
+		          <td bgcolor="#CCD0D6" width="2000" height="22">
+		            <div align="right"><a href="http://www.it.uc3m.es/localizacion/localizacion.htm" class="azul">Localizaci&oacute;n</a>
+		              | <a href="#"></a><a href="http://www.it.uc3m.es/personal/directorio.htm"><span class="rojo">Personal</span></a>
+		              | <a href="http://www.it.uc3m.es/docencia/docencia.htm" class="azul">Docencia</a>
+		              | <a href="http://www.it.uc3m.es/investigacion/investigacion.htm" class="azul">Investigaci&oacute;n</a>
+		              | <a href="http://www.it.uc3m.es/novedades/novedades.htm" class="azul">Novedades</a>
+		              | <a href="http://www.it.uc3m.es/intranet/intranet.htm" class="azul">Intranet</a>
+		              &nbsp;&nbsp;</div>
+		          </td>
+		        </tr>
+		      </table>
+		    </td>
+		  </tr>
+		</table>
+		<!-- Tabla encabezado departamento (fin) -->
+		
+		<!-- Navegación -->
+		<nav>
+			<p class="nav"><a class="azul"
+			href="http://www.it.uc3m.es/index.html">Home</a> / <a class="azul"
+			href="http://www.it.uc3m.es/docencia/docencia.htm">Docencia</a> / <a
+			class="azul" href="http://www.it.uc3m.es/docencia/grado-audiovisuales.html">Grado en Ingeniería de Sistemas Audiovisuales</a> / 
+			<a class="azul" href="http://www.it.uc3m.es/rcrespo/docencia/amm/1112/">Aplicaciones Multimedia</a>
+			</p>
+		</nav>
+		<!-- Navegación (fin) -->
+		
+		<header>
+			<h1>Pr&aacute;ctica 2: Introducción a JavaScript</h1>
+		</header>
+		
+		<section id="intro">
+			<h2>Introducción</h2>
+			<p>
+				En esta segunda práctica vamos a introducir el uso de JavaScript (JS) para dotar de dinamismo e interacción a nuestra página web. 
+				Se pretenden establecer las bases de conocimiento que nos permitirán manejar objetos multimedia en el navegador, así como las interacciones del usuario con ellos.
+			</p>
+			<p>
+			Se hará uso de los siguientes conceptos estudiados en las clases teóricas:</p>
+			<ul>
+				<li>Manipulación del árbol de objetos de la página (DOM)</li>
+				<li>Manejo de eventos</li>
+			</ul>
+			<p>
+				Se pretende desarrollar la página web de una empresa, que hará uso del conocido diseño con pestañas. Es decir, la web constará de varias secciones 
+				a las que podremos acceder clickando la pestaña correspondiente. El objetivo de esta práctica es el desarrollo de esta web, tanto su interfaz de usuario 
+				como la navegación por la misma mediante pestañas. Para ello, tendremos que hacer uso de un script JavaScript que capture la interacción del usuario 
+				con las pestañas y realice las acciones necesarias para visualizar el contenido de esa sección de la página web.
+
+			</p>
+			<figure>
+				<div class="bordeNegro">
+					<img src="images/screenshot.png" />
+				</div>
+				<figcaption><p><em>Figura 1</em>: Ejemplo de una página web con pestañas</p></figcaption>
+			</figure>
+			
+			<p class="minititulo">Recomendaciones</p>
+			<ul>
+				<li>
+					Durante el desarrollo de esta práctica y las siguientes se recomienda el uso de las herramientas para desarrolladores de Google Chrome, 
+					accesibles desde el men&uacute; Herramientas, principalmente de la consola JavaScript y el explorador de elementos.
+				</li>
+			</ul>
+		</section>
+		
+		<section id="step1">
+			<h2>Paso 1: HTML</h2>
+			<p>
+				En primer lugar deberá crearse la estructura HTML correspondiante a la web de la empresa. Esta estructura debe usar los elementos:
+			</p>
+			<ul>
+				<li><code>header</code> para la cabecera de la página</li>
+				<li><code>nav</code> para las pestañas, que son usadas para la navegación en el documento; para cada opción usaremos un elemento contenedor, por ejemplo <code>span</code></li>
+				<li><code>section</code> para las secciones (contenidos) de las distintas pestañas</li>
+				<li><code>footer</code> para el pie de página</li>
+			</ul>
+			<p>
+				El resultado será una web con todas las secciones, una a continuación de la siguiente. Diseñaremos la navegación por pestañasa partir del siguiente paso.
+			</p>
+		</section>
+		
+		<section id="step2">
+			<h2>Paso 2: Visualización</h2>
+			<p>
+				Existen distintas opciones para implementar la interacción de las pestañas, cualquiera de ellas perfectamente válida. Una de estas opciones es el uso de 
+				propiedades CSS para mostrar/ocultar contenidos. 
+				Para mostrar el contenido de una sección, haremos uso de la propiedad CSS <code>display</code> aplicada sobre el elemento correspondiente a la sección. 
+				Esta propiedad tomará el valor <code>block</code> en la sección con contenido a mostrar, y el valor <code>none</code> en las secciones con contenido oculto. 
+				Por tanto, crearemos dos estilos CSS para las secciones, uno para mostrar la sección visible y otro para ocultar el resto de secciones. 
+			</p>
+			<p>
+				A continuación, crearemos dos estilos CSS para las pestañas, uno usado para la pestaña activa y otro para el resto. Por ejemplo, puede cambiarse el color de fondo 
+				de la misma (<code>background</code>), el borde (<code>border</code>), cambiar el tipo de letra (<code>font</code>), etc.
+			</p>
+			<p>
+				Finalmente, podemos mejorar la experiencia de usuario mediante el uso de otros recursos CSS:
+			</p>
+			<ul>
+				<li>Poniendo las esquinas de las pestañas redondeadas con las propiedades <code>-webkit-border-radius</code> / <code>-moz-border-radius</code>, 
+				únicas para cada navegador (si queremos que funcione en varios navegadores deberan usarse todas ellas)</li>
+				<li>Cambiando el comportamiento del cursor al pasar sobre una pestañas (cursor)</li>
+				<li>Aplicando otras mejoras visuales que nos parezcan apropiadas</li>
+			</ul>
+			
+		</section>
+		
+		<section id="step3">
+			<h2>Paso 3: Eventos</h2>
+			<p>
+				Se desarrollará un script que implemente la nevegación por pestañas en nuestra página. Para ello, haremos uso del elemento <code>script</code>. 
+				Para evitar problemas de concurrencia en la ejecución de scripts, se recomienda insertar éstos al final del <code>body</code>.
+			</p>
+			<p>
+				El script desarrollado deberá asignar al elemento que compone la pestaña (en el ejemplo, el elemento <code>span</code>) un manejador de eventos que se 
+				ejecute con el evento click del ratón. Este manejador será una función JavaScript que definiremos a continuación. Recuerda que en el código de esa función podremos 
+				acceder al elemento de la pestaña mediante la palabra reservada <code>this</code>. La función que programaremos realizará las siguientes acciones:
+			</p>
+			<ul>
+				<li>Resaltará la nueva pestaña activa y desactivará el resto.</li>
+				<li>Ocultará las secciones del documento excepto la seleccionada.</li>	
+			</ul>
+			<p>
+				Para ello, podremos hacer uso de la nueva propiedad HTML5 <code>classList</code> que para un elemento devuelve otro elemento con el que podremos manipular 
+				su atributo <code>class</code> (estilos). 
+				Por ejemplo, <code>var lista = element.classList;</code> devuelve el elemento en la variable <code>lista</code>, sobre la que podremos ejecutar acciones 
+				para añadir estilos <code>add</code>, eliminarlos <code>remove</code> o cambiar de estado <code>toggle</code>.
+			</p>
+		</section>
+		
+		<section id="step4">
+			<h2>Paso 4: Contenido dinámico</h2>
+			<p>
+				El contenido de una web puede ser dinámico, es decir, que el número de pestañas y su contenido pueden variar en función de algunos parámetros (por ejemplo, de los 
+				permisos del usuario de un servicio). Por tanto, esta información puede venir dada desde el servidor de la página, y por tanto va a ser dependiente de una 
+				ejecución concreta. Vamos a simular este hecho definiendo dos arrays en el script desarrollado anteriormente: uno que 
+				contiene cadenas de texto correspondientes al nombre de las pestañas; y otro del mismo tamaño con el contenido de las mismas (que puede ser código HTML). 
+				Debemos, por tanto, construir toda la estrucutra de la página de forma dinámica, ya que tendremos un número variable de pestañas. 
+				Un ejemplo de los arrays anteriores es (atención al uso de comillas en cadenas de texto con HTML):
+			</p>
+			<p>
+				<code>var tabNames = ["Inicio", "Noticias", "Acerca de"];</code><br />
+				<code>var tabValues = ["&lt;p&gt;Esta es la página de inicio de la web de nuestra empresa&lt;/p&gt;", "&lt;img border='0' src='http://www.w3.org/html/logo/downloads/HTML5_Logo_64.png' alt='HTML5 logo' /&gt;", 
+				"&lt;p&gt;Este ejemplo ha sido realizado por los profesores de Aplicaciones Multimedia&lt;/p&gt;"];</code>
+			</p>
+			<p>
+				Para implementar esta funcionalidad puede hacerse uso de funciones JavaScript para la manipulación del DOM, como 
+				<code>createElement</code>, <code>appendChild</code>, <code>parentNode</code>, etc. o la propiedad <code>innerHTML</code>.
+			</p>
+		</section>
+		
+		<section id="self-assessment">
+			<h2>Preguntas de Autoevaluaci&oacute;n</h2>
+			<p>Tras la finalizaci&oacute;n de la pr&aacute;ctica, deber&iacute;ais ser capaces de 
+			contestar a estas preguntas:</p>
+			<ul>
+				<li>Describe el uso de los siguientes elementos HTML en la página de vuestra empresa:
+					<ul class="level2">
+						<li><code>header</code>, <code>nav</code>, <code>section</code>, <code>span</code>, <code>footer</code></li>
+					</ul>
+				</li>
+				<li>Describe el proceso elegido para mostrar/ocultar las pestañas. ¿Puedes pensar en otro procedimiento distinto a usar display? 
+				Toma como punto de partida el trabajo realizado en el paso 4.</li>
+				
+				<li>
+					Explica paso a paso cómo has implementado la interacción con las pestañas. ¿Qué eventos has tenido en cuenta? ¿Cómo has asignado un manejador a los eventos? 
+					¿Cuándo se ejecuta el manejador? ¿Cómo accedes los elementos de la pestañas y de su contenido? ¿Cómo accedes/modificas los estilos de un elemento?
+				</li>
+				<li>
+					¿Qué funciones puedes usar para manejar la estructura del documento? ¿Cómo has creado elementos nuevos en el documento? 
+					¿Cómo los has colocado en la posición que querías? ¿Sabrías asignarles atributos? ¿Y cambiar su estilo?
+				</li>
+			</ul>
+		</section>
+		
+		<section id="refs">
+			<h2>Referencias</h2>
+			<ul>
+				<li><a href="http://www.librosweb.es/javascript/">Introducci&oacute;n a Javascript</a></li>
+				<li><a href="http://www.librosweb.es/javascript/capitulo6/modelo_basico_de_eventos1.html">
+				Modelo de eventos b&aacute;sico en Javascript</a></li>
+				<li><a href="http://www.w3schools.com/jsref/default.asp">Referencia de JavaScript en W3Schools</a></li>
+			</ul>
+		</section>
+		
+		<footer>
+			<figure>
+				<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/es/">
+				<img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/es/88x31.png" /></a>
+				<figcaption>Este <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text" rel="dct:type">obra</span> 
+				está bajo una <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/es/">licencia Creative Commons 
+				Reconocimiento-CompartirIgual 3.0 España</a>.</figcaption>
+			</figure>
+			<details>
+				<summary>Recurso desarollado por Israel Gutiérrez (<a href="mailto:igrojas@it.uc3m.es">igrojas@it.uc3m.es</a>), data de <time datetime="2012-01-31">2012-01-31</time>.</summary>
+			</details>
+			<br /><br /><br />
+		</footer>
+		<script type="text/javascript" src="js/socket.io.min.js"></script>
+		<script type="text/javascript" src="js/classon.js"></script>
+		
+	</body>
+</html>

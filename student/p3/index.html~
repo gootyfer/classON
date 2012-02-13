@@ -1,0 +1,217 @@
+<html>
+	<head>
+		<title>Aplicaciones Multimedia: Práctica 3</title>
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+		<link rel="SHORTCUT ICON" href="http://www.uc3m.es/favicon.ico" /> 
+		<link href="http://www.it.uc3m.es/rcrespo/docencia/asignatura.css" rel="stylesheet" type="text/css" />
+		<link href="http://www.it.uc3m.es/estilo.css" rel="stylesheet" type="text/css" />
+		<link href="css/amm.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		
+		<!-- BEGIN ADD, 21/05/09; to comply with UC3M corporate image requirements -->
+		<div class="headerBorderUc3mblue"></div>
+		<div class="header white">
+		  <a href="http://www.uc3m.es/">
+		  	<img class="logos logoleft" src="http://www.it.uc3m.es/imag/EscudoLogoCorporativo.png" alt="Universidad Carlos III de Madrid" />
+		  </a>
+	      <a href="http://www.it.uc3m.es">
+	      	<img class="logos logoright" src="http://www.it.uc3m.es/imag/SpanishLogoIT.png" alt="Departamento de Ingeniería Telemática" />
+	      </a>
+		</div>
+		<div class="headerBorderUc3mblue"></div>
+		<!-- END ADD 21/05/09 -->
+		
+		
+		<!-- Tabla encabezado departamento -->
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+		  <tr>
+		    <td>
+		      <table width="100%" border="0" cellspacing="1" cellpadding="0">  	
+		        <tr>
+		          <td bgcolor="#CCD0D6" width="2000" height="22">
+		            <div align="right"><a href="http://www.it.uc3m.es/localizacion/localizacion.htm" class="azul">Localizaci&oacute;n</a>
+		              | <a href="#"></a><a href="http://www.it.uc3m.es/personal/directorio.htm"><span class="rojo">Personal</span></a>
+		              | <a href="http://www.it.uc3m.es/docencia/docencia.htm" class="azul">Docencia</a>
+		              | <a href="http://www.it.uc3m.es/investigacion/investigacion.htm" class="azul">Investigaci&oacute;n</a>
+		              | <a href="http://www.it.uc3m.es/novedades/novedades.htm" class="azul">Novedades</a>
+		              | <a href="http://www.it.uc3m.es/intranet/intranet.htm" class="azul">Intranet</a>
+		              &nbsp;&nbsp;</div>
+		          </td>
+		        </tr>
+		      </table>
+		    </td>
+		  </tr>
+		</table>
+		<!-- Tabla encabezado departamento (fin) -->
+		
+		<!-- Navegación -->
+		<nav>
+			<p class="nav"><a class="azul"
+			href="http://www.it.uc3m.es/index.html">Home</a> / <a class="azul"
+			href="http://www.it.uc3m.es/docencia/docencia.htm">Docencia</a> / <a
+			class="azul" href="http://www.it.uc3m.es/docencia/grado-audiovisuales.html">Grado en Ingeniería de Sistemas Audiovisuales</a> / 
+			<a class="azul" href="http://www.it.uc3m.es/rcrespo/docencia/amm/1011/">Aplicaciones Multimedia</a>
+			</p>
+		</nav>
+		<!-- Navegación (fin) -->
+		
+		<header>
+			<h1>Pr&aacute;ctica 3: Video en HTML 5</h1>
+		</header>
+		<section id="intro">
+			<h2>Introducci&oacute;n</h2>
+			<p>
+				En la nueva especificación de HTML5 se incluyen mejoras para el tratamiento de recursos multimedia; así, audio y video 
+				pasan a ser elementos de primera clase. En esta práctica aprenderemos a usar el nuevo elemento nativo de video, como sus
+				controles más básicos, distintas fuentes de datos, etc. Pero nos centraremos en el sistema de eventos de que dispone 
+				JavaScript que nos permitirá manipular elementos de la página en función de eventos que genere el elemento de video 
+				(por ejemplo inicio de reproducción, pausa, salto, etc.). 
+			</p>
+			<p>
+				En el objeto video de HTML5 no existe soporte nativo para subtítulos por el momento, aunque se está estudiando el tema en 
+				diversas discusiones del W3C y WHATWG (
+				<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/video.html#the-track-element">posible implementación</a>
+				). Olvidándonos de ese posible soporte futuro, esta práctica consiste en, dado un video y un fichero de subtítulos en formato SRT, 
+				crear una página web que reproduzca el video y los subtítulos sincronizados.
+			</p>
+			<p>
+				Asimismo, se estudiarán las peticiones asíncronas de recursos al servidor. Para ello se
+				hará uso del elemento <code>XMLHttpRequest</code> para acceder a recursos dinámicamente y sin recargar la 
+				página en el navegador (técnica a la que comúnmente se refiere como AJAX).
+			</p>
+			<p class="minititulo">Recomendaciones</p>
+			<ul>
+				<li>
+					Durante el desarrollo de esta práctica y las siguientes se recomienda el uso de las herramientas para desarrolladores de Google Chrome, 
+					accesibles desde el men&uacute; Herramientas, principalmente de la consola JavaScript y el explorador de elementos.
+				</li>
+			</ul>
+		</section>
+		
+		<section id="step1">
+			<h2>Paso 1: Estructura del documento</h2>
+			<p>
+				En primer lugar vamos a crear el marcado HTML correspondiente a la página, que constará de 3 elementos:
+				El texto de los subtítulos aparecerá en un objeto
+				contenedor de HTML5 (<code>div</code>, <code>span</code>) bajo el elemento de video.
+			</p>
+			<ul>
+				<li>El elemento <code>video</code> de HTML5 para reporducir el video. Por ejemplo, podéis usar 
+				este <a href="http://mooplay.challet.eu/media/video/sintel-1024-stereo.mp4">video de ejemplo</a>.
+				Jugad con los distintos atributos vistos en la clase de teoría (controles, precarga, etc.)</li>
+				<li>Un objeto contenedor de HTML5 (<code>div</code>, <code>span</code>) donde aparecerá el texto de los subtítulos, 
+				bajo el elemento de video; también podéis posicionarlo sobre el video mediante capas con la propiedad CSS <code>z-index</code>.</li>
+				<li>Un combo (<code>select</code>) para seleccionar el idioma, al menos con las opciones de español e inglés.</li>
+			</ul>
+			<figure>
+				<div class="bordeNegro">
+					<img src="images/screenshot.png" />
+				</div>
+				<figcaption><p><em>Figura 1</em>: Ejemplo de reproductor de video con subtítulos</p></figcaption>
+			</figure>
+		</section>
+		<section id="step2">
+			<h2>Paso 2: Sincronización del video</h2>
+			<p>
+				Para subtitular el video, deberá desarrollarse un script que escuche los eventos asociados a la reproducción de un video. 
+				En los manejadores de esos eventos se implementará la lógica necesaria para la reproducción del video sincronizada con los
+				subtítulos. Como hasta el paso siguiente no leeremos el fichero de subtítulos, vamos a simular que lo tenemos parseado 
+				en una variable javascript como la siguiente, que conta de triplas con el instante de inicio y fin del subtítulo en milisegundos 
+				y el texto del mismo:
+			</p>
+			<p>
+				<code>
+				var subs = [[107250,110500,"Esta hoja tiene un pasado oscuro."],[111800,115800,"Ha derramado mucha sangre inocente."],
+				[118000,121450,"Eres una tonta por viajar sola, sin ninguna preparación."],[121750,124800,"Tienes suerte de que aún 
+				corra sangre por tus venas."]];
+				</code>
+			</p>
+			<p>
+				<em>Importante:</em>
+			</p>
+			<ul>
+				<li>
+					No hacer uso de funciones como <code>setTimeout</code> para la sincronización de los subtítulos, sino de sistema de eventos JavaScript.
+				</li>
+				<li>
+					No es necesario que el subtitulado funcione al hacer un salto (seek) durante la reproducción del video, aunque es una mejora a implementar.
+				</li>
+			</ul>
+		</section>
+		<section id="step3">
+			<h2>Paso 3: Obtención del fichero de subtítulos</h2>
+			<p>
+				Finalmente se realizará la lectura del fichero de subtítulos en el servidor para completar el proceso de subtitulado.
+				El acceso al fichero de subtítulos (.srt) se realizará de forma asíncrona (mediante <code>XMLHttpRequest</code>) 
+				ya que el idioma podrá cambiarse dinámicamente mediante un combo (elemento <code>select</code>) en la página. 
+				Ya que el parseado de ficheros de texto no es un objetivo de la práctica, se pone a vuestra disposición 
+				<a href="p2_aux.js">esta librería</a> que realiza las funciones de parseado del fichero de subtítulos y de las marcas de tiempo.
+			</p>
+			<p>
+				Podeis utilizar estos <a href="http://mooplay.challet.eu/media/subtitle/">ficheros de subtítulos</a>, correspondientes al video, 
+				anterior para vuestras pruebas.
+			</p>
+			<p>
+				<em>Importante:</em>
+			</p>
+			<ul>
+				<li>
+					No puede desarrollarse con el fichero fuente en local para realizar llamadas XMLHttpRequest, ya que precisa de HTTP para
+					su correcto funcionamiento. Por tanto, se recomienda usar un servidor web (por ejemplo, 
+					<a href="http://microapache.kerys.co.uk/">MicroApache</a>) durante el desarrollo de este apartado.
+				</li>
+			</ul>
+		</section>
+			
+		<section id="self-assessment">
+			<h2>Preguntas de Autoevaluaci&oacute;n</h2>
+			<p>Tras la finalizaci&oacute;n de la pr&aacute;ctica, deber&iacute;ais ser capaces de 
+			contestar a estas preguntas:</p>
+			<ul>
+				<li>Describe el funcionamiento de los parámetros de configuración del objeto de <code>video</code>:
+					<ul class="level2">
+						<li><code>src</code>, <code>controls</code>, <code>autoplay</code>, <code>preload</code></li>
+					</ul>
+				</li>
+				<li>Describe el funcionamiento de los eventos que genera el objeto de <code>video</code>:
+					<ul class="level2">
+						<li><code>progress</code>, <code>emptied</code>, <code>play</code>, <code>pause</code>, <code>waiting</code>, 
+						<code>playing</code>, <code>seeking</code>, <code>ended</code>, <code>timeupdate</code>, <code>volumenchange</code></li>
+						<li>¿Cuáles has tenido que escuchar para el desarrollo de la práctica?</li>
+					</ul>
+				</li>
+				<li>
+					Explica paso a paso el funcionamiento de una llamada al servidor mediante el objeto <code>XMLHttpRequest</code>. 
+					¿Puede accederse a recursos que están en un servidor distinto al que sirve la página que hace la llamada? ¿Por qué?
+				</li>
+			</ul>
+		</section>
+		
+		<section id="refs">
+			<h2>Referencias</h2>
+			<ul>
+				<li><a href="http://www.w3.org/TR/html5/video.html">Elemento de video nativo en HTML5</a></li>
+				<li><a href="http://www.w3.org/TR/XMLHttpRequest/">El elemento XMLHttpRequest</a></li>
+				<li><a href="http://www.librosweb.es/javascript/">Introducci&oacute;n a Javascript</a></li>
+				<li><a href="http://www.librosweb.es/javascript/capitulo6/modelo_basico_de_eventos1.html">
+				Modelo de eventos b&aacute;sico en Javascript</a></li>
+				<li><a href="http://www.librosweb.es/ajax/">Introducci&oacute;n a AJAX</a></li>
+			</ul>
+		</section>
+		
+		<footer>
+			<figure>
+				<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/es/">
+				<img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/es/88x31.png" /></a>
+				<figcaption>Este <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text" rel="dct:type">obra</span> 
+				está bajo una <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/es/">licencia Creative Commons 
+				Reconocimiento-CompartirIgual 3.0 España</a>.</figcaption>
+			</figure>
+			<details>
+				<summary>Recurso desarollado por Israel Gutiérrez (<a href="mailto:igrojas@it.uc3m.es">igrojas@it.uc3m.es</a>), data de <time datetime="2012-02-06">2012-02-06</time>.</summary>
+			</details>
+			<br /><br /><br />
+		</footer>
+	</body>
+</html>
