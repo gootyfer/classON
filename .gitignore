@@ -2,3 +2,6 @@
 node_modules
 users
 .settings
+.project
+.settings/org.eclipse.wst.jsdt.ui.superType.name
+.settings/org.eclipse.wst.jsdt.ui.superType.container
