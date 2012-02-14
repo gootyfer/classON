@@ -1,3 +1,10 @@
+//Load session id
+var scripts = document.getElementsByTagName('script');
+var index = scripts.length - 1;
+var myScript = scripts[index];
+var src = myScript.src;
+var session = src.substr(src.indexOf('=')+1);
+
 //Load sections
 var sections = document.getElementsByTagName("section");
 
@@ -68,7 +75,6 @@ progressdiv.appendChild(progressbar);
 
 menu.appendChild(progressdiv);
 
-
 //Step in the progressbar
 var step = Math.ceil(100 / menuItems.length);
 var currentSection = 0;
@@ -82,6 +88,7 @@ helpButton.addEventListener("click", askForHelp);
 helpButton.innerHTML = "AYUDA";
 helpButton.className = "button red";
 menu.appendChild(helpButton);
+//Waiting for help?
 var helpNeeded = false;
 
 //Load info from localstorage; otherwise, from the server
@@ -89,15 +96,48 @@ var user = window.localStorage.getItem("user");
 
 if(!user){
 	user = [];
+	requestUser();
+}else{
+	user = user.split(",");
+	checkUsers(function(error){
+		if(error){
+			requestUser("Los NIAs almacenados no son correctos. Por favor, revísalos y pincha OK.");
+		}else{
+			usersOK();
+		}
+	});
+}
+
+var usersInfo = [];
+var info = document.createElement("div");
+info.className = "info";
+menu.appendChild(info);
+function usersOK(){
+	window.localStorage.setItem("user", user);
+	//User info
+	info.innerHTML = (usersInfo[0]?(usersInfo[0].surname+" "+usersInfo[0].name):"")+"<br />"+
+	(usersInfo[1]?(usersInfo[1].surname+" "+usersInfo[1].name):"")+"<br />"+
+	"<input type='button' onclick='logout()' value='DESCONECTAR' style='margin: auto;' />";
+	
+	$.unblockUI();
+}
+
+function logout(){
+	window.localStorage.removeItem("user");
+	window.location.reload();
+}
+
+function requestUser(error){
+	window.localStorage.removeItem("user");
 	$.blockUI({
 		theme:     true, 
         title:    'Participantes', 
 		message: "<div>Por favor, introduce el nombre de los participantes para acceder al enunciado. Gracias.<br /><br />" +
-		"Participante 1: <input type='text' id='p1' /><br />Participante 2: <input type='text' id='p2' /><br />" +
-		"<div><input type='button' onclick='saveUsers()' value='OK' style='margin-left: 350px;' /></div></div>"});
-}else{
-	user = user.split(",");
-	//askForHelp2();
+		"NIA 1: <input type='text' id='p1' value='"+(user[0]?user[0]:"")+"' /><br />" +
+		"NIA 2: <input type='text' id='p2' value='"+(user[1]?user[1]:"")+"' /><br />" +
+		"<div><input type='button' onclick='saveUsers()' value='OK' style='float: right;' /></div>" +
+		"<div id='error' class='error'>"+(error?error:"")+"</div></div>"});
+	user = [];
 }
 
 function saveUsers(){
@@ -105,9 +145,14 @@ function saveUsers(){
 	if(user1) user.push(user1);
 	var user2 = document.getElementById("p2").value;
 	if(user2) user.push(user2);
-	//askForHelp2();
-	window.localStorage.setItem("user", user);
-	$.unblockUI();
+	checkUsers(function(error){
+		if(error){
+			$.unblockUI();
+			requestUser("Los NIAs indicados no son correctos. Por favor, revísalos y pincha OK.");
+		}else{
+			usersOK();
+		}
+	});
 }
 
 
@@ -173,9 +218,9 @@ function askForHelp(){
 		theme:     true, 
         title:    (helpNeeded)?'Solución':'Duda', 
 		message: "<div>Por favor, describe brevemente la "+(helpNeeded?'respuesta a tu duda':'duda que vas a preguntar')+".<br /><br />" +
-		"<textarea id='duda' style='width:375px;height:100px'></textarea><br /><br />" +
-		"<div><input type='button' onclick='$.unblockUI();' value='Cancelar' style='margin-left: 0px;' />" +
-		"<input type='button' onclick='askForHelp2()' value='OK' style='margin-left: 270px;' /></div></div>"});
+		"<textarea id='duda' style='width:100%;height:100px'></textarea><br /><br />" +
+		"<div><input type='button' onclick='$.unblockUI();' value='Cancelar' style='float:left;' />" +
+		"<input type='button' onclick='askForHelp2()' value='OK' style='float: right;' /></div></div>"});
 }
 
 
@@ -199,9 +244,7 @@ function askForHelp2(){
 	//Send event to the server
 	
 	var event = {
-			user: user,
 			eventType: eventType,
-			eventSection: currentSection
 	};
 	var duda = document.getElementById("duda");
 	if(duda){
@@ -219,15 +262,13 @@ function finishSection(){
         title:    "Sección terminada", 
 		message: "<div>¿Seguro que has terminado el apartado correpondiente?<br /><br />" +
 		"<div><input type='button' onclick='$.unblockUI();' value='Cancelar' style='margin-left: 0px;' />" +
-		"<input type='button' onclick='finishSection2();' value='OK' style='margin-left: 270px;' /></div></div>"});
+		"<input type='button' onclick='finishSection2();' value='OK' style='float:right;' /></div></div>"});
 }
 
 function finishSection2(){
 	//Send event to the server
 	var event = {
-			user: user,
 			eventType: 'finishSection',
-			eventSection: currentSection
 	};
 	sendEventToServer(event);
 	finishSection3();
@@ -245,15 +286,13 @@ function undoFinishSection(){
         title:    "Deshacer progreso", 
 		message: "<div>¿Seguro que deseas volver al apartado anterior?<br /><br />" +
 		"<div><input type='button' onclick='$.unblockUI();' value='Cancelar' style='margin-left: 0px;' />" +
-		"<input type='button' onclick='undoFinishSection2();' value='OK' style='margin-left: 270px;' /></div></div>"});
+		"<input type='button' onclick='undoFinishSection2();' value='OK' style='float:right;' /></div></div>"});
 }
 
 function undoFinishSection2(){
 	//Send event to the server
 	var event = {
-			user: user,
 			eventType: 'undoFinishSection',
-			eventSection: currentSection
 	};
 	sendEventToServer(event);
 	
@@ -269,57 +308,47 @@ function setExercise(savedSection){
 	}
 }
 
-var server = document.location.href.substr(0,document.location.href.lastIndexOf(':'));
-server = "163.117.141.206";
-var socket = io.connect(server+':80');
-socket.on('connect', function() {
-	socket.emit('new student', {user: user});
-	socket.on('student registered', function(state){
-		setExercise(state.exercise);
-		console.log("exercise:"+state.exercise);
-		if(state.help){
-			helpNeeded = true;
-			helpButton.innerHTML = "SOLUCIONADO";
-			helpButton.className = "button green";
-		}
-	});
-	
-	//Connection to the practice event
-	var event = {
-			user: user,
-			eventType: "connection",
-			eventSection: currentSection
-	};
-	socket.emit('new event', event);
-});
-
-
-function sendEventToServer(event){
-	socket.emit('new event', event);
-}
-
-/*
-function sendEventToServer(event){
-	var client = new XMLHttpRequest();
-	client.onreadystatechange = handler;
-	try{
-		client.open("POST", "/event");
-		client.setRequestHeader("Content-type", "application/json");
-		client.send(JSON.stringify(event));
-	}catch(err){
-         //alert("Connection error: " + err);
-         return;
-    }
-}
-
-function handler() {
-	if(this.readyState == 4 && this.status == 201){
-		//alert("Event saved!");
-		return;
-	} else if (this.readyState == 4 && this.status != 201){
-		//alert("Error when saving the event: "+this.status+" "+this.statusText);
-		return;
+var socket;
+function checkUsers(callback){
+	if(!socket){
+		var server = document.location.href.substr(0,document.location.href.lastIndexOf(':'));
+		//server = "163.117.141.206";
+		server = "127.0.0.1";
+		socket = io.connect(server+':80');
+		socket.on('connect', function() {
+			socket.emit('new student', {user: user, session: session});
+			
+			socket.on('student registered', function(regInfo){
+				console.log("student registered:"+JSON.stringify(regInfo));
+				if(!regInfo.error){
+					usersInfo = regInfo.userInfoArray;
+					if(regInfo.exercise){
+						setExercise(regInfo.exercise);
+						//console.log("exercise:"+state.exercise);
+					}
+					if(regInfo.help){
+						helpNeeded = true;
+						helpButton.innerHTML = "SOLUCIONADO";
+						helpButton.className = "button green";
+					}
+					//Connection to the practice event
+					var event = {
+							eventType: "connection",
+					};
+					sendEventToServer(event);
+				}
+				callback(regInfo.error);
+			});
+		});
+	}else{
+		socket.emit('new student', {user: user, session: session});
 	}
-	
 }
-*/
+
+function sendEventToServer(event){
+	event.user = user;
+	event.eventSection = currentSection;
+	event.session = usersInfo[0].group + session;
+	socket.emit('new event', event);
+}
+

@@ -1,5 +1,5 @@
 //Id of the group of students
-var group = "66";
+var group = "AMM_66";
 
 //TODO: create this variable from config file
 var pcs = [{IP: "0.0.0.0"}, {IP: "0.0.0.0"}, {IP: "163.117.101.209"}, {IP: "163.117.101.210"}, {IP: "0.0.0.0"},
@@ -10,10 +10,15 @@ var pcs = [{IP: "0.0.0.0"}, {IP: "0.0.0.0"}, {IP: "163.117.101.209"}, {IP: "163.
            {IP: "163.117.101.231"}, {IP: "163.117.101.232"}, {IP: "163.117.101.233"}, {IP: "163.117.101.234"}, {IP: "163.117.101.235"}
            ];
 
-var teacher = document.location.href.substr(document.location.href.lastIndexOf('=')+1);
+var queryString = document.location.href.substr(document.location.href.lastIndexOf('?')+1);
+var parameters = queryString.split("&");
+
+var teacher = parameters[0].split("=")[1];
+var session = parameters[1].split("=")[1];
+
 if(teacher=="igrojas"){
-	group="67";
-pcs = [{IP: "0.0.0.0"}, {IP: "0.0.0.0"}, {IP: "163.117.101.180"}, {IP: "163.117.101.179"}, {IP: "0.0.0.0"},
+	group="AMM_67";
+pcs = [{IP: "127.0.0.1"}, {IP: "0.0.0.0"}, {IP: "163.117.101.180"}, {IP: "163.117.101.179"}, {IP: "0.0.0.0"},
            {IP: "163.117.101.185"}, {IP: "163.117.101.184"}, {IP: "163.117.101.183"}, {IP: "163.117.101.182"}, {IP: "163.117.101.181"},
            {IP: "163.117.101.190"}, {IP: "163.117.101.189"}, {IP: "163.117.101.188"}, {IP: "163.117.101.187"}, {IP: "163.117.101.186"},
            {IP: "163.117.101.195"}, {IP: "163.117.101.194"}, {IP: "163.117.101.193"}, {IP: "163.117.101.192"}, {IP: "163.117.101.191"},
@@ -31,6 +36,33 @@ for (var i=0; i<icons.length;i++){
 		}(i));
 }
 
+/*
+ * Timer in the detail page
+ */
+var timer;
+var timerTimeout;
+var startTime;
+
+function startTimer(){
+	startTime = (new Date()).getTime();
+	timerTimeout = setInterval(updateTimer, 1000);
+}
+
+function updateTimer(){
+	var timeDiff = new Date();
+	var diff = timeDiff.getTime() - startTime;
+	timeDiff.setTime(diff);
+	var minutes = timeDiff.getMinutes();
+	var seconds = timeDiff.getSeconds();
+	timer.innerHTML = (minutes<9?"0"+minutes:minutes) + ":" + (seconds<9?"0"+seconds:seconds);
+}
+
+function stopTimer(){
+	if(timerTimeout){
+		clearInterval(timerTimeout);
+	}
+}
+
 function showUsers(id){
 	var main = document.getElementById("main");
 	main.classList.add("hide");
@@ -40,12 +72,12 @@ function showUsers(id){
 	var actualUsers = pcs[id].users;
 	
 	if(actualUsers){
-		console.log("showUsers (actualUsers): "+pcs[id].users.join(","));
+		//console.log("showUsers (actualUsers): "+pcs[id].users.join(","));
 		for(var i=0; i<actualUsers.length; i++){
-			var figure = document.createElement("figure");
+			var figure = document.createElement("div");
 			users.appendChild(figure);
 			var img = document.createElement("img");
-			var figurecaption = document.createElement("figurecaption");
+			var figurecaption = document.createElement("div");
 			var student;
 			for(var j=0; j<students.length;j++){
 				if(actualUsers[i] == students[j].username){
@@ -54,49 +86,100 @@ function showUsers(id){
 				}
 			}
 			if(student != undefined){
-				console.log("showUsers (img): /users/photos/"+student.img);
+				//console.log("showUsers (img): /users/photos/"+student.img);
 				img.src = "/users/photos/"+student.img;
-				figurecaption.innerHTML = student.name;
+				figurecaption.innerHTML = student.surname+" "+student.name;
 			} else {
 				img.src = "/users/photos/f1.png";
 				figurecaption.innerHTML = "NOT FOUND";
 			}
+			figure.className = "figure";
 			figure.appendChild(img);
 			figure.appendChild(figurecaption);
 		}
-		console.log("showUsers (description):"+pcs[id].description);
+		//console.log("showUsers (description):"+pcs[id].description);
 		if(pcs[id].description){
 			var desc = document.createElement("div");
-			desc.innerHTML = "Problema: "+pcs[id].description;
+			desc.className = "desc";
+			desc.innerHTML = "Duda: "+pcs[id].description;
 			users.appendChild(desc);
 		}
 	}
+	
+	//Timer
+	timer = document.createElement("div");
+	timer.innerHTML = "00:00";
+	timer.className = "timer";
+	users.appendChild(timer);
+	
 	//initHelp button
 	var button = document.createElement("div");
-	button.addEventListener("click", function(){ initHelp(id);});
+	button.addEventListener("click", onInitHelp = function(){ initHelp(id, button);});
 	users.appendChild(button);
 	button.innerHTML = "INIT HELP";
-	button.className = "button green relative";
+	button.className = "button green help";
 	
 	//Back button
-	var button = document.createElement("div");
-	button.addEventListener("click", goBack);
-	users.appendChild(button);
-	button.innerHTML = "VOLVER";
-	button.className = "button red relative";
+	var back_button = document.createElement("div");
+	back_button.addEventListener("click", function(){ goBack(id, button);});
+	users.appendChild(back_button);
+	back_button.innerHTML = "VOLVER";
+	back_button.className = "button gray back";
+	
 }
 
-function goBack(){
+var helpingStudent =  false;
+
+function goBack(id, button){
+	if(helpingStudent){
+		endHelp(id, button);
+	}
 	var users = document.getElementById("users");
 	users.classList.add("hide");
 	users.innerHTML = "";
 	var main = document.getElementById("main");
-	main.classList.remove("hide");
-	
+	main.classList.remove("hide");	
 }
 
-function initHelp(id){
-	socket.emit('teacher event', {group: group, eventType: "initHelp", user: pcs[id].users});
+function initHelp(id, button){
+	button.removeEventListener("click", onInitHelp);
+	button.addEventListener("click", onEndHelp = function(){ endHelp(id, button);});
+	button.innerHTML = "END HELP";
+	button.className = "button red help";
+	
+	socket.emit('teacher event', {
+		session: group+session, 
+		eventType: "initHelp", 
+		eventSection: pcs[id].currentExercise,
+		user: pcs[id].users
+		});
+	//Teacher is helping the students on screen
+	helpingStudent =  true;
+	
+	//Start timer
+	startTimer();
+}
+
+function endHelp(id, button){
+	//Redraw interface
+	problemSolved(id);
+	//Stop timer
+	stopTimer();
+	//Change button display
+	button.removeEventListener("click", onEndHelp);
+	button.addEventListener("click", onInitHelp = function(){ initHelp(id, button);});
+	button.innerHTML = "INIT HELP";
+	button.className = "button green help";
+	//No more helping
+	helpingStudent =  false;
+	//Save event
+	socket.emit('teacher event', {
+		session: group+session, 
+		eventType: "endHelp", 
+		eventSection: pcs[id].currentExercise,
+		user: pcs[id].users,
+		IP: pcs[id].IP
+		});
 }
 
 //Groups that asked for help
@@ -106,7 +189,8 @@ var help_needed =  false; //Teacher has work to do
 //Websockets
 //Cambiar la IP a bruch:80
 var server = document.location.href.substr(0,document.location.href.lastIndexOf(':'));
-server = "163.117.141.206";
+//server = "163.117.141.206";
+server = "127.0.0.1";
 var socket = io.connect(server+':80');
 socket.on('connect', function() {
 	var button = document.getElementsByClassName("button")[0];
@@ -114,24 +198,9 @@ socket.on('connect', function() {
 	button.classList.remove("red");
 	button.innerHTML = "Conectado";
 	
-	socket.emit("new teacher", {"group": group});
-	socket.emit("userList", {"group": group});
+	socket.emit("new teacher", {session: group+session});
+	socket.emit("userList", {group: group});
 });
-
-/*
-var client = new XMLHttpRequest();
-client.onreadystatechange = function(){
-	if(this.readyState == 4 && this.status == 200){
-		students = eval('(' + this.responseText + ')');
-	} else if (this.readyState == 4 && this.status != 200){
-		//alert("Error when saving the event: "+this.status+" "+this.statusText);
-		return;
-	}
-};
-client.open("POST", "/user");
-client.setRequestHeader("Content-type", "application/json");
-client.send(JSON.stringify({"group": group}));
-*/
 
 socket.on("init", function(my_session){
 
@@ -140,7 +209,7 @@ socket.on("init", function(my_session){
 	for(var i=0; i<pcs.length;i++){
 		var icon = document.getElementsByClassName("comp_icon")[i].firstElementChild;
 		for(var j=0; j<state.length; j++){
-console.log("init (data.IP): "+state[j].IP);
+//console.log("init (data.IP): "+state[j].IP);
 			if(pcs[i].IP == state[j].IP){
 				if(pcs[i].users){
 					pcs[i].users.push(state[j].username);
@@ -184,15 +253,38 @@ socket.on('userListResp', function(data){
 	students = data;
 });
 
+
+function problemSolved(index){
+	var icon = document.getElementsByClassName("comp_icon")[index].firstElementChild;
+	pcs[index].help = false;
+	icon.classList.remove("waiting_start");
+	icon.classList.add("working");
+	if(pcs_needHelp.indexOf(index)!=-1){ //queued, then remove form queue
+		pcs_needHelp.splice(pcs_needHelp.indexOf(index),1);
+	}else{//not
+		icons[index].classList.remove("next_icon");
+		if(pcs_needHelp.length>0){
+			icons[pcs_needHelp.shift()].classList.add("next_icon");
+		}else{
+			help_needed = false;
+			var button = document.getElementsByClassName("button")[1];
+			button.classList.add("green");
+			button.classList.remove("red");
+			button.innerHTML = "FREE";
+		}
+	}
+}
+
 socket.on('event', function (data) {
 	//alert(data.IP);
-console.log("event (data.IP): "+data.IP);
+console.log("event (data.IP): "+data.IP+" event:"+data.eventType+" user:"+data.user);
 	for(var i=0; i<pcs.length;i++){
 		if(data.IP == pcs[i].IP){
 			var icon = document.getElementsByClassName("comp_icon")[i].firstElementChild;
+			console.log("event: IP found!");
 			switch(data.eventType){
 			case "connection":
-				if(!pcs[i].users==undefined){
+				if(pcs[i].users==undefined){
 					pcs[i].users = data.user;
 					pcs[i].currentExercise = 1;
 					pcs[i].help =  false;
@@ -227,25 +319,7 @@ console.log("event (data.IP): "+data.IP);
 				}
 				break;
 			case "solved":
-				pcs[i].help = false;
-				icon.classList.remove("waiting_start");
-				icon.classList.add("working");
-				if(pcs_needHelp.indexOf(i)!=-1){ //queued, the remove form queue
-					pcs_needHelp.splice(pcs_needHelp.indexOf(i),1);
-					console.log("solved (found in queue) :"+data.user);
-				}else{//not
-					console.log("solved (not found in queue) :"+data.user);
-					icons[i].classList.remove("next_icon");
-					if(pcs_needHelp.length>0){
-						icons[pcs_needHelp.shift()].classList.add("next_icon");
-					}else{
-						help_needed = false;
-						var button = document.getElementsByClassName("button")[1];
-						button.classList.add("green");
-						button.classList.remove("red");
-						button.innerHTML = "FREE";
-					}
-				}
+				problemSolved(i);
 				break;
 			}
 			break;

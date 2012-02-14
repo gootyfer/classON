@@ -3,7 +3,6 @@ var path = require('path');
 var fs = require('fs');
 var express = require('express');
 var EventManager = require('./eventmanager').EventManager;
-//var UserManager = require('./users/usermanager').UserManager;
 
 var app = express.createServer();
 //Websockets
@@ -11,7 +10,6 @@ var io = require('socket.io').listen(app);
 io.set('log level', 1);
 
 var eventManager = new EventManager('localhost', 27017);
-//var userManager = new UserManager('localhost', 27017);
 
 app.configure(function(){
     app.use(express.methodOverride());
@@ -58,8 +56,7 @@ console.log('requesting file:'+request.url);
                 if (error) {
                     response.writeHead(500);
                     response.end();
-                }
-                else {
+                }  else {
                     response.writeHead(200, { 'Content-Type': contentType });
                     response.end(content, 'utf-8');
                 }
@@ -83,35 +80,31 @@ app.get('/users/photos/*', function (request, response) {
 	serve_http(request, response);
 });
 
-/*
-app.post('/event', function (request, response) {
-	var event = request.body;
-	for(var field in event){
-		console.log('field:'+field+' value:'+event[field]);
-	}
-	
-	eventManager.save(event, function(error, events){
-		var event = events[0];
-		event.IP = request.connection.remoteAddress;
-		//Forward event to the teacher
-		io.sockets.emit('event', event);
-		
-		if(error) response.writeHead(500);
-		else response.writeHead(201);
-		
-		response.end();
-	});
-});
-*/
+
 //TODO: hacer din‡mico!
 //Sessions: list of objects
-/*	{ 
+/*	session_item = { 
 		username: "username",
 		exercise: 0,
 		help: false,
 		IP: "IP"
 	}
+	queue_item = IPs
  */
+var sessions = {};
+var queues = {};
+
+function getSession(id){
+	if(sessions[id]==undefined) sessions[id] = [];
+	return sessions[id];
+}
+
+function getQueue(id){
+	if(queues[id]==undefined) queues[id] = [];
+	return queues[id];
+}
+
+/*
 var session_66 = [];
 var session_67 = [];
 
@@ -133,6 +126,7 @@ getUserByParam({group: "67"}, function(err, docs){
 		students_67.push(docs[i].username);
 	}
 });
+*/
 
 function getUserByParam(userParams, handler){
 	var mongodb = require('mongodb');
@@ -147,6 +141,22 @@ function getUserByParam(userParams, handler){
 	});
 }
 
+function getUsersByUsername(usernameArray, userInfoArray, handler){
+	if(usernameArray.length>0){
+		var username = usernameArray.pop();
+		getUserByParam({username: username}, function(error, userInfo){
+			if(!error && userInfo.length>0){
+				userInfoArray.push(userInfo[0]);
+				getUsersByUsername(usernameArray, userInfoArray, handler);
+			}else{
+				handler("error");
+			}
+		});
+	}else{
+		handler(null, userInfoArray);
+	}
+}
+
 io.sockets.on('connection', function (socket) {
 	
 	//Request user list
@@ -157,7 +167,7 @@ io.sockets.on('connection', function (socket) {
 				  console.log('error en la consulta: userList');
 				  socket.emit('userListResp', []);
 				}else{
-					console.log('docs:'+JSON.stringify(docs));
+					//console.log('docs:'+JSON.stringify(docs));
 					socket.emit('userListResp', docs);
 				}
 		});
@@ -172,14 +182,22 @@ io.sockets.on('connection', function (socket) {
 			//Forward event to the teachers + other students
 			socket.broadcast.emit('event', event);
 			
+			var my_session = getSession(event.session);
+			var my_queue = getQueue(event.session);
+			
+			/*
 			var my_session = session_66; //Grupo 66
 			var my_queue = queue_66;
 			if(students_66.indexOf(event.user[0])==-1){//67
 				my_session = session_67;
 				my_queue = queue_67;
 			}
-			console.log('new event(my_session):'+JSON.stringify(my_session));
-			console.log('new event(my_queue):'+JSON.stringify(my_queue));
+			*/
+			//console.log('new event(my_session):'+JSON.stringify(my_session));
+			//console.log('new event(my_queue):'+JSON.stringify(my_queue));
+			
+			//console.log('new event(sessions):'+JSON.stringify(sessions));
+			//console.log('new event(queues):'+JSON.stringify(queues));
 			
 			var students = event.user;
 			for(var i=0; i<students.length; i++){
@@ -231,6 +249,27 @@ io.sockets.on('connection', function (socket) {
 	
 	//Event from teacher
 	socket.on('teacher event', function(event){
+		if(event.eventType=="endHelp" && event.user){
+			var IP = event.IP;
+			delete event.IP;
+			
+			var my_session = getSession(event.session);
+			var my_queue = getQueue(event.session);
+			//console.log('teacher event before loop'+JSON.stringify(event));
+			var students = event.user;
+			for(var i=0; i<students.length; i++){
+				for(var j=0; j<my_session.length; j++){
+					if(students[i] == my_session[j].username){
+						//console.log('teacher event found student for'+students[i]);
+						my_session[j].help = false;
+						if(my_queue.indexOf(IP)!=-1){
+							my_queue.splice(my_queue.indexOf(IP),1);
+						}
+						break;
+					}
+				}
+			}
+		}
 		eventManager.save(event, function(error, events){
 			var event = events[0];
 			console.log('teacher event'+JSON.stringify(event));
@@ -238,9 +277,61 @@ io.sockets.on('connection', function (socket) {
 	});
 	
 	//New student connected
-	socket.on("new student", function(students){
-		students = students.user;
+	socket.on("new student", function(users){
+		students = users.user;
 		console.log('new student:'+students.join(","));
+		
+		getUsersByUsername(students.slice(0), [], function(error, userInfoArray){
+			if(error){
+				console.log('student registered: error emitted');
+				socket.emit('student registered',{error:error});
+			}else{
+				var my_session = getSession(userInfoArray[0].group+users.session);
+				//console.log('new student.my_session:'+userInfoArray[0].group+users.session);
+				//console.log('new student(my_session):'+JSON.stringify(my_session));
+				//console.log('new event(sessions):'+JSON.stringify(sessions));
+				//console.log('new event(queues):'+JSON.stringify(queues));
+				
+				
+				console.log('new student:'+students.join(","));
+				//console.log('new student(userInfoArray):'+userInfoArray);
+				var emited = false;
+				for(var i=0; i<students.length; i++){
+					var found = false;
+					
+					for(var j=0; j<my_session.length; j++){
+						if(students[i] == my_session[j].username){
+							if(!emited){
+								//console.log('emit student registered:'+my_session[j].exercise);
+								socket.emit('student registered', {
+									userInfoArray : userInfoArray,
+									exercise: my_session[j].exercise, 
+									help: my_session[j].help
+									});
+								emited = true;
+							}
+							found = true;
+							break;
+						}
+					}
+					if(!found){
+						//Not found
+						my_session.push({ 
+							username: students[i],
+							exercise: 0,
+							help: false,
+							IP: socket.handshake.address.address
+						});
+						//console.log('emit student registered: new student');
+						socket.emit('student registered', {
+							userInfoArray : userInfoArray
+						});
+					}
+				}
+			}
+		});
+		
+		/*
 		var my_session = session_66; //Grupo 66
 		var group = "66";
 		if(students_66.indexOf(students[0])==-1){//67
@@ -272,24 +363,22 @@ io.sockets.on('connection', function (socket) {
 				});
 			}
 		}
+		*/
 		//Save names to the socket
-		//TODO: merece la pena?
-		socket.set("username", students);
-		socket.set("group", group);
+		//No merece la pena?
+		//socket.set("username", students);
+		//socket.set("group", group);
 	});
 	
 	//New teacher connected
-	socket.on("new teacher", function(group){
-		console.log('new teacher: from group'+group+" 67 by default");
-		var my_session = session_66;
-		var my_queue = queue_66;
-		if(group!="66"){
-			my_session = session_67;
-			my_queue = queue_67;
-		}
+	socket.on("new teacher", function(session){
+		console.log('new teacher: at session '+session.session);
+		var my_session = getSession(session.session);
+		var my_queue = getQueue(session.session);
+		//console.log('new event(my_session):'+JSON.stringify(my_session));
+		//console.log('new event(my_queue):'+JSON.stringify(my_queue));
 		
 		socket.emit('init', {session: my_session, queue: my_queue});
-		
 	});
 	
 	socket.on("disconnect", function(){
@@ -307,33 +396,6 @@ io.sockets.on('connection', function (socket) {
 	});
 });
 
-/*
-app.post('/user', function (request, response) {
-	var userParams = request.body;
-	console.log('userParams:'+JSON.stringify(userParams));
-	for(var field in userParams){
-		console.log('field:'+field+' value:'+userParams[field]);
-	}
-	
-	var mongodb = require('mongodb');
-	var server = new mongodb.Server("127.0.0.1", 27017, {});
-	new mongodb.Db('classon', server, {}).open(function (error, client) {
-		  if (error) throw error;
-		  var collection = new mongodb.Collection(client, 'users');
-		  collection.find(userParams).toArray(function(err, docs) {
-			  if(error){
-					response.writeHead(500);
-					response.end();
-				}else{
-					response.writeHead(200, { 'Content-Type': 'application/json' });
-					console.log('docs'+JSON.stringify(docs));
-					response.end(JSON.stringify(docs), 'utf-8');
-				}
-			  client.close();
-		  });
-	});
-});
-*/
 app.listen(80);
 
 console.log('Server running at http://127.0.0.1:80/');
