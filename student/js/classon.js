@@ -101,7 +101,7 @@ if(!user){
 	user = user.split(",");
 	checkUsers(function(error){
 		if(error){
-			requestUser("Los NIAs almacenados no son correctos. Por favor, revísalos y pincha OK.");
+			requestUser("Los NIAs almacenados no son correctos. Por favor, revï¿½salos y pincha OK.");
 		}else{
 			usersOK();
 		}
@@ -148,7 +148,7 @@ function saveUsers(){
 	checkUsers(function(error){
 		if(error){
 			$.unblockUI();
-			requestUser("Los NIAs indicados no son correctos. Por favor, revísalos y pincha OK.");
+			requestUser("Los NIAs indicados no son correctos. Por favor, revï¿½salos y pincha OK.");
 		}else{
 			usersOK();
 		}
@@ -216,7 +216,7 @@ function indicateProgress(back){
 function askForHelp(){
 	$.blockUI({
 		theme:     true, 
-        title:    (helpNeeded)?'Solución':'Duda', 
+        title:    (helpNeeded)?'Soluciï¿½n':'Duda', 
 		message: "<div>Por favor, describe brevemente la "+(helpNeeded?'respuesta a tu duda':'duda que vas a preguntar')+".<br /><br />" +
 		"<textarea id='duda' style='width:100%;height:100px'></textarea><br /><br />" +
 		"<div><input type='button' onclick='$.unblockUI();' value='Cancelar' style='float:left;' />" +
@@ -259,8 +259,8 @@ function askForHelp2(){
 function finishSection(){
 	$.blockUI({
 		theme:     true, 
-        title:    "Sección terminada", 
-		message: "<div>¿Seguro que has terminado el apartado correpondiente?<br /><br />" +
+        title:    "Secciï¿½n terminada", 
+		message: "<div>ï¿½Seguro que has terminado el apartado correpondiente?<br /><br />" +
 		"<div><input type='button' onclick='$.unblockUI();' value='Cancelar' style='margin-left: 0px;' />" +
 		"<input type='button' onclick='finishSection2();' value='OK' style='float:right;' /></div></div>"});
 }
@@ -284,7 +284,7 @@ function undoFinishSection(){
 	$.blockUI({
 		theme:     true, 
         title:    "Deshacer progreso", 
-		message: "<div>¿Seguro que deseas volver al apartado anterior?<br /><br />" +
+		message: "<div>ï¿½Seguro que deseas volver al apartado anterior?<br /><br />" +
 		"<div><input type='button' onclick='$.unblockUI();' value='Cancelar' style='margin-left: 0px;' />" +
 		"<input type='button' onclick='undoFinishSection2();' value='OK' style='float:right;' /></div></div>"});
 }
@@ -312,8 +312,8 @@ var socket;
 function checkUsers(callback){
 	if(!socket){
 		var server = document.location.href.substr(0,document.location.href.lastIndexOf(':'));
-		//server = "163.117.141.206";
-		server = "127.0.0.1";
+		server = "163.117.141.206";
+		//server = "127.0.0.1";
 		socket = io.connect(server+':80');
 		socket.on('connect', function() {
 			socket.emit('new student', {user: user, session: session});
