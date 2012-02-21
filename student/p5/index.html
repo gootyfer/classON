@@ -1,0 +1,419 @@
+<html>
+<head>
+  <title>Aplicaciones Multimedia</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="author" content="Raquel M. Crespo García, rcrespo@it.uc3m.es" />
+  <link REL="SHORTCUT ICON" HREF="http://www.uc3m.es/favicon.ico" /> 
+  
+  <link href="http://www.it.uc3m.es/rcrespo/docencia/asignatura.css" rel="stylesheet" type="text/css" />
+  <link href="http://www.it.uc3m.es/estilo.css" rel="stylesheet" type="text/css" />
+<link href="http://www.it.uc3m.es/rcrespo/docencia/amm/1112/p3/css/amm.css" rel="stylesheet" type="text/css" />
+		<link href="../css/classon.css" rel="stylesheet" type="text/css" />
+		<link href="../css/jquery-ui.css" rel="stylesheet" type="text/css" />
+		<style TYPE="text/css">
+  <!--
+  @import url(http://www.it.uc3m.es/rcrespo/docencia/apuntes.css);
+  --> 
+
+  .note {
+    /* color: navy; */
+    font-style: italic;
+  }
+  .opt {
+    color: DimGrey;
+  }
+  .code {
+    font-style: italic;
+  }
+  p.pimg {
+    text-align : center;
+  }
+  img {
+    border : solid gray;
+  }
+  </style> 
+  
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/jquery.blockUI.js"></script>
+		</head>
+
+<body>
+
+<!-- BEGIN ADD, 21/05/09; to comply with UC3M corporate image requirements -->
+		<div class="headerBorderUc3mblue"></div>
+		<div class="header white">
+		  <a href="http://www.uc3m.es/">
+		  	<img class="logos logoleft" src="http://www.it.uc3m.es/imag/EscudoLogoCorporativo.png" alt="Universidad Carlos III de Madrid" />
+		  </a>
+	      <a href="http://www.it.uc3m.es">
+	      	<img class="logos logoright" src="http://www.it.uc3m.es/imag/SpanishLogoIT.png" alt="Departamento de Ingeniería Telemática" />
+	      </a>
+		</div>
+		<div class="headerBorderUc3mblue"></div>
+		<!-- END ADD 21/05/09 -->
+		
+		
+		<!-- Tabla encabezado departamento -->
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+		  <tr>
+		    <td>
+		      <table width="100%" border="0" cellspacing="1" cellpadding="0">  	
+		        <tr>
+		          <td bgcolor="#CCD0D6" width="2000" height="22">
+		            <div align="right"><a href="http://www.it.uc3m.es/localizacion/localizacion.htm" class="azul">Localizaci&oacute;n</a>
+		              | <a href="#"></a><a href="http://www.it.uc3m.es/personal/directorio.htm"><span class="rojo">Personal</span></a>
+		              | <a href="http://www.it.uc3m.es/docencia/docencia.htm" class="azul">Docencia</a>
+		              | <a href="http://www.it.uc3m.es/investigacion/investigacion.htm" class="azul">Investigaci&oacute;n</a>
+		              | <a href="http://www.it.uc3m.es/novedades/novedades.htm" class="azul">Novedades</a>
+		              | <a href="http://www.it.uc3m.es/intranet/intranet.htm" class="azul">Intranet</a>
+		              &nbsp;&nbsp;</div>
+		          </td>
+		        </tr>
+		      </table>
+		    </td>
+		  </tr>
+		</table>
+		<!-- Tabla encabezado departamento (fin) -->
+		
+		<!-- Navegación -->
+		<nav>
+			<p class="nav"><a class="azul"
+			href="http://www.it.uc3m.es/index.html">Home</a> / <a class="azul"
+			href="http://www.it.uc3m.es/docencia/docencia.htm">Docencia</a> / <a
+			class="azul" href="http://www.it.uc3m.es/docencia/grado-audiovisuales.html">Grado en Ingeniería de Sistemas Audiovisuales</a> / 
+			<a class="azul" href="http://www.it.uc3m.es/rcrespo/docencia/amm/1011/">Aplicaciones Multimedia</a>
+			</p>
+		</nav>
+		<!-- Navegación (fin) -->
+<header>
+<h1>HTML5: Imágenes vectoriales SVG</h1>
+</header>
+
+<section id="intro">
+<h2 class="minititulo">Objetivo: juego de reconocimiento de formas</h2>
+
+<div class="boxed">
+
+<p>
+  SVG (Scalable Vector Graphics) es un lenguaje de representación gráfica 2D que permite combinar gráficos vectoriales, imágenes <em>"rasterizadas"</em> (basadas en mapas de bits) y texto. SVG incluye también un modelo de eventos que permite escribir scripts manejadores (generalmente Javascript) que manipulan el modelo de documento DOM del fichero SVG. Así como elementos de animación nativos que permiten animar el gráfico sin necesidad de scripts. 
+</p>
+
+<p>
+ En esta práctica vamos a usar SVG para implementar un juego de reconocimiento de formas.
+</p>
+
+<p>
+  Se trata del típico juego infantil en el que hay bloques y moldes con distintas formas (círculo, triángulo, cuadrado, estrella, etc.). Se trata de encajar cada forma en el molde correspondiente.
+</p>
+
+<p>
+ En el apartado final (<a href="#refs">Referencias</a>) puedes encontrar enlaces a diversos recursos: documentación, tutoriales y algunos ejemplos demostrativos.
+</p>
+
+</div>
+</section>
+<section id="step1">
+<h2 class="minititulo">Paso 1: crear un fichero SVG</h2>
+
+<div class="boxed">
+
+<p>
+  En este caso vamos a crear nuestro gráfico en un fichero independiente. 
+  Recuerda que también se puede crear empotrado en la propia página HTML. 
+</p>
+
+<p>
+  Crea un fichero de texto plano con el esqueleto de un documento SVG. 
+  Ten cuenta que el gráfico deberá tener un tamaño total de 400 píxeles de alto por 400 de ancho. 
+</p>
+</div>
+</section>
+<section id="step2">
+<h2 class="minititulo">Paso 2: coordenadas y formas básicas</h2>
+
+<div class="boxed">
+
+<p class="opt">
+  En este paso nos limitaremos simplemente a dibujar las figuras, con el tamaño y en la posición adecuados, sin preocuparnos de aspectos como el color, relleno, etc. 
+</p>
+
+<p>
+  La distribución del espacio en la imagen seguirá el patrón que se muestra en la imagen.
+  Cada figura tendrá como tamaño 100x100 
+  (por ejemplo, un círculo tendrá radio 50). 
+  El espacio de separación entre regiones será de 25.
+</p>
+
+<p class="pimg">
+  <img src="img/layout.png"  />
+</p>
+
+<p>
+  Dibuja un círculo en el centro de la imagen. Esta figura central será la que deba encajarse en el molde correspondiente.
+</p>
+
+<p>
+  Dibuja tres figuras más en la parte inferior de la imagen (moldes). 
+  Una tiene que coincidir con la figura central (círculo). 
+  Dibuja además un rectángulo y un triángulo como formas alternativas.
+</p>
+
+<p>
+  El resultado debería ser algo así:
+</p>
+
+<p class="pimg">
+  <img src="img/formas-1.png" width="200" height="200" />
+</p>
+
+
+<div class="opt">
+<p>
+  <em>Posibles mejoras:</em> 
+</p>
+<ul>
+  <li>Prueba a dibujar otras figuras, por ejemplo una estrella.</li>
+</ul>
+</div>
+
+</div>
+</section>
+<section id="step3">
+<h2 class="minititulo">Paso 3: texto</h2>
+
+<div class="boxed">
+
+<p>
+  Añade en la parte superior el texto con el título del juego y los autores (etiqueta <span class="code">text</span>). 
+  Recuerda que la etiqueta <span class="code">tspan</span> permite dividir en texto en bloques, por ejemplo para dividir en líneas. 
+</p>
+
+<p class="note">
+  SVG permite usar CSS, sin embargo, el soporte es opcional para los visualizadores de SVG. No obstante, SVG define atributos de presentación con el mismo nombre que los atributos CSS correspondientes, duplicando su función.
+</p>
+
+<p class="pimg"><img src="img/formas-3.png" width="200" height="200" /></p>
+
+<div class="opt">
+<p>
+  <em>Posibles mejoras:</em> 
+</p>
+<ul>
+  <li>Usa atributos de presentación basados en propiedades CSS para modificar el aspecto del texto, por ejemplo <span class="code">font-size</span>, <span class="code">font-weight</span>. </li>
+</ul>
+</div>
+
+</div>
+</section>
+<section id="step4">
+<h2 class="minititulo">Paso 4: color</h2>
+
+<div class="boxed">
+
+<p>Modifica el color de las figuras dibujadas, así como del texto. </p>
+
+<div class="note">
+
+<p> Recuerda que:</p>
+
+<p class="note">
+  Se puede definir el color de los elementos SVG mediante los atributos <span class="code">stroke</span> y <span class="code">fill</span>. <span class="code">stroke</span> define el color de línea (borde exterior). <span class="code">fill</span> define el color de relleno. Como valores, puede indicarse un color, <span class="code">none</span> o <span class="code">currentColor</span>. Todas las formas SVG (incluyendo los elementos de texto) tienen estos dos atributos.
+</p>
+
+<p class="note">
+  Además, puede especificarse el grado de transparencia mediante el atributo <span class="code">opacity</span> (o sus derivados <span class="code">fill-opacity</span>, <span class="code">stroke-opacity</span>, <span class="code">stop-opacity</span> -este último para gradientes-).
+</p>
+
+<p class="note">
+  Se pueden conseguir efectos de color más complejos usando gradientes, patrones y máscaras. 
+</p>
+
+</div>
+
+<div class="opt">
+<p>
+  <em>Posibles mejoras:</em>
+</p>
+<ul>
+ <li>Prueba a utilizar gradientes para colorear las figuras. </li>
+</ul>
+</div>
+
+
+
+<p class="pimg"><img src="img/formas-4.png" width="200" height="200" /></p>
+
+</div>
+</section>
+<section id="step5">
+<h2 class="minititulo">Paso 5: grupos</h2>
+
+<div class="boxed">
+
+<p>
+  En este paso vamos a convertir cada figura inferior en su vaciado, de modo que realmente parezca un molde. Para ello, combinaremos cada figura con un rectángulo de fondo. Y agruparemos cada pareja rectángulo-figura usando grupos (etiqueta <span class="code">g</span>), de modo que puedan tratarse como una unidad.
+</p>
+
+<p>
+  Usa transparencias para conseguir el efecto de vaciado.
+</p>
+
+<p class="pimg"><img src="img/formas-5.png" width="200" height="200" /></p>
+
+</div>
+</section>
+<section id="step6">
+<h2 class="minititulo">Paso 6: caminos (path) y definiciones (defs)</h2>
+
+<div class="boxed">
+
+<p>
+  Usaremos caminos para definir la trayectoria de la animación de la figura, desde la posición central hasta el molde seleccionado
+</p>
+
+<p>
+  Por tanto, deberás definir (<span class="code">defs</span>) 3 caminos (<span class="code">path</span>):
+</p>
+
+<ol>
+  <li>Trayectoria desde la posición central al molde izquierdo</li>
+  <li>Trayectoria desde la posición central al molde central</li>
+  <li>Trayectoria desde la posición central al molde derecho</li>
+</ol>
+
+<p>
+  Prueba a visualizar los caminos definidos, para comprobar que se dibujan correctamente. En la versión final no deberán verse, sólo se definen para usarse después en las animaciones. 
+</p>
+
+<p class="pimg"><img src="img/formas-6.png" width="200" height="200" /></p>
+
+<div class="opt">
+<p>
+  <em>Posibles mejoras:</em>
+</p>
+<ul>
+ <li>Alinea el texto del título siguiendo una trayectoria ondulada. </li>
+</ul>
+</div>
+
+</div>
+</section>
+<section id="step7">
+
+<h2 class="minititulo">Paso 7: animaciones</h2>
+
+<div class="boxed">
+<p>
+  Utiliza el elemento <span class="code">animateMotion</span> para animar la figura central, de modo que se desplace sobre la trayectoria correspondiente al hacer click sobre uno de los moldes.
+</p>
+
+<p>
+  Ten en cuenta que al usar un camino para la trayectoria de la animación, ese camino pasa a ser la referencia para las coordenadas (en vez del origen). Como inicialmente la figura central está situada en el punto (200, 200), para que la animación funcione como se espera hay que cambiar el valor de sus coordenadas a (0,0) también al pulsar sobre el molde. Para ello, lo más sencillo es usar el elemento <span class="name">set</span> (un "atajo" de <span class="name">animate</span> para cambiar el valor de un atributo).
+</p>
+
+<p>
+  Para detectar que se ha hecho click sobre un elemento svg, se usa el evento <span class="name">click</span> del objeto correspondiente (por ejemplo, <span class="name">molde1.click</span>).
+</p>
+
+<div class="opt">
+<p>
+  <em>Posibles mejoras - Prueba a aplicar otros efectos de animación:</em>
+</p>
+<ul>
+ <li>Aumentar el tamaño de la figura (y volver a disminuirlo).</li>
+ <li>Girar el molde y la figura una vez se coloca ésta última sobre el primero.</li>
+</ul>
+</div>
+
+</div>
+</section>
+<section id="step8">
+<h2 class="minititulo">Paso 8: lógica del juego</h2>
+
+<div class="boxed">
+
+<p>
+  Agrega el código Javascript necesario para controlar el número de intentos hasta que el usuario selecciona el molde correcto. 
+</p>
+
+<p>
+  Tendrás que añadir un elemento de texto para representar esta información. 
+</p>
+
+<p class="pimg"><img src="img/formas-8.png" width="200" height="200" /></p>
+
+<div class="opt">
+<p>
+  <em>Posibles mejoras:</em>
+</p>
+<ul>
+ <li>Puedes utilizar Javascript para seleccionar aleatoriamente la figura central (de modo que no siempre sea un círculo). Lo mismo para variar los moldes así como el orden en que aparecen.</li>
+</ul>
+</div>
+</div>
+
+<h2 class="minititulo">Casos de uso</h2>
+
+<div class="boxed">
+
+<p>
+  Puedes utilizar SVG para crear una imagen representativa de tu proyecto (juego), que podría incluirse como logo o banner publicitario en otras páginas web.
+</p>
+
+<p>
+  También puedes utilizar SVG en tu proyecto para representar elementos gráficos del mismo (personajes, objetos, etc.).
+</p>
+
+<p>
+  Finalmente, también puedes utilizarlo para representar gráficamente estadísticas del juego.
+</p>
+
+</div>
+
+<!--
+<a name="eval" />
+<div class="boxed">
+  <h2>Preguntas de Autoevaluación</h2>
+<ul>
+  <li>¿Qué alternativas hay para incluir un gráfico SVG en una página HTML?</li>
+</ul>
+</div>
+
+</div>
+-->
+</section>
+<section id="refs">
+
+<h2 class="minititulo">Referencias</h2>
+
+<div class="boxed">
+
+<ul>
+
+<li>
+<a href="https://aulaglobal2.uc3m.es/file.php/18311/html5_svg.pdf">Apuntes sobre SVG</a>
+</li>
+
+<li><a href="http://apike.ca/prog_svg.html">Tutorial sobre SVG</a></li>
+
+<li><a href="http://www.svgbasics.com/index.html">Tutorial sobre SVG</a></li>
+
+<li><a href="http://www.w3.org/TR/SVG11/types.html#ColorKeywords">Nombres de colores en SVG</a></li>
+
+<li><a href="http://apike.ca/prog_svg_presattr.html">Resumen de atributos de presentación</a></li>
+
+<li><a href="http://apike.ca/prog_svg_presattr_anim.html">Atributos de animación (resumen)</a></li>
+
+<li><a href="http://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_random">Generación de números aleatorios con Javascript (ejemplo práctico)</a></li>
+
+</ul>
+
+</div>
+</section>
+<footer>
+<p></p>
+</footer>
+<script type="text/javascript" src="../js/socket.io.min.js"></script>
+		<script type="text/javascript" src="../js/classon.js?session=p5"></script>
+</body>
+</html>
