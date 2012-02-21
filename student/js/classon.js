@@ -216,7 +216,7 @@ function indicateProgress(back){
 function askForHelp(){
 	$.blockUI({
 		theme:     true, 
-        title:    (helpNeeded)?'Soluci�n':'Duda', 
+        title:    (helpNeeded)?'Solución':'Duda', 
 		message: "<div>Por favor, describe brevemente la "+(helpNeeded?'respuesta a tu duda':'duda que vas a preguntar')+".<br /><br />" +
 		"<textarea id='duda' style='width:100%;height:100px'></textarea><br /><br />" +
 		"<div><input type='button' onclick='$.unblockUI();' value='Cancelar' style='float:left;' />" +
@@ -259,8 +259,8 @@ function askForHelp2(){
 function finishSection(){
 	$.blockUI({
 		theme:     true, 
-        title:    "Secci�n terminada", 
-		message: "<div>�Seguro que has terminado el apartado correpondiente?<br /><br />" +
+        title:    "Sección terminada", 
+		message: "<div>¿Seguro que has terminado el apartado correpondiente?<br /><br />" +
 		"<div><input type='button' onclick='$.unblockUI();' value='Cancelar' style='margin-left: 0px;' />" +
 		"<input type='button' onclick='finishSection2();' value='OK' style='float:right;' /></div></div>"});
 }
@@ -284,7 +284,7 @@ function undoFinishSection(){
 	$.blockUI({
 		theme:     true, 
         title:    "Deshacer progreso", 
-		message: "<div>�Seguro que deseas volver al apartado anterior?<br /><br />" +
+		message: "<div>¿Seguro que deseas volver al apartado anterior?<br /><br />" +
 		"<div><input type='button' onclick='$.unblockUI();' value='Cancelar' style='margin-left: 0px;' />" +
 		"<input type='button' onclick='undoFinishSection2();' value='OK' style='float:right;' /></div></div>"});
 }
@@ -319,7 +319,7 @@ function checkUsers(callback){
 			socket.emit('new student', {user: user, session: session});
 			
 			socket.on('student registered', function(regInfo){
-				console.log("student registered:"+JSON.stringify(regInfo));
+				//console.log("student registered:"+JSON.stringify(regInfo));
 				if(!regInfo.error){
 					usersInfo = regInfo.userInfoArray;
 					if(regInfo.exercise){

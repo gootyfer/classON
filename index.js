@@ -48,6 +48,9 @@ console.log('requesting file:'+request.url);
         case '.ico':
         	contentType = 'image/x-icon';
         	break;
+		case '.svg':
+        	contentType = 'image/svg+xml';
+        	break;
     }
     
     path.exists(filePath, function(exists) {
@@ -286,6 +289,7 @@ io.sockets.on('connection', function (socket) {
 				console.log('student registered: error emitted');
 				socket.emit('student registered',{error:error});
 			}else{
+				if(userInfoArray.length==0) return;
 				var my_session = getSession(userInfoArray[0].group+users.session);
 				//console.log('new student.my_session:'+userInfoArray[0].group+users.session);
 				//console.log('new student(my_session):'+JSON.stringify(my_session));

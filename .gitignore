@@ -1,4 +1,7 @@
 .DS_Store
 node_modules
 users
+users_old
 .project
+.settings
+*~
