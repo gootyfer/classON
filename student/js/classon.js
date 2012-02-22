@@ -132,7 +132,7 @@ function requestUser(error){
 	$.blockUI({
 		theme:     true, 
         title:    'Participantes', 
-		message: "<div>Por favor, introduce el nombre de los participantes para acceder al enunciado. Gracias.<br /><br />" +
+		message: "<div>Por favor, introduce el NIA de los participantes para acceder al enunciado. Gracias.<br /><br />" +
 		"NIA 1: <input type='text' id='p1' value='"+(user[0]?user[0]:"")+"' /><br />" +
 		"NIA 2: <input type='text' id='p2' value='"+(user[1]?user[1]:"")+"' /><br />" +
 		"<div><input type='button' onclick='saveUsers()' value='OK' style='float: right;' /></div>" +

@@ -84,16 +84,13 @@ h5 {
 }
 
 #prof{
-	width: 90px;
-	height: 90px;
 	background: black;
-	position: relative;
-	left: 15px;
-	top: 15px;
-	float: left;
 	color: white;
-	text-align: center;
-	v-align: middle;
+}
+
+.empty div{
+	border-color: transparent;
+	color: transparent;
 }
 
 .comp { 
@@ -132,6 +129,8 @@ h5 {
 	margin: 5px;
 	padding: 5px;
 	border-radius: 15px;
+	//width: 90px;
+	//height: 90px;
 }
 
 .comp_icon:active {
