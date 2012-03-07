@@ -1,0 +1,381 @@
+<html>
+	<head>
+		<title>Aplicaciones Multimedia</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<link rel="SHORTCUT ICON" href="http://www.uc3m.es/favicon.ico" /> 
+		<link href="http://www.it.uc3m.es/rcrespo/docencia/asignatura.css" rel="stylesheet" type="text/css" />
+		<link href="http://www.it.uc3m.es/estilo.css" rel="stylesheet" type="text/css" />
+		<link href="http://www.it.uc3m.es/rcrespo/docencia/amm/1112/p3/css/amm.css" rel="stylesheet" type="text/css" />
+		<link href="../css/classon.css" rel="stylesheet" type="text/css" />
+		<link href="../css/jquery-ui.css" rel="stylesheet" type="text/css" />
+		<style>
+			h2 {
+			  text-align: left; 
+			}
+			
+			ul.level2 {
+			  list-style-type:circle;
+			}
+			
+			figure div img{
+			  display: block;
+			  margin-left: auto;
+			  margin-right: auto;
+			}
+			
+			figcaption p{
+			  text-align: center;
+			}
+			
+			.bordeNegro{
+			  border-style:solid;
+			  border-width:3px;
+			  border-color: black;
+			}
+			
+			section {
+			  padding: 0 20px 20px;
+			  margin: 0 0 30px;
+			  border: 2px solid black;
+			  border-radius: 10px;
+			  -moz-border-radius: 10px;
+			  -webkit-border-radius: 10px;
+			}
+			
+		</style>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/jquery.blockUI.js"></script>
+	</head>
+	<body>
+		
+		<!-- BEGIN ADD, 21/05/09; to comply with UC3M corporate image requirements -->
+		<div class="headerBorderUc3mblue"></div>
+		<div class="header white">
+		  <a href="http://www.uc3m.es/">
+		  	<img class="logos logoleft" src="http://www.it.uc3m.es/imag/EscudoLogoCorporativo.png" alt="Universidad Carlos III de Madrid" />
+		  </a>
+	      <a href="http://www.it.uc3m.es">
+	      	<img class="logos logoright" src="http://www.it.uc3m.es/imag/SpanishLogoIT.png" alt="Departamento de Ingenier&iacute;a Telem&aacute;tica" />
+	      </a>
+		</div>
+		<div class="headerBorderUc3mblue"></div>
+		<!-- END ADD 21/05/09 -->
+		
+		
+		<!-- Tabla encabezado departamento -->
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+		  <tr>
+		    <td>
+		      <table width="100%" border="0" cellspacing="1" cellpadding="0">  	
+		        <tr>
+		          <td bgcolor="#CCD0D6" width="2000" height="22">
+		            <div align="right"><a href="http://www.it.uc3m.es/localizacion/localizacion.htm" class="azul">Localizaci&oacute;n</a>
+		              | <a href="#"></a><a href="http://www.it.uc3m.es/personal/directorio.htm"><span class="rojo">Personal</span></a>
+		              | <a href="http://www.it.uc3m.es/docencia/docencia.htm" class="azul">Docencia</a>
+		              | <a href="http://www.it.uc3m.es/investigacion/investigacion.htm" class="azul">Investigaci&oacute;n</a>
+		              | <a href="http://www.it.uc3m.es/novedades/novedades.htm" class="azul">Novedades</a>
+		              | <a href="http://www.it.uc3m.es/intranet/intranet.htm" class="azul">Intranet</a>
+		              &nbsp;&nbsp;</div>
+		          </td>
+		        </tr>
+		      </table>
+		    </td>
+		  </tr>
+		</table>
+		<!-- Tabla encabezado departamento (fin) -->
+		
+		<!-- Navegaci&oacute;n -->
+		<nav>
+			<p class="nav"><a class="azul"
+			href="http://www.it.uc3m.es/index.html">Home</a> / <a class="azul"
+			href="http://www.it.uc3m.es/docencia/docencia.htm">Docencia</a> / <a
+			class="azul" href="http://www.it.uc3m.es/docencia/grado-audiovisuales.html">Grado en Ingenier&iacute;a de Sistemas Audiovisuales</a> / 
+			<a class="azul" href="http://www.it.uc3m.es/rcrespo/docencia/amm/1112/">Aplicaciones Multimedia</a>
+			</p>
+		</nav>
+		<!-- Navegaci&oacute;n (fin) -->
+		
+		<header>
+			<h1>Pr&aacute;ctica 6: Animaci&oacute;n en Flash</h1>
+		</header>
+		<section id="intro">
+			<h2>Introducci&oacute;n</h2>
+				<p> 
+				 Las herramientas para desarrollar aplicaciones en Flash proporcionan t&iacute;picamente un entorno de "dibujo" que permite insertar y manipular objectos 
+				 dentro de un escenario. El soporte del lenguaje <span class="code">&lt;ActionScript&gt;</span> proporciona adem&aacute;s la capacidad de implementar la l&oacute;gica 
+				 de gesti&oacute;n. Aunque el lenguaje <span class="code">&lt;ActionScript&gt;</span> es muy potente y permite la creaci&oacute;n de aplicaciones Flash completas,
+				 los entornos de desarrollo gr&aacute;ficos facilitan la creaci&oacute;n de la interfaz de usuario y la creaci&oacute;n de animaciones. 
+				</p>
+
+<br />
+				
+				<p class="minititulo">Interfaz CS4</p>
+				<p>
+					En esta pr&aacute;ctica vamos a usar la suite CS4, proporcionada por Adobe, para implementar una sencilla animaci&oacute;n que nos servir&aacute; para explorar la funcionalidad b&aacute;sica de la herramienta y algunas posiblidades del lenguaje Flash.
+					C&oacute;mo primera toma de contacto vamos a analizar la interfaz proporcionada por Adobe y analizar los distintos elementos que la componen. La suite proporciona m&uacute;ltiples interfaces con el objetivo de facilitar la visi&oacute;n de las principales herramientas disponibles seg&uacute;n el tipo de tarea que se vaya a realizar. En Fig.1 se da un ejemplo de la interfaz en modo "Animador"
+				</p>
+				<figure>
+					<div>
+						<img src="images/flash.png"  width="800"/> <!--height="500"-->
+					</div>
+					<figcaption>
+					  <p><b>Figura 1</b>: Captura de pantalla de la herramienta CS4. La interfaz seleccionada es la denominada "ANIMADOR" donde s&oacute;lo una escena (fotograma) ha sido creada (Sin t&iacute;tulo-1).</p></figcaption>
+				</figure>
+			
+				<p>
+					Los principales elementos que componen dicha interfaz pueden dividirse en (la totalidad de elementos o paneles pueden ser visualizado desde el menu <em>window</em>):
+				</p>
+				<ul>
+					<li><em>Escenario o lienzo</em>: donde todos los componentes gr&aacute;ficos, as&iacute; como videos y dem&aacute;s elementos disponibles, son organizados y donde se desarolla la reproducci&oacute;n.</li>
+					<li><em>La l&iacute;nea de tiempo</em>: a trav&eacute;s de la cual se organiza y controla el tiempo de aparici&oacute;n de los objetos del escenario. La l&iacute;nea de tiempo tambi&eacute;n puede ser utilizada para la organizaci&oacute;n en capas del escenario, objetos pertenecientes a una l&iacute;nea de tiempo de m&aacute;s alto nivel aparecer&aacute;n por encima de los de nivel m&aacute;s bajo.</li>
+					<li><em>El panel de herramientas</em>: donde se recojen las herramientas disponibles para selecci&oacute;n, dibujo etc.</li>
+					<li><em>El inspector de propiedades</em>: visualiza las propiedades y caracter&iacute;sticas de los objetos seleccionados, habilitando su modificaci&oacute;n.</li>
+					<li><em>La biblioteca de elementos</em>: donde los objetos multimedia y s&iacute;mbolos utilizados en el proyecto de Flash son almacenados y organizados. </li>
+				</ul>
+			
+<br />
+
+				<p class=minititulo>La l&iacute;nea de tiempo</p>
+				<p>
+					La l&iacute;nea de tiempo organiza y controla el contenido de un documento a trav&eacute;s del tiempo en capas y fotogramas. Al igual que en las pel&iacute;culas, los documentos de Flash dividen el tiempo en fotogramas. Las capas son como varias bandas de pel&iacute;cula apiladas unas sobre otras, cada una de las cuales contiene una imagen diferente que aparece en el escenario. Los componentes principales de la l&iacute;nea de tiempo son las capas, los fotogramas y la cabeza lectora.
+				</p>
+				<p>
+				Las capas de un documento aparecen en una columna situada a la izquierda de la l&iacute;nea de tiempo. Los fotogramas contenidos en cada capa aparecen en una fila a la derecha del nombre de la capa. El encabezado de la l&iacute;nea de tiempo situado en la parte superior de la l&iacute;nea de tiempo indica los n&uacute;meros de fotograma. La cabeza lectora indica el fotograma actual que se muestra en el escenario. Mientras se reproduce el documento, la cabeza lectora se desplaza de izquierda a derecha de la l&iacute;nea de tiempo.
+				</p>
+
+<br />
+
+				<p class=minititulo>Fotogramas</p>
+				<p>
+					Los fotogramas son la base de la animaci&oacute;n en Flash, representan un instante en la animaci&oacute;n o pel&iacute;cula que estamos realizando. Los fotogramas son representados en la l&iacute;nea de tiempo por recuadros caracterizados por distintos s&iacute;mbolos(c&iacute;rculo, c&iacute;rculo relleno ...) donde son organizados para especificar el orden de aparici&oacute;n de los objetos contenidos en el fotograma. Existente principalmente dos tipos de fotogramas: <em>Keyframe</em> y <em>Property keyframe</em>.
+		  </p>
+					<ul>
+						<li>Los <em>keyframe</em> son fotogramas de contenido espec&iacute;ficos utilizados cuando una nueva instancia de alg&uacute;n s&iacute;mbolo aparece en la pel&iacute;cula. Pueden incluir codigo <em>ActionScript</em>.</li>
+						<li>Los <em>property keyframes</em> son fotogramas en los que se especifica un cambio en alguna propiedad de alg&uacute;n objeto en una animaci&oacute;n. Estos tipo de fotogramas son muy &uacute;tiles a la hora de crear animaciones si los combinamos con la creaci&oacute;n autom&aacute;tica de fotogramas mediante interpolaci&oacute;n. </li>
+					</ul>
+				<p>No se pueden modificar las propiedades en un frame, si se cambia de propiedad en el objeto hay que generar otro.
+				</p>
+				<p>Para mayor informaci&oacute;n sobre el uso de fotogramas: <a href="http://help.adobe.com/en_US/Flash/10.0_UsingFlash/WSd60f23110762d6b883b18f10cb1fe1af6-7ec8a.html"> Frames and Keyframes</a>.
+				</p>
+
+<br />
+
+
+				<p class=minititulo>S&iacute;mbolos</p>
+				<p>
+					Los s&iacute;mbolos son recursos que pueden ser reutilizados en cualquier punto del proyecto sin necesidad de ser creados nuevamente. Existen tres tipos de s&iacute;mbolos: gr&aacute;ficos, peque&ntilde;os clips de pel&iacute;cula o botones. Los s&iacute;mbolos son de gran utilidad a la hora de crear animaciones y pel&iacute;culas complejas.
+					<ul>
+						<li><em>Los s&iacute;mbolos gr&aacute;ficos</em> son imag&eacute;nes est&aacute;ticas principalmente utilizadas en animaciones. Cualquier im&aacute;gen importada o dibujo vectorial puede ser un s&iacute;mbolo gr&aacute;fico. Controles interactivos o pistas de sonido no pueden ser implementados como s&iacute;mbolos gr&aacute;ficos. Se componen por un s&oacute;lo fotograma en su l&iacute;nea de tiempo.
+						<li><em>Los s&iacute;mbolos botones</em> a&ntilde;aden interactividad a la pel&iacute;cula y responden a eventos del rat&oacute;n o de teclado. Se pueden definir distintos gr&aacute;ficos asociados a cada uno de los estados del bot&oacute;n.</li>
+						<li><em>Los s&iacute;mbolos pel&iacute;cula</em> consisten de una peque&ntilde;a animaci&oacute;n que puede ser reutilizada. Se componen por uno o varios elementos gr&aacute;ficos o interactivos y poseen su propia l&iacute;nea de tiempo.</li>
+					</ul>
+					<p>
+						Para mayor informaci&oacute;n sobre s&iacute;mbolos Flash: <a href="http://wwwimages.adobe.com/www.adobe.com/content/dam/Adobe/en/devnet/fireworks/articles/fwcs4_howto/fwcs4_howto_ch09.pdf"> Working with Symbols</a></p>
+		</section>
+
+		<section id="step1">
+	    <h2>Paso 1: El entorno</h2>
+			<p>
+				Para poder realizar una animaci&oacute;n en Flash primero vamos a establecer el correcto entorno de trabajo. Para ello abra la aplicaci&oacute;n Adobe Flash CS4 disponible en cada equipo de laboratorio y, a trav&eacute;s del menu <em>Archivo</em> cree un nuevo proyecto de flash. Dividir los trabajos en proyectos es una practica racomendada para la buena organizaci&oacute;n de los recursos. (Recucerde que en cualquier momento puede acceder al panel de proyectos a trav&eacute;s del men&uacute; <code>Archivo->Nuevo->Proyecto de Flash</code>. Este comando no crea realmente un nuevo proyecto si no que da acceso al panel a trav&eacute;s del cual podemos modificar/crear proyectos
+			</p>
+			<p>
+				Una vez creado el proyecto vamos a a&ntilde;adir los ficheros necesarios para realizar una animaci&oacute;n, haciendo uso de los iconos en la parte baja del panel de proyectos. En nuestro caso a&ntilde;adiremos un nuevo <em>Fichero de Flash</em>, puesto que no vamos a tratar el uso del lenguaje <em>ActionScript</em>, propio de Flash, en esta pr&aacute;ctica.
+			Cree un nuevo fichero y seleccione la opci&oacute;n de interfaz "Animador". Este fichero representa el primer fotograma de nuestra animaci&oacute;n y se visualizar&aacute; como un escenario en blanco.
+			</p>
+		</section>
+		
+		<section id="step2">
+			<h2>Paso 2: Animaci&oacute;n b&aacute;sica - Interpolaci&oacute;n de movimiento </h2>
+			<p>
+				A menudo la mejor manera de entender el funcionamiento de un nuevo Framework es realizar alguna tarea b&aacute;sica pero esclarecedora. Con este objetivo, en este paso vamos a realizar una sencilla animaci&oacute;n por interpolaci&oacute;n de movimiento.
+			</p>
+			<ul>
+				<li>En el escenario vac&iacute;o creado en el apartado anterior vamos a dibujar un objeto sencillo, un cuadrado o un c&iacute;rculo. (Observe las distintas herramientas disponibles en CS4 para las tareas de dibujo). Posicionaremos el objeto en la esquina superior izquierda del escenario.</li>
+				<li>Es importante recordar que s&oacute;lo los s&iacute;mbolos pueden ser objeto de animaciones, por lo tanto vamos a convertir el objeto que acabamos de dibujar en un s&iacute;mbolo gr&aacute;fico. Seleccione el objeto a convertir y ejecute el comando <code>Modificar->Convertir a s&iacute;mbolo</code>. En la ventana que aparecer&aacute;, seleccionar el tipo de s&iacute;mbolo (gr&aacute;fico) y nombrar. Al pulsar aceptar crearemos un nuevo s&iacute;mbolo gr&aacute;fico, disponible en la biblioteca para futuras aplicaciones. N&oacute;tese que ahora es posible acceder al s&iacute;mbolo, generalmente para realizar modificaciones en sus propiedades, a trav&eacute;s del peque&ntilde;o men&uacute; en la parte superior derecha del escenario.</li>
+				</br>
+				<figure>
+				<div>
+					<img src="images/esquina.png" /> <!--height="500" width="1080"-->
+				</div>
+				<figcaption>
+				  <p><b>Figura 2</b>: Captura de pantalla de un detalle de la herramienta CS4. En la parte superior izquierda del escenario suelen situarse tres opciones para la visualizaci&oacute;n de escenas y s&iacute;mbolo. Respectivamente, encontramos las opciones para colocar todas las escenas en la pel&iacute;cula, los s&iacute;mbolos presentes en la biblioteca asociada y modificar el zoom.</p></figcaption>
+			</figure>
+			<li>Hacer click derecho en el s&iacute;mbolo reci&eacute;n creado. Seleccionaremos <code>Crear interpolaci&oacute;n de movimiento</code>. Observe como en l&iacute;nea de tiempo se han generado varios frames, siendo un frame correspondiente a un instante de ejecuci&oacute;n de la pel&iacute;cula. Utilizando el rat&oacute;n podemos extender el n&uacute;mero de frames (y por lo tanto la duraci&oacute;n de la pel&iacute;cula). Una animaci&oacute;n ya est&aacute; creada. No obstante y como no hemos especificado ning&uacute;n cambio a realizar en el s&iacute;mbolo durante la ejecuci&oacute;n de la pel&iacute;cula, la animaci&oacute;n ser&aacute; equivalente a la imagen est&aacute;tica del primer fotograma. Compru&eacute;belo ejecutando <code>Control->Reproducir</code></li>
+			<li>Para insertar movimiento en la animaci&oacute;n, seleccione el &uacute;ltimo fotograma en la l&iacute;nea de tiempo (si no est&aacute; ya seleccionado). Ahora mueva el s&iacute;mbolo a la parte inferior del escenario. Una l&iacute;nea aparecer&aacute; indicando el recorrido del s&iacute;mbolo a lo largo del escenario durante la animaci&oacute;n. Note como CS4 automaticamente se ha a&ntilde;adido un <em>property keyframe</em> en correspondencia del fotograma en donde se realiz&oacute; la modificaci&oacute;n de la posici&oacute;n del s&iacute;mbolo. Seleccionando uno de los fotogramas intermedios  se puede observar el estado del s&iacute;mbolo en el correspondiente instante de la animaci&oacute;n, autom&aacute;ticamente producido por la herramienta de interpolaci&oacute;n. Comprobar el efecto resultante ejecutando <code>Control->Reproducir</code>.</li>
+			<li>Para a&ntilde;adir dinamicidad a una animaci&oacute;n se suelen utilizar varios <em>property keyframe</em>. En este caso vamos a seleccionar uno de los frames intermedios de la animaci&oacute;n. Una vez seccionado el s&iacute;mbolo del escenario vamos a modificar, por ejemplo, la rotaci&oacute;n del s&iacute;mbolo respecto a su eje principal. Previsiblemente CS4 cre&oacute; autom&aacute;ticamente un nuevo <em>property keyframe</em> en correspondencia de la nueva modificaci&oacute;n de propiedades y los fotogramas intermedios desde el anterior <em>property keyframe</em> necesarios para crear una animaci&oacute;n fluida. </li>
+			<li>Crear modificaciones en la animaci&oacute;n insertando m&aacute;s property keyframes y modificando las propiedades del s&iacute;mbolo.</li>
+			</ul>
+		</section>
+		
+		<section id="step3">
+			<h2>Paso 3: Animaci&oacute;n b&aacute;sica - Interpolaci&oacute;n de forma</h2>
+			<p>
+				En este apartado vamos a ver otra manera de crear animaci&oacute;n por interpolaci&oacute;n. En este caso vamos a utilizar la interpolaci&oacute;n de forma para hacer que un objeto se transforme de manera fluida desde una forma original a una forma destino distinta. Para ello:
+			</p>
+			<ul>
+				<li>Genere un nuevo escenario de animaci&oacute;n. Para ello basta con presionar <code>Ctrl+N</code> o desde el men&uacute; <code>Archivo</code> seleccionar "<code>Nuevo</code>". Crearemos un nuevo archivo de Flash.</li>
+				<li>Seleccione la herramienta <em>PolyStar</em> para dibujar pol&iacute;gonos y dibuje un pol&iacute;gono sencillo en la esquina superior izquierda del escenario. Para este ejemplo consideraremos el uso de un pent&aacute;gono.</li>
+				<li>En la l&iacute;nea de tiempo, inserte un nuevo fotograma clave en el instante 70 de reproducci&oacute;n. CS4 autom&aacute;ticamente crear&aacute; un fotograma con una copia del escenario tal y como se ha generado para el fotograma 1. Este fotograma representa el estado del escenario al final de la animaci&oacute;n por lo que vamos a borrar la figura en su estado inicial.</li>				
+				<li>Con la herramienta <em>PolyStar</em> seleccionada f&iacute;jense en el panel de propiedades. Desde este panel seleccionar <em>Opciones</em> y configurar el comportamiento de la herramienta. Dibuje una estrella en esquina inferior derecha del escenario.</li>
+				<li>Utilice los paneles de propiedades de los objetos ahora presentes en el escenario y modifique color de relleno, trazo etc. </li>
+				<li>En la l&iacute;nea de tiempo, si seleccionamos cualquiera de los fotogramas intermedios autom&aacute;ticamente insertados por CS4 podemos ver como el pent&aacute;gono dibujado en el fotograma 1 ha sido copiado en cada uno de los instantes intermedios. Para generar los estados intermedios entre la forma inicial y la final (la estrella), haga click derecho en cualquiera de los fotogramas entre el instante inicial y el final y seleccione <code>Crear interpolaci&oacute;n de formas</code>. Se puede notar como el pent&aacute;gono presente en los fotogramas intermedios ha sido sustituido por pol&iacute;gonos que progresivamente asumen la forma de la estrella en el fotograma final de la animaci&oacute;n. CS4 evidencia la interpolaci&oacute;n de forma en la l&iacute;nea de tiempo a trav&eacute;s de una flecha que va desde el fotograma inicial al final.</li>
+				<li>Compruebe el resultado de la animaci&oacute;n a trav&eacute;s del comando <code>Control->Reproducir</code>.</li>
+			</ul>
+		</section>
+		
+		<section id="step4">
+			<h2>Paso 4: M&aacute;s animaciones - La herramienta hueso</h2>
+			<p>
+				Una herramienta muy interesante introducida en CS4 es la herramienta hueso. Esta herramienta permite crear animaciones fluidas de una manera muy sencilla alcanzando resultados que de otra forma ser&iacute;an muy dif&iacute;ciles de obtener. Esta forma de animaci&oacute;n se denomina cinem&aacute;tica inversa. En este apartado vamos a utilizar esta herramienta con el fin de animar un sencillo ejemplo de forma. Para ello utilizaremos el boceto estilizado del cuerpo de un murci&eacute;lago. El dibujo vectorial es un arte en si mismo por lo que en este momento no nos vamos a centrar en la calidad de la imagen y utilizaremos un dibujo muy sencillo como en el ejemplo de fig. 3.
+			</p>
+			<ul>
+				<li> Utilizando las herramientas apropiadas dibuje una figura parecida al ejemplo de Fig. 3.
+						<p> <b>Sugerencia</b>: Para obtener un buen efecto final en la animaci&oacute;n seleccione el conjunto de lineas utilizado para dibujar  y utiliza el comando <code>Modificar->Combinar Objetos->Uni&oacute;n</code> de esta formase tratar&aacute; el conjunto de lineas como una s&oacute;la forma y se podr&aacute; rellenar del color que se quiera.</p></li>
+					<figure>
+							<div>
+								<img src="images/bat.png"  /> <!--height="500" width="1080"-->
+							</div>
+							<figcaption><p><b>Figura 3</b>: Captura de pantalla de la herramienta CS4. Dibujo utilizado en la animaci&oacute;n de ejemplo. Las herramientas utilizadas para la realizaci&oacute;n han sido la de <em>linea (N)</em> y la de <em>selecci&oacute;n (V)</em> para crear los contornos de la figura. Puede resultar muy &uacute;til la herramienta de <em>subseleccion (A)</em> para modificar la curvatura de las lineas dibujadas. En figura podemos ver la im&aacute;gen tr&aacute;s ser seleccionada con dicha herramienta.</p></figcaption>
+					</figure>
+				<li> Seleccione la herramienta hueso. Con esta herramienta simularemos el esqueleto del animal. Haga click con el rat&oacute;n en la base de la cola y, manteniendo pulsado, arrastre hasta aproximadamente el centro de la cabeza. De esa forma se crear&aacute; el primer hueso de la forma que vamos a animar. Fig. 4.</li>
+					<figure>
+							<div>
+								<img src="images/bat1.png"  /> <!--height="500" width="1080"-->
+							</div>
+							<figcaption><p><b>Figura 4</b>: Captura de pantalla de la herramienta CS4. Se puede notar el nodo ra&iacute;z de la estructura esqueleto en correspondencia de la origen del primer hueso insertado.</p></figcaption>
+					</figure>
+				<li>Arrastrando desde la ra&iacute;z del primer hueso insertado, vamos ahora a crear los siguientes huesos. Desde la ra&iacute;z del esqueleto arrastre hasta las puntas superiores de las alas creando un esquema como en figura 5.</li>
+					<figure>
+							<div>
+								<img src="images/bat2.png"  /> <!--height="500" width="1080"-->
+							</div>
+							<figcaption><p><b>Figura 5</b>: Captura de pantalla de la herramienta CS4. Estructura de esqueleto parcial.</p></figcaption>
+					</figure>
+					<p>
+						Compruebe las posibilidades de movimiento resultantes de la aplicaci&oacute;n de la herramienta hueso. Seleccione (herramienta de selecci&oacute;n [V]) una de las extremidades del esqueleto y arrastrela a  otro punto del escenario. Como puede comprobar, CS4 autom&aacute;ticamente modificar'ala forma del murci&eacute;lago para seguir el movimiento de los huesos.
+					</p>
+				<li>A&ntilde;&aacute;danse ahora los restantes huesos para conectar la parte superior de las alas con la parte inferior. Figura 6.</li>
+					<figure>
+							<div>
+								<img src="images/bat3.png"  /> <!--height="500" width="1080"-->
+							</div>
+							<figcaption><p><b>Figura 6</b>: Captura de pantalla de la herramienta CS4. Estructura de esqueleto constituyente la forma de murc&iacute;elago. Notense como la estructura creada se parezca a la estructura de esqueleto real.</p></figcaption>
+					</figure>
+					<p>
+						Compruebe las posibilidades de movimiento resultantes de la aplicaci&oacute;n de la herramienta hueso. Seleccione (herramienta de selecci&oacute;n [V]) una de las nuevas extremidades del esqueleto y arrastrela a  otro punto del escenario. A&ntilde;adiendo m&aacute;s puntos de articulaci&oacute;n al esqueleto se a&ntilde;aden m&aacute;s posibilidades do movimiento.
+					</p>
+				<li>
+					<p>
+						Es posible limitar los movimientos del esqueleto construidos con esta herramienta para simular el comportamiento de las articulaciones reales. Las articulaciones del esqueleto construido tienen un gama de posibles movimientos entre los 0 y 360 grados. Como ninguna articulaci&oacute;n real permite ese tipo de movimiento, es posible limitar los &aacute;ngulos de cada articulaci&oacute;n, para ello modifique la propiedad (xxxx) en el panel de propiedades despu&eacute;s de seleccionar el hueso deseado.
+					</p>
+				</li>	
+				<li>Para realizar la animaci&oacute;n de una forma con estructura de esqueleto se procede de una forma lig&eacute;ramente distinta respecto a lo visto anteriormente.</li>
+					<ul>
+						<li>Cuando se insert&oacute; el primer hueso se cre&oacute; autom&aacute;ticamente una capa en la l&iacute;nea de tiempo correspondiente a la estructura esqueleto y a la figura asociada. En esa capa insertar una nueva <em>pose</em> en el fotograma 15. Cu&aacute;ndo se trabaja con esqueletos la creaci&oacute;n de una nueva pose conlleva de forma autom&aacute;tica la interpolaci&oacute;n de movimiento de la forma asociada y la creaci&oacute;n de un fotograma clave en correspondencia de la nueva pose. Como para los fotogramas clave, se insertar&aacute; una pose a trav&eacute;s del men&uacute; que aparece tras hacer click derecho en el correspondiente instante de tiempo en la l&iacute;nea de tiempo.</li>
+						<li>Como resultado de insertar una nueva pose, se crear&aacute; una interpolaci&oacute;n para modificar la figura de la pose en el fotograma 1 en la figura de la pose en el fotograma 15. Puesto que todav&iacute;a no se ha aportado ninguna modificaci&oacute;n, la interpolaci&oacute;n no habr&aacute; producido ning&uacute;n efecto evidente en la animaci&oacute;n.</li>
+						<li>Para obtener el efecto de batir de alas, seleccionese el fotograma 5 en la l&iacute;nea de tiempo. Moviendo las extremidades de los huesos creados anteriormente, modificamos la posici&oacute;n de los mismos subiendo las alas del murc&iacute;elago. Figura 7.</li>
+							<figure>
+								<div>
+									<img src="images/bat4.png"  /> <!--height="500" width="1080"-->
+								</div>
+								<figcaption>
+							    <p><b>Figura 7</b>: Captura de pantalla de la herramienta CS4. Estructura de esqueleto constituyendo la forma de murc&iacute;elago en en el fotograma 5.</p></figcaption>
+							</figure>
+						<li>Ahora seleccione el fotograma 10. En este fotograma mu&eacute;vanse los huesos para que la alas se extiendan hac&iacute;a abajo. Figura 8.</li>
+							<figure>
+								<div>
+									<img src="images/bat5.png"  /> <!--height="500" width="1080"-->
+								</div>
+								<figcaption>
+							    <p><b>Figura 8</b>: Captura de pantalla de la herramienta CS4. Estructura de esqueleto constituyendo la forma de murc&iacute;elago en en el fotograma 10.</p></figcaption>
+							</figure>
+						<li>Se puede notar como las poses intermedias entre las modificadas  se han adaptado manualmente de forma autom&aacute;tica para crear una transici&oacute;n fluida entre las poses modificadas por el animador.</li>
+						<li>Comprobar el resultado de esta acci&oacute;n ejecutando <code>Control->Reproducir</code>. Si todo ha ido bien deber&iacute;a obtenerse un resultado parecido a la siguiente animaci&oacute;n:</li>
+							<embed type="application/x-shockwave-flash" src="./images/bat.swf"> <!-- height="" width="" -->
+					</ul>
+			</ul>
+			
+			<p class="minititulo">Info adicional</p>
+			<p>
+				La herramienta hueso es muy utilizada en la realizaci&oacute;n de animaciones que incluyan movimientos fluidos, como puede ser el movimiento de formas humanas. Con pocos y sencillos pasos, y una buena capacidad de dibujo, esta herramienta permite alcanzar resultado complejos como el de este <a href="http://youtu.be/M9volv5AS_Y" >ejemplo</a>.
+			</p>
+			<p>
+				Es interesante ver algunos ejemplos de lo que se puede alcanzar con buenos conocimientos en animaci&oacute;n. La animaci&oacute;n en Flash es un campo que ha tenido particular &eacute;xito especialmente en el marco de la realizaci&oacute;n de pop-up y peque&ntilde;os videojuegos para la web. 
+			</p>
+			<p>
+				Un interesantes ejemplo de lo que se puede conseguir s&oacute;lo a trav&eacute;s de la animaci&oacute;n:
+			<p>
+			<ul>
+				<li><a href="http://www.stickpage.com/animatorvsanimationplay.shtml" >Animator vs. Animation</a></li>
+			</ul>
+		</section>
+		
+		<section id="step5">
+      <h2>Paso 5: Reutilizaci&oacute;n de peque&ntilde;as animaciones</h2>
+      		
+			<p>
+				En este ultimo punto vamos a utilizar los conocimientos adquiridos a lo largo de esta pr&aacute;ctica para realizar una animaci&oacute;n donde se combinen varios efectos.
+			 <br/>Util&iacute;cese la animaci&oacute;n de aleteo del murci&eacute;lago desarrollada en el punto 4 como elemento de un escenario m&aacute;s complejo obteniendo un efecto similar a la siguiente animaci&oacute;n:
+			</p>
+			<embed type="application/x-shockwave-flash" src="./images/bat2.swf">
+		</section>
+		
+		<section id="option">
+			<h2>Ejercicios avanzados</h2>
+			<ol>
+				<li>Utilizando interpolaci&oacute;n de movimiento y modificando adecuadamente trayectoria y forma de la pelota, realice una animaci&oacute;n parecida a la <a href="./images/pelota.swf">siguiente</a>
+				</li>
+				<li>
+					Aplique los conocimientos adquiridos para obtener una animaci&oacute;n de efecto similar a la <a href="http://alanbecker.deviantart.com/art/Animator-vs-Animation-34244097">siguiente</a>.
+				</li>
+			</ol>
+		</section>
+		
+		<section id="evaluation">
+      <h2>Preguntas de autoevaluaci&oacute;n</h2>
+			<p>
+				Tr&aacute;s finaliza la practica conteste a las siguientes preguntas para completar/reforzar los conocimientos adquiridos.
+			</p>
+			<ul>
+				<li>&iquest;Cu&aacute;l es la extensi&oacute;n de los ficheros que recogen los elementos graficos (vectoriales) de una animaci&oacute;n?</li>
+				<li>&iquest;En qu&eacute; se diferecian un <em>keyframe</em> y un <em>property keyframe</em>?</li>
+				<li>&iquest;C&oacute;mo se distingue un keyframe vac&iacute;o de uno con contenido?</li>
+				<li>Pregunta alo sobre interpolaci&oacute;n de movimiento?</li>
+				<li>Pregunta algo sobr einterpolacione de forma?</li>
+				<li>&iquest;Cu&aacute;l es el uso de la herramienta <em>Vinculaci&oacute;n</em> (Z), accesible a trav&eacute;s del men&uacute; relativo a la herramienta <em>Hueso</em>?</li>
+
+			</ul>
+		</section>
+		
+		<section id="refs">
+			<h2>Referencias</h2>
+			<ul>
+				<li><a href="http://www.adobe.com/devnet/flash/getting_started_cs4.html">Empezar con Flash (Adobe CS 4)</a></li>
+				<li><a href="http://www.adobe.com/devnet/flash/training.html#day1">Five steps to learning Flash Professional</a></li>
+				<li><a href="http://www.adobe.com/devnet/fireworks/articles/fwcs4_howto.html">Fireworks CS4 How-Tos excerpts: Importing, exporting, symbols, prototyping, scaling</a></li>
+				<li><a href="http://help.adobe.com/es_ES/Flash/10.0_UsingFlash/WS0CC7D962-6484-46f0-9596-BB27B21C4926a.html">Utilizaci&oacute;n de Flash CS4 Professional</a>
+					<ul><li><a href="http://help.adobe.com/es_ES/flash/cs/using/WS45297825-6A92-4af2-92C4-08FC3DD668A7.html">Edici&oacute;n de esqueletos y objetos IK</a></li></ul>
+				<li><a href="http://www.adobe.com/devnet/flash/articles/character_animation_ik.html">Character animation with the Bone tool in Flash</a></li>
+				<p> En los siguientes enlaces podr&aacute; encontrar varios recursos, a menudo en forma de tutorial, para la animaci&oacute;n y programaci&oacute;n en Flash. Algunos puntos est&aacute;n especificamente pensados para el desarollo a trav&eacute;s de la suite CS5, sin embargo, todos son aplicables en su larga mayoria a la suite CS4.
+				<li><a href="http://www.smartwebby.com/Flash/">Recursos Web para aprender Flash 1</a></li>
+				<li><a href="http://www.aulaclic.es/flash-cs5">Recursos Web para aprender Flash 2</a></li>
+			</ul>
+		</section>
+		
+		<footer>
+			<figure>
+				<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/es/">
+				<img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/es/88x31.png" /></a>
+				<figcaption>Este <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text" rel="dct:type">obra</span> 
+				est&aacute; bajo una <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/es/">licencia Creative Commons 
+				Reconocimiento-CompartirIgual 3.0 Espa&ntilde;a</a>.</figcaption>
+			</figure>
+			<details>
+				<summary>Recurso desarollado por Fabio Sanvido (<a href="mailto:fsanvido@it.uc3m.es">fsanvido@it.uc3m.es</a>), data de <time datetime="2012--02-07">2012-02-07</time>.</summary>
+			</details>
+			<br /><br /><br />
+		</footer>
+		<script type="text/javascript" src="../js/socket.io.min.js"></script>
+		<script type="text/javascript" src="../js/classon.js?session=p6"></script>
+	</body>
+</html>
