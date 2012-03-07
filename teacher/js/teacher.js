@@ -187,7 +187,6 @@ var pcs_needHelp = []; //List of computers that need help
 var help_needed =  false; //Teacher has work to do
 
 //Websockets
-//Cambiar la IP a bruch:80
 var server = document.location.href.substr(0,document.location.href.lastIndexOf(':'));
 server = "163.117.141.206";
 //server = "127.0.0.1";
@@ -203,7 +202,9 @@ socket.on('connect', function() {
 });
 
 socket.on("init", function(my_session){
-
+	console.log("init received. session received:");
+	console.log(my_session.session);
+	console.log("queue received:"+my_session.queue);
 	var state = my_session.session;
 	var order = my_session.queue;
 	for(var i=0; i<pcs.length;i++){
@@ -211,15 +212,18 @@ socket.on("init", function(my_session){
 		for(var j=0; j<state.length; j++){
 //console.log("init (data.IP): "+state[j].IP);
 			if(pcs[i].IP == state[j].IP){
+				pcs[i].users = state[j].username;
+				/*
 				if(pcs[i].users){
 					pcs[i].users.push(state[j].username);
 				}else{
 					pcs[i].users = [state[j].username];
 				}
+				*/
 				pcs[i].currentExercise = state[j].exercise+1;
 				icon.innerHTML = pcs[i].currentExercise;
 				//No need of the help field, but description
-				console.log("init (description) :"+state[j].description);
+				//console.log("init (description) :"+state[j].description);
 				pcs[i].description = state[j].description;
 				icon.classList.add("working");
 			}
@@ -239,14 +243,19 @@ socket.on("init", function(my_session){
 					button.classList.remove("green");
 					button.innerHTML = "BUSY";
 				}else{
+					//console.log("add to queue:"+pcs[i].IP);
 					pcs_needHelp.push(i);
 				}
 			}
 		}
-		if(pcs_needHelp.length>0){
-			pcs_needHelp.shift();
-		}
+		
+		//if(pcs_needHelp.length>0){
+		//	pcs_needHelp.shift();
+		//}
 	}
+	//console.log("session in teacher browser:");
+	//console.log(pcs);
+	console.log("queue in teacher browser:"+pcs_needHelp);
 });
 
 socket.on('userListResp', function(data){
@@ -259,18 +268,20 @@ function problemSolved(index){
 	pcs[index].help = false;
 	icon.classList.remove("waiting_start");
 	icon.classList.add("working");
-	if(pcs_needHelp.indexOf(index)!=-1){ //queued, then remove form queue
+	if(pcs_needHelp.indexOf(index)!=-1){ //queued, then remove from queue
 		pcs_needHelp.splice(pcs_needHelp.indexOf(index),1);
-	}else{//not
-		icons[index].classList.remove("next_icon");
-		if(pcs_needHelp.length>0){
-			icons[pcs_needHelp.shift()].classList.add("next_icon");
-		}else{
-			help_needed = false;
-			var button = document.getElementsByClassName("button")[1];
-			button.classList.add("green");
-			button.classList.remove("red");
-			button.innerHTML = "FREE";
+	}else{//not queued
+		if(icons[index].classList.contains("next_icon")){ //This group was in the first position of the queue
+			icons[index].classList.remove("next_icon");
+			if(pcs_needHelp.length>0){
+				icons[pcs_needHelp.shift()].classList.add("next_icon");
+			}else{
+				help_needed = false;
+				var button = document.getElementsByClassName("button")[1];
+				button.classList.add("green");
+				button.classList.remove("red");
+				button.innerHTML = "FREE";
+			}
 		}
 	}
 }
@@ -281,7 +292,7 @@ console.log("event (data.IP): "+data.IP+" event:"+data.eventType+" user:"+data.u
 	for(var i=0; i<pcs.length;i++){
 		if(data.IP == pcs[i].IP){
 			var icon = document.getElementsByClassName("comp_icon")[i].firstElementChild;
-			console.log("event: IP found!");
+			//console.log("event: IP found!");
 			switch(data.eventType){
 			case "connection":
 				if(pcs[i].users==undefined){
@@ -322,6 +333,9 @@ console.log("event (data.IP): "+data.IP+" event:"+data.eventType+" user:"+data.u
 				problemSolved(i);
 				break;
 			}
+			console.log("event received. info:");
+			console.log(pcs[i]);
+			console.log("queue:"+pcs_needHelp);
 			break;
 		}
 	}

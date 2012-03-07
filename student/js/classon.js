@@ -250,7 +250,7 @@ function askForHelp2(){
 	if(duda){
 		event.description = duda.value;
 	}
-	sendEventToServer(event);
+	sendEventToServer('new event', event);
 	
 	helpNeeded = !helpNeeded;
 	$.unblockUI();
@@ -267,10 +267,7 @@ function finishSection(){
 
 function finishSection2(){
 	//Send event to the server
-	var event = {
-			eventType: 'finishSection',
-	};
-	sendEventToServer(event);
+	sendEventToServer('new event', {eventType: 'finishSection'});
 	finishSection3();
 	$.unblockUI();
 }
@@ -291,10 +288,7 @@ function undoFinishSection(){
 
 function undoFinishSection2(){
 	//Send event to the server
-	var event = {
-			eventType: 'undoFinishSection',
-	};
-	sendEventToServer(event);
+	sendEventToServer('new event', {eventType: 'undoFinishSection'});
 	
 	progressbar.value -= step;
 	currentSection--;
@@ -311,12 +305,15 @@ function setExercise(savedSection){
 var socket;
 function checkUsers(callback){
 	if(!socket){
-		var server = document.location.href.substr(0,document.location.href.lastIndexOf(':'));
+		var server = document.location.href.hostname;
+		//var server = document.location.href.substr(0,document.location.href.lastIndexOf(':'));
 		server = "163.117.141.206";
 		//server = "127.0.0.1";
 		socket = io.connect(server+':80');
 		socket.on('connect', function() {
-			socket.emit('new student', {user: user, session: session});
+			sendEventToServer('new student', {session: session});
+			//console.log('new student when connecting');
+			//socket.emit('new student', {user: user, session: session});
 			
 			socket.on('student registered', function(regInfo){
 				//console.log("student registered:"+JSON.stringify(regInfo));
@@ -332,23 +329,29 @@ function checkUsers(callback){
 						helpButton.className = "button green";
 					}
 					//Connection to the practice event
-					var event = {
-							eventType: "connection",
-					};
-					sendEventToServer(event);
+					sendEventToServer('new event', {eventType: "connection"});
+					//console.log('send connection event to server');
 				}
 				callback(regInfo.error);
 			});
 		});
 	}else{
-		socket.emit('new student', {user: user, session: session});
+		//socket.emit('new student', {user: user, session: session});
+		sendEventToServer('new student', {session: session});
+		
 	}
 }
 
-function sendEventToServer(event){
+function sendEventToServer(eventName, event){
 	event.user = user;
-	event.eventSection = currentSection;
-	event.session = usersInfo[0].group + session;
-	socket.emit('new event', event);
+	if(eventName!="new student"){
+		event.eventSection = currentSection;
+		event.session = usersInfo[0].group + session;
+	}
+	
+	//Testing IPs
+	//event.IP = "163.117.101."+document.location.href.substr(document.location.href.lastIndexOf('?')+1).split("=")[1];
+	socket.emit(eventName, event);
+	console.log('new event sent:'+eventName);
 }
 
