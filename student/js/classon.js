@@ -237,7 +237,7 @@ function askForHelp2(){
 		}
 		*/
 	}else{
-		helpButton.innerHTML = "SOLUCIONADO";
+		helpButton.innerHTML = "SOLUCIONADO?";
 		helpButton.className = "button green";
 	}
 	
@@ -306,9 +306,9 @@ var socket;
 function checkUsers(callback){
 	if(!socket){
 		var server = document.location.href.hostname;
-		//var server = document.location.href.substr(0,document.location.href.lastIndexOf(':'));
+		//TODO:var server = document.location.href.substr(0,document.location.href.lastIndexOf(':'));
 		server = "163.117.141.206";
-		//server = "127.0.0.1";
+		server = "127.0.0.1";
 		socket = io.connect(server+':80');
 		socket.on('connect', function() {
 			sendEventToServer('new student', {session: session});
@@ -325,7 +325,7 @@ function checkUsers(callback){
 					}
 					if(regInfo.help){
 						helpNeeded = true;
-						helpButton.innerHTML = "SOLUCIONADO";
+						helpButton.innerHTML = "SOLUCIONADO?";
 						helpButton.className = "button green";
 					}
 					//Connection to the practice event
@@ -333,6 +333,14 @@ function checkUsers(callback){
 					//console.log('send connection event to server');
 				}
 				callback(regInfo.error);
+			});
+			
+			socket.on('update queue', function(position){
+				console.log("new position in queue:"+position);
+				helpButton.innerHTML = "SOLUCIONADO?<br />("+position+")";
+				if(position==0){
+					askForHelp();
+				}
 			});
 		});
 	}else{
@@ -349,8 +357,8 @@ function sendEventToServer(eventName, event){
 		event.session = usersInfo[0].group + session;
 	}
 	
-	//Testing IPs
-	//event.IP = "163.117.101."+document.location.href.substr(document.location.href.lastIndexOf('?')+1).split("=")[1];
+	//TODO:Testing IPs
+	event.IP = "163.117.101."+document.location.href.substr(document.location.href.lastIndexOf('?')+1).split("=")[1];
 	socket.emit(eventName, event);
 	console.log('new event sent:'+eventName);
 }

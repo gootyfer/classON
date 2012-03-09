@@ -151,6 +151,40 @@ function getUsersByUsername(usernameArray, userInfoArray, handler){
 	}
 }
 
+function sendEventToSession(event, sessionType){
+	var clients = io.sockets.clients();
+	for(var i=0; i<clients.length; i++){
+		clients[i].get(sessionType, function(err, session){
+			if(session == event.session){//Check the teacher
+				clients[i].emit('event', event);
+				console.log('emit new event to teacher in session:'+session);
+			}
+		});
+	}
+}
+
+function sendQueuePositions(userIPs, solvedIP){
+	var clients = io.sockets.clients();
+	for(var i=0; i<clients.length; i++){
+		//TODO: fix fakeIP
+		clients[i].get("fakeIP", function(err, fakeIP){
+			//var position = userIPs.indexOf(clients[i].handshake.address.address);
+			var position = userIPs.indexOf(fakeIP);
+			console.log('sendQueuePositions: check '+userIPs+' and '+fakeIP);
+			if(position!=-1){
+				clients[i].emit('update queue', position+1);
+				console.log('emitted update queue to: '+fakeIP);
+			}
+			if(solvedIP){
+				if(solvedIP==fakeIP){
+					clients[i].emit('update queue', 0);
+					console.log('emitted update queue to: '+fakeIP);
+				}
+			}
+		});
+	}
+}
+
 //Connection of the new websocket client
 io.sockets.on('connection', function (socket) {
 	
@@ -172,7 +206,8 @@ io.sockets.on('connection', function (socket) {
 	socket.on('new event', function(event){
 		eventManager.save(event, function(error, events){
 			var event = events[0];
-			event.IP = socket.handshake.address.address;
+			//TODO: delete
+			//event.IP = socket.handshake.address.address;
 			console.log('new event:'+JSON.stringify(event));
 			
 			//Forward event to the teachers + other students: old
@@ -196,6 +231,7 @@ io.sockets.on('connection', function (socket) {
 					//check by first username only
 					if(my_session[j].username.indexOf(students[0])!=-1){
 						switch(event.eventType){
+						
 						case "connection":
 							break;
 						case "finishSection":
@@ -208,12 +244,15 @@ io.sockets.on('connection', function (socket) {
 							my_session[j].help = true;
 							my_session[j].description = event.description;
 							my_queue.push(event.IP);
+							//Send event to this group
+							socket.emit("update queue", my_queue.length);
 							break;
 						case "solved":
 							my_session[j].help = false;
 							if(my_queue.indexOf(event.IP)!=-1){
 								my_queue.splice(my_queue.indexOf(event.IP),1);
 							}
+							sendQueuePositions(my_queue);
 							break;
 						}
 						found = true;
@@ -238,6 +277,8 @@ io.sockets.on('connection', function (socket) {
 			console.log("queue after the event:");
 			console.log(my_queue);
 			
+			sendEventToSession(event, "sessionTeacher");
+			/*
 			//Test retransmission of messages:done
 			var clients = io.sockets.clients();
 			//console.log('sockets:'+clients);
@@ -259,7 +300,7 @@ io.sockets.on('connection', function (socket) {
 					}
 				});
 			}
-			
+			*/
 			
 		});
 	});
@@ -284,6 +325,7 @@ io.sockets.on('connection', function (socket) {
 						if(my_queue.indexOf(IP)!=-1){
 							my_queue.splice(my_queue.indexOf(IP),1);
 						}
+						sendQueuePositions(my_queue, IP);
 						break;
 					}
 				}
@@ -313,11 +355,6 @@ io.sockets.on('connection', function (socket) {
 			}else{
 				if(userInfoArray.length==0) return;
 				var my_session = getSession(userInfoArray[0].group+users.session);
-				//console.log('new student.my_session:'+userInfoArray[0].group+users.session);
-				//console.log('new student(my_session):'+JSON.stringify(my_session));
-				//console.log('new event(sessions):'+JSON.stringify(sessions));
-				//console.log('new event(queues):'+JSON.stringify(queues));
-				
 				
 				//console.log('new student:'+students.join(","));
 				//console.log('new student(userInfoArray):'+userInfoArray);
@@ -343,25 +380,23 @@ io.sockets.on('connection', function (socket) {
 							username: students,
 							exercise: 0,
 							help: false,
-							//Testing IPs
-							//IP: users.IP
-							IP: socket.handshake.address.address
+							//TODO:Testing IPs
+							IP: users.IP
+							//IP: socket.handshake.address.address
 						});
 						console.log('new student '+students+' registered on session:');
 						//console.log(my_session);
 						socket.emit('student registered', {
 							userInfoArray : userInfoArray
 						});
-				
 					}
+					//Save session name to the socket
+					socket.set("sessionStudent", userInfoArray[0].group+users.session);
+					//TODO:Testing IPs
+					socket.set("fakeIP", users.IP);
 				//}
 			}
 		});
-		
-		//Save names to the socket
-		//No merece la pena?
-		//socket.set("username", students);
-		//socket.set("group", group);
 	});
 	
 	//New teacher event (TEACHER)
@@ -370,7 +405,8 @@ io.sockets.on('connection', function (socket) {
 		var my_queue = getQueue(session.session);
 		//console.log('new event(my_session):'+JSON.stringify(my_session));
 		//console.log('new event(my_queue):'+JSON.stringify(my_queue));
-		socket.set("session", session.session);
+		//Save session name to the socket
+		socket.set("sessionTeacher", session.session);
 		socket.emit('init', {session: my_session, queue: my_queue});
 		console.log('new teacher: at session '+session.session);
 	});
