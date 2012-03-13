@@ -1,0 +1,363 @@
+<html>
+	<head>
+		<title>Aplicaciones Multimedia: Pr&aacute;ctica ActionScript</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<link rel="SHORTCUT ICON" href="http://www.uc3m.es/favicon.ico" /> 
+		<link href="http://www.it.uc3m.es/rcrespo/docencia/asignatura.css" rel="stylesheet" type="text/css" />
+		<link href="http://www.it.uc3m.es/estilo.css" rel="stylesheet" type="text/css" />
+		<link href="http://www.it.uc3m.es/rcrespo/docencia/amm/1112/css/amm.css" rel="stylesheet" type="text/css" />
+		<link href="../css/classon.css" rel="stylesheet" type="text/css" />
+		<link href="../css/jquery-ui.css" rel="stylesheet" type="text/css" />
+		<style>
+			h2 {
+			  text-align: left; 
+			}
+			
+			ul.level2 {
+			  list-style-type:circle;
+			}
+			
+			figure div img{
+			  display: block;
+			  margin-left: auto;
+			  margin-right: auto;
+			}
+			
+			div embed {
+				align: center;
+			}
+			
+			figcaption p{
+			  text-align: center;
+			}
+			
+			.bordeNegro{
+			  border-style:solid;
+			  border-width:3px;
+			  border-color: black;
+			}
+			
+			section {
+			  padding: 0 20px 20px;
+			  margin: 0 0 30px;
+			  border: 2px solid black;
+			  border-radius: 10px;
+			  -moz-border-radius: 10px;
+			  -webkit-border-radius: 10px;
+			}
+			
+		</style>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/jquery.blockUI.js"></script>
+	</head>
+	<body>
+		
+		<!-- BEGIN ADD, 21/05/09; to comply with UC3M corporate image requirements -->
+		<div class="headerBorderUc3mblue"></div>
+		<div class="header white">
+		  <a href="http://www.uc3m.es/">
+		  	<img class="logos logoleft" src="http://www.it.uc3m.es/imag/EscudoLogoCorporativo.png" alt="Universidad Carlos III de Madrid" />
+		  </a>
+	      <a href="http://www.it.uc3m.es">
+	      	<img class="logos logoright" src="http://www.it.uc3m.es/imag/SpanishLogoIT.png" alt="Departamento de Ingenier&iacute;a Telem&aacute;tica" />
+	      </a>
+		</div>
+		<div class="headerBorderUc3mblue"></div>
+		<!-- END ADD 21/05/09 -->
+		
+		
+		<!-- Tabla encabezado departamento -->
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+		  <tr>
+		    <td>
+		      <table width="100%" border="0" cellspacing="1" cellpadding="0">  	
+		        <tr>
+		          <td bgcolor="#CCD0D6" width="2000" height="22">
+		            <div align="right"><a href="http://www.it.uc3m.es/localizacion/localizacion.htm" class="azul">Localizaci&oacute;n</a>
+		              | <a href="#"></a><a href="http://www.it.uc3m.es/personal/directorio.htm"><span class="rojo">Personal</span></a>
+		              | <a href="http://www.it.uc3m.es/docencia/docencia.htm" class="azul">Docencia</a>
+		              | <a href="http://www.it.uc3m.es/investigacion/investigacion.htm" class="azul">Investigaci&oacute;n</a>
+		              | <a href="http://www.it.uc3m.es/novedades/novedades.htm" class="azul">Novedades</a>
+		              | <a href="http://www.it.uc3m.es/intranet/intranet.htm" class="azul">Intranet</a>
+		              &nbsp;&nbsp;</div>
+		          </td>
+		        </tr>
+		      </table>
+		    </td>
+		  </tr>
+		</table>
+		<!-- Tabla encabezado departamento (fin) -->
+		
+		<!-- Navegaci&oacute;n -->
+		<nav>
+			<p class="nav"><a class="azul"
+			href="http://www.it.uc3m.es/index.html">Home</a> / <a class="azul"
+			href="http://www.it.uc3m.es/docencia/docencia.htm">Docencia</a> / <a
+			class="azul" href="http://www.it.uc3m.es/docencia/grado-audiovisuales.html">Grado en Ingenier&iacute;a de Sistemas Audiovisuales</a> / 
+			<a class="azul" href="http://www.it.uc3m.es/rcrespo/docencia/amm/1112/">Aplicaciones Multimedia</a>
+			</p>
+		</nav>
+		<!-- Navegaci&oacute;n (fin) -->
+		
+		<header>
+			<h1>Pr&aacute;ctica 7: ActionScript&reg; (scripting en Flash)</h1>
+		</header>
+		<section id="intro">
+			<h2>Introducci&oacute;n</h2>
+			<p> 
+				ActionScript&reg; 3.0 es la versi&oacute;n m&aacute;s reciente del lenguaje de programaci&oacute;n propio de Flash. Gracias a este lenguaje es posible controlar y manejar todos los componentes de una pel&iacute;cula Flash introduciendo interactividad a las pel&iacute;culas o animaciones. Este lenguaje se basa en la especificaci&oacute;n ECMA-262 y, como su propio nombre indica, es un lenguaje de scripting. La principal diferencia de un lenguaje de scripting respecto a otros lenguajes es que, al no requerir una estructura declarativa r&iacute;gida, es posible obtener c&oacute;digo perfectamente operativo simplemente asociando las l&iacute;neas de c&oacute;digo que implementan el comportamiento a cualquiera de los s&iacute;mbolos que componen la pel&iacute;cula Flash.
+			</p>
+			<p>
+				ActionScript&reg; es un lenguaje orientado a objetos, de hecho cada s&iacute;mbolo creado en una animaci&oacute;n Flash se corresponde con un objeto en ActionScript&reg;. Supongamos que se ha definido un s&iacute;mbolo de clip de pel&iacute;cula (por ejemplo, el dibujo de un murci&eacute;lago) y se ha colocado una copia del mismo en el escenario. Dicho s&iacute;mbolo de clip de pel&iacute;cula es literalmente un objeto en ActionScript&reg;, es una instancia de la clase MovieClip y como tal podemos asociarle un identificativo &uacute;nico, un nombre, mediante el panel de propiedades. La propiedades representadas en este panel se corresponden con las propiedades de una clase del tipo al que el s&iacute;mbolo pertenece.
+			</p>
+			<p>
+				Cada clase e instancia de ella posee pues propiedades y m&eacute;todos a los que se accede mediante una sintaxis de punto (<code>cuadrado.x = x<sub>1</sub></code> es el t&iacute;pico ejemplo). Es importante recordar en este punto que ActionScript&reg; usa un tipado fuerte en la definici&oacute;n de las variables, es decir, al contrario que en Javascript, las variables son declaradas con tipo por lo que debe existir concordancia entre los datos asignados a una variable y su definici&oacute;n de tipo.
+				<br/>(ej. declaraci&oacute;n variable en ActionScript&reg;: <code>var nombreVariable:tipoVariable;</code>).
+			</p>
+			<p>
+				En ActionScript&reg; 3.0 el modelo de gesti&oacute;n de eventos est&aacute; basado en la especificaci&oacute;n de eventos DOM3. Aunque la estructura de archivo swf no cumpla estrictamente con la especificada en DOM3, las similitudes son suficientes para la implementaci&oacute;n del modelo (los <em>nodos</em> de un documento DOM3 se consideran equivalentes a los objetos de <em>lista de visualizaci&oacute;n</em> de un archivo swf). Para que un c&oacute;digo especifico se ejecute al ocurrir un determinado evento, es necesario registrar un "escuchador" a tal evento, dicho escuchador puede ser una funci&oacute;n o un m&eacute;todo y se suscribe mediante la funci&oacute;n: <code>addEventListener()</code>. En ActionScript&reg; algunos evento tienen asociado un comportamiento determinado que puede ser eliminado a trav&eacute;s del uso de la funci&oacute;n <code>preventDefault()</code>. Por ejemplo los recuadros de inserci&oacute;n de texto por defecto visualizan el texto introducido en el propio objeto, si se desea evitar dicho comportamiento (quiz&aacute;s para ocultar los caracteres de una contrase&ntilde;a) es posible utilizar esta funci&oacute;n y sobreescribir el comportamiento por defecto (aunque este caso tan com&uacute;n esta previsto en las propiedades del objeto <em><a href="http://help.adobe.com/es_ES/ActionScript/3.0_UsingComponentsAS3/WS5b3ccc516d4fbf351e63e3d118a9c65b32-7f9f.html">TextInput</a></em>.
+			</p>
+			
+			<br /> <!-- Prog sin codigo -->
+				<p class="minititulo">Programar sin c&oacute;digo</p>
+				<p>
+					Flash permite insertar scripts ActionScript&reg; sin casi la necesidad de escribir realmente c&oacute;digo. Esto permite a usuarios menos expertos en programaci&oacute;n (como dise&ntilde;adores o animadores) aprovechar las posibilidades de interactividad que Flash ofrece, sin embargo no toda la funcionalidad es accesible a trav&eacute;s de este m&eacute;todo de programaci&oacute;n y la flexibilidad alcanzable escribiendo directamente el c&oacute;digo ActionScript&reg; necesario es muy superior.
+				</p>
+				<ul>
+					<li>El <em>Asistente</em> proporcionado por CS4 permite a&ntilde;adir acciones a trav&eacute;s de una interfaz para introducir los par&aacute;metros necesarios para dicha acci&oacute;n. Se requiere alg&uacute;n conocimiento sobre las acciones disponibles en Flash, pero no se necesita conocer la sintaxis de la programaci&oacute;n a trav&eacute;s de ActionScript&reg;.</li>
+					<li>Los <em>Comportamientos</em> son scripts predefinidos que realizan tareas consideras "comunes". Los comportamientos no est&aacute;n disponibles para versiones de ActionScript&reg; superiores a la 2.0.</li>
+					<li>Los <em>Componentes</em> son <em>Movie Clips</em> disponibles en CS4 para ser utilizados directamente. T&iacute;pico ejemplo de componente son los elementos de la interfaz de usuario que permiten a&ntilde;adir funcionalidad de control, a veces tambi&eacute;n compleja, a animaciones simples. Los usuarios pueden crear nuevos componentes o modificar componentes existente, sin embargo se necesitan conocimientos m&aacute;s espec&iacute;ficos sobre el uso de c&oacute;digo ActionScript&reg;  para este caso. En CS4 puede acceder al panel de componentes en cualquier momento a trav&eacute;s del comando <code>Ventana->Componentes</code>.</li>
+				</ul>
+			
+			<br /> <!-- situar codigo -->
+				<p class="minititulo">Situar el c&oacute;digo</p>
+				<p>
+					La colocaci&oacute;n del c&oacute;digo ActionScript directamente en fotogramas es una forma sencilla de a&ntilde;adir comportamientos a las aplicaciones incorporadas en la herramienta de edici&oacute;n de Flash. En el entorno de edici&oacute;n de Flash, es posible a&ntilde;adir c&oacute;digo ActionScript a cualquier fotograma de una l&iacute;nea de tiempo. Este c&oacute;digo se ejecutar&aacute; mientras se reproduce la pel&iacute;cula, cuando la cabeza lectora alcance dicho fotograma. No obstante esta pr&aacute;ctica es poco habitual para aplicaciones de gran tama&ntilde;o debido a su elevada dificultad de mantenimiento.
+				</p>
+				<p>
+					A medida que las aplicaciones se hacen m&aacute;s complejas es m&aacute;s com&uacute;n utilizar ficheros externos para el desarrollo del c&oacute;digo ActionScript&reg;. Dichos archivos se almacenan con extensi&oacute;n <em>as</em> y pueden situarse, en principio, en cualquier parte del proyecto en desarrollo. Existen dos formas para gesti&oacute;n archivos contentes c&oacute;digo. En la m&aacute;s sencilla, y menos interesante, el c&oacute;digo se escribe en el fichero exactamente como si se estuviera escribiendo un script en un fotograma de la l&iacute;nea de tiempo. Para que sea ejecutado por la aplicaci&oacute;n ser&aacute; necesario utilizar una sentencia <code>include</code> en la ubicaci&oacute;n en donde se desea introducir dicho c&oacute;digo obteniendo de esta forma el mismo efecto obtenido introduciendo el c&oacute;digo directamente en esta ubicaci&oacute;n.
+					<br/>Una forma m&aacute;s potente de utilizaci&oacute;n de c&oacute;digo ActionScript consiste en definir una o varias clases, con sus propio m&eacute;todos y propiedades, en uno o m&aacute;s ficheros externos. En este caso ser&aacute; necesario utilizar una sentencia <code>import</code>, especificando el nombre completo de la clase para que el compilador pueda localizarla. De este modo ser&aacute; posible crear una instancia de la clase y utilizar sus propiedades, m&eacute;todos y eventos, tal y como se har&iacute;a con cualquiera de las clases de ActionScript incorporadas por defecto.
+					<br/>(Ej.: <code>import flash.display.MovieClip;</code> para poder utilizar la clase MovieClip de Flash.)
+				</p>
+			
+			<br /> <!-- Lista -->
+				<p class="minititulo">Lista de visualizaci&oacute;n</p>
+				<p>
+					Como gran parte de la programaci&oacute;n de ActionScript&reg; implica crear y manipular elementos visuales, todas las aplicaciones creadas se acometen a una jerarqu&iacute;a de visualizaci&oacute;n de objetos conocida como <em>lista de visualizaci&oacute;n</em> que contiene todos los elementos visuales de la aplicaci&oacute;n.
+				</p>
+				<figure>
+					<div>
+						<img src="images/lista.png"  /> <!--height="500"  width="1080"-->
+					</div>
+					<figcaption><p><b>Figura 1</b>: Jerarqu&iacute;a de visualizaci&oacute;n en una aplicaci&oacute;n ActionScript</figcaption>
+				</figure>
+				<p>
+					En esta introducci&oacute;n no vamos a profundizar en el concepto de lista de visualizaci&oacute;n. M&aacute;s informaci&oacute;n puede ser encontrada en la <a href="http://help.adobe.com/es_ES/ActionScript/3.0_ProgrammingAS3/WS5b3ccc516d4fbf351e63e3d118a9b90204-7e3e.html">gu&iacute;a</a> completa de ActionScript.
+				</p>
+			
+<!--				<section> <!-- esribir AS -->
+<!--					<p class="minititulo">Escribir c&oacute;digo ActionScript&reg;</p>-->
+<!--					<p>-->
+<!--				-->
+<!--					</p>-->
+<!--				</section>-->
+<!--			-->
+<!--				<section> <!-- AS Vs JS -->
+<!--					<p class="minititulo">ActionScript&reg; Vs JavaScript</p>-->
+<!--					<p>-->
+<!--						Es interesante notar como el lenguaje ActionScript&reg; mantiene cierto parecido con el lenguaje Javascript.-->
+<!--					</p>-->
+<!--				</section>			-->
+		</section>
+
+		<section id="step1">
+			<h2>Paso 1: Introducci&oacute;n de sencillos elementos de control</h2>
+			<p>
+				Como primera toma de contacto con ActionScript&reg;, vamos a modificar el archivo utilizado en el desarrollo de la pr&aacute;ctica anterior. Se introducir&aacute; pues un bot&oacute;n de play/pause que permita un grado m&iacute;nimo de interactividad con la animaci&oacute;n realizada. Para ello:
+			</p>
+			<ul>
+				<li>
+					Abra el archivo .fla resultante de la animaci&oacute;n desarrollada en la anterior pr&aacute;ctica. En caso de no tener a disponible dicho fichero, puede utilizar la animaci&oacute;n usada como ejemplo en el enunciado de la practica. Puede acceder al fichero <a href="../p6/sol/murcie.fla" >aqui</a>.
+				</li>
+				<li>
+					Desde la interfaz de animador (la misma utilizada durante la pr&aacute;ctica anterior), inserte una nueva capa, por encima de las presentes.
+				</li>
+				<li>
+					Acceda al panel de componentes a trav&eacute;s de comando <code>Ventana->Componentes</code> y inserte un componente de tipo bot&oacute;n en la nueva capa. Especifique un nombre de instancia para este componente, de esta forma podremos referirnos al bot&oacute;nl desde el c&oacute;digo. A trav&eacute;s del panel <code>Inspector de componentes</code>, cambie la etiqueta por defecto asociada al componente bot&oacute;n de "Label" a "Start".
+				</li>
+				<li>
+					En ActionScript 3.0, el c&oacute;digo de programaci&oacute;n s&oacute;lo puede ser a&ntilde;adido a fotogramas clave o incluido en ficheros ActionScript externos. En este caso, al a&ntilde;adir el componente bot&oacute;n a la nueva capa creada, autom&aacute;ticamente se ha creado un fotograma clave. Abra el panel <code>Acciones</code> desde el men&uacute; contextual al que se accede haciendo click derecho en dicho fotograma. De este modo CS4 presentar&aacute; el espacio designado a la escritura de c&oacute;digo para el correspondiente fotograma clave.
+				</li>
+				<li>
+					Para poder responder a eventos generados por el rat&oacute;n es necesario importar la  librer&iacute;a correcta. En este caso importe la librer&iacute;a <code>flash.events.MouseEvent</code>. T&oacute;mese un momento para familiarizarse con esta clase y sus propiedades y m&eacute;todos descritos en la <em><a href="#reference" >Code Reference<a></em>
+			  </li>
+				<li>
+					Utilice la funci&oacute;n <code>addEventListener</code> asociada a la instancia del bot&oacute;n para registrar la funci&oacute;n <code>fn_start</code> como escuchador del evento <code>CLICK</code> definido por la clase <code>MouseEvent</code>.</li>
+				<li>
+					Defina la funci&oacute;n <code>fn_start</code>. Esta funci&oacute;n tomar&aacute; como par&aacute;metro un evento de la clase <code>MouseEvent</code> y no devolver&aacute; ningun valor como salida (<code>void</code>). 
+					<p>
+						(ej: <code> function <b><em>mi_funci&oacute;n</em></b>(<b><em>nombePar&aacute;metro</em></b>:<b><em>tipo_par&aacute;metro</em></b>):<b><em>valorDeRetorno</em> </b>{} </code>)
+					</p>
+				</li>
+				<li>
+				Como primera comprobaci&oacute;n, utilice la funci&oacute;n <code>trace(<em>srtring</em>)</code> para escribir un mensaje de aviso cada vez que el usuario pulse el bot&oacute;n. Dicho mensaje se escribir&aacute; en el panel <em>Salida</em>. Utilice el comando <code>Archivo->Vista previa de publicaci&oacute;n</code> para comprobar el correcto funcionamiento del c&oacute;digo. El panel <code>Errores de compilaci&oacute;n</code> mostrar&aacute; posibles errores en la compilaci&oacute;n del c&oacute;digo. </li>
+				<figure>
+					<div>
+						<img src="images/panel.png"  width="100%"/> <!--height="500"-->
+					</div>
+					<figcaption><p><b>Figura 2</b>: Captura de pantalla de la herramienta CS4. La figura muestra los diferentes paneles disponibles desde la interfaz <em>Animador</em>.</p></figcaption>
+				</figure>
+				<li>
+					Para hacer que el comienzo de la animaci&oacute;n dependa de las acciones (eventos) asociados al bot&oacute;n, primero es necesario detener el arranque autom&aacute;tico de la animaci&oacute;n. Para ello es suficiente introducir el c&oacute;digo <code>this.stop();</code> en cualquier punto del script asociado al primer fotograma clave. Al arrancar la animaci&oacute;n, se ejecutar&aacute; el c&oacute;digo asociado al primer fotograma clave, deteniendo de este modo la animaci&oacute;n. Compruebe el efecto de esta sentencia a trav&eacute;s del comando <code>Archivo->Vista previa de publicaci&oacute;n</code>
+				</li>
+				<li>
+					A&ntilde;ada el c&oacute;digo necesario para que la animaci&oacute;n empiece al presionar el bot&oacute;n.
+					<p>
+						<em><a href="http://help.adobe.com/en_US/ActionScript/3.0_ProgrammingAS3/WS5b3ccc516d4fbf351e63e3d118a9b90204-7d9d.html">Sugerencia</a></em>
+					</p>
+				</li>
+				<li>
+					A&ntilde;ada ahora el c&oacute;digo necesario para la implementaci&oacute;n de la funcionalidad <em>Pause</em>. S&oacute;lo durante la ejecuci&oacute;n de la animaci&oacute;n el bot&oacute;n deber&aacute; cambiar su etiqueta de "Start" a "Pause" de forma que cuando sea  presionado detenga la ejecuci&oacute;n de la animaci&oacute;n. Si la animaci&oacute;n se encuentra detenida, la etiqueta del bot&oacute;n sera igual a "Start" y, al presionar el bot&oacute;n este reanudar&aacute; la ejecuci&oacute;n de la animaci&oacute;n y cambiar&aacute; el estado de su etiqueta a "Pause".
+				</li>
+				<li>
+					Con el c&oacute;digo escrito hasta ahora, al poner la animaci&oacute;n en estado de "Pause" no se detiene la animaci&oacute;n asociada a la figura del murci&eacute;lago (el aleteo). Esto se debe al hecho de que dicha figura es un clip de pel&iacute;cula, caracterizado por su propia l&iacute;nea de tiempo. Si no ha sido considerado previamente, a&ntilde;&aacute;dase el c&oacute;digo necesario para que la animaci&oacute;n de este clip de pel&iacute;cula se detenga a la vez que la animaci&oacute;n principal.
+				</li>
+				<p>
+					El resultado de a&ntilde;adir el este c&oacute;digo a la animaci&oacute;n de la practica anterior deber&aacute; resultar en una animaci&oacute;n parecida a <a href="images/murci.html"> esta</a>.
+				</p>
+			</ul>
+		</section>
+		
+		<section id="step2">
+      <h2>Paso 2: Profundizando enel uso de ActionScript&reg; </h2>
+			<p>
+				Como se ha mencionado anteriormente, la forma m&aacute;s potente para trabajar con ActionScript es la de organizar el c&oacute;digo por clases en ficheros externos. Vamos a ver en este paso como realizar una sencilla implementaci&oacute;n utilizando este esquema de programaci&oacute;n. Para una informaci&oacute;n m&aacute;s detallada sobre la programaci&oacute;n por clase utilizando ActionScript se reccomienda consultar: <a href="http://help.adobe.com/es_ES/as3/learn/WSf00ab63af761f170-4ed0731912937da73f7-8000.html">Programaci&oacute;n orientada a objetos con ActionScript</a>
+			</p>
+			<p>
+				El objetivo en este punto es la realizaci&oacute;n de un juego interactivo sencillo, como el del  siguiente ejemplo:
+			</p>
+			<div><embed type="application/x-shockwave-flash" src="./images/tris.swf"  width="400" height="400"></div>
+			<p>
+				<ol>
+					<li> <!--	estructura de ficheros-->
+						El primer paso es <b>crear la estructura de ficheros</b> apta para el uso de clases Actionscript. Para ello:
+						<ul>
+							<li>Genere un nuevo fichero de Flash y obtenga un escenario vaci&oacute; en que se pueda empezar a dibujar.</li>
+							<li>Seguidamente cree un nuevo archivo de ActionScript 3.0 y gu&aacute;rdelo en la misma ruta del fichero de Flash reci&eacute;n creado</li>
+							<li>Es necesario relacionar el fichero de Flash con su correspondiente archivo ActionScript, para ello, en el panel de propiedades de escenario introduzca el nombre <em>main</em> en el campo <code>Clase</code>.</li>
+							<li>En el fichero as ser&aacute; necesario pues crear una clase de nombre <em>main</em> para que se corresponda con el par&aacute;metro introducido en fichero de Flash. </li>
+						</ul>
+					</li>  
+					<li>    <!--	crear la clase  -->
+						Para <b>crear la clase <em>main</em></b> en el fichero as (la clase que se ejecutar&aacute; al lanzar la animaci&oacute;n o pel&iacute;cula Flash):
+						<ul>
+							<li>Abra el fichero main.as (se recuerda que, para que Flash sepa reconocer las clases y ficheros adecuados, el nombre de fichero del fichero que contiene la clase del documento, introducida en el panel de propiedades del escenario, deber&aacute; corresponderse con el nombre de dicha clase). En este fichero vamos a introducir la palabra clave <code>package</code>. Esta sentencia identifica el paquete del c&oacute;digo y siempre abre un fichero de c&oacute;digo ActioScript. Se puede componer de m&aacute;s niveles y contiene (entre llaves) todo el c&oacute;digo que se vaya a escribir en este fichero. Puesto que el fichero se ha guardado en la misma carpeta que el archivo de Flash, no ser&aacute; necesario a&ntilde;adir m&aacute;s componentes a la ruta. </li>
+							<li>Dentro del espacio cerrado por las llaves de <code>package</code> vamos a importar las librer&iacute;as necesarias para el desarrollo. En este caso importaremos la librer&iacute;a <code>flash.display.MovieClip</code>. Esta librer&iacute;a es el requisito m&iacute;nimo que se necesita para trabajar con una pel&iacute;cula de Flash ya que el escenario est&aacute; asociado a dicha clase y el resultado final de la exportaci&oacute;n ser&aacute; tambi&eacute;n un objeto <em>MovieClip</em>.</li>
+							<li>Finalmente vamos a crear la clase main declarada previamente en el archivo de Flash. Para ello utilizaremos la sentencia: <code> public class main extends MovieClip</code>. Dicha sentencia declara la clase como p&uacute;blica, para que pueda accederse desde el fichero de Flash y como derivada de la clase MovieClip (desde la que hereda la propiedades y m&eacute;todos) para que sea posible trabajar con el escenario.</li>
+						</ul>
+						<p>
+							El resultado de estas operaciones dar&aacute; lugar a un archivo ActionScript parecido a <a href="images/clase_as.html">este</a>, relacionado al escenario contenido en el fichero de Flash.
+						</p>
+					</li>	
+					<li>     <!--	comprobar funcionamiento   -->
+						El c&oacute;digo creado hasta ahora no realiza ninguna operaci&oacute;n, por lo que vamos a <em><b>comprobar el correcto funcionamiento</b></em> de la estructura de ficheros creada de forma muy sencilla.
+						<ul>
+							<li>En el escenario cree un espacio de texto con la herramienta de texto (T). En el panel de propiedades del recuadro creado especifique que sea un recuadro de texto din&aacute;mico y asigne un nombre de instancia al objeto.</li>
+							<li>En el fichero main.as vamos a importar la clase <code>flash.text.TextField</code> responsable de definir los objetos de tipo texto.</li>
+							<li>Al ejecutarse la pel&iacute;cula el escenario crear&aacute; una instancia de la clase main y la primera funci&oacute;n ejecutada ser&aacute; por defecto la hom&oacute;nima a la clase (esta funci&oacute;n se denomina <a href="http://help.adobe.com/es_ES/as3/learn/WSf00ab63af761f170-4ed0731912937da73f7-7ffe.html">m&eacute;todo constructor</a>). En este caso la funci&oacute;n no tomar&aacute; par&aacute;metros de entrada y no devolver&aacute; alg&uacute;n valor de salida por lo que la sentencia de declaraci&oacute;n se corresponder&aacute; a: <code>public function main():void</code>.</li>
+							<li>En el cuerpo del m&eacute;todo constructor vamos a inicializar el campo de texto. Como la instancia de este objeto se ha definido directamente en el escenario, no es necesario declarar una variable que lo represente en el fichero ActionScript (s&iacute; lo es para objetos que no est&eacute;n presentes en el escenario, recuerden que el tipado de ActionScript es de tipo fuerte) por lo que vamos a introducir un texto de inicializaci&oacute;n simplemente con la instrucci&oacute;n: <code><em>nombreInstanciaObjeto</em>.text = "texto con clase main"</code>.</li>
+							<li>Ejecutando la animaci&oacute;n desde el fichero de Flash (a trav&eacute;s del comando <code>Archivo->Vista Previa de publicaci&oacute;n</code>) observen como el objeto de texto se inicializa con el valor introducido desde la clase.</li>
+						</ul>
+					</li>   
+					<li>    <!-- Dibujar escenario -->
+						Vamos ahora a preparar el escenario para el juego del tres en raya. Prepare un escenario con el esquema para el juego y los dos marcadores que se van a utilizar en el juego. Modifique el tama&ntilde;o del escenario (si necesario) para que quede dividido en partes iguales por el esquema de juego (esto facilitar&aacute; mucho la implementaci&oacute;n del c&oacute;digo posterior) .
+						  <figure>
+							<div>
+								<img src="images/esquema.png"  /> <!--height="500"  width="1080"-->
+							</div>
+							<figcaption><p><b>Figura 3</b> Ejemplo de escenario utilizado en el juego.</p></figcaption>
+						</figure>
+						Para poder a&ntilde;adir din&aacute;micamente los marcadores (cruz y c&iacute;rculo) de los jugadores, conviertalos en s&iacute;mbolos. Para ello:
+						<ul>
+							<li>Seleccione la opci&oacute;n convertir en s&iacute;mbolo del men&uacute; contextual del objeto dibujado.</li>
+							<li>En el panel de opciones avanzadas marque <em>Exportar para ActionScript</em> y elija un nombre de clase para el s&iacute;mbolo. Por defecto Flash deber&iacute;a definir esta clase como subclase de <code>flash.display.MovieClip</code>, si no es as&iacute; cambie oportunamente el valor de la opci&oacute;n <em>Clase base</em>.</li>	
+							<li>Una vez a&ntilde;adidos los s&iacute;mbolos <code>cruz</code> y <code>circulo</code> a la biblioteca, elimine las instancias de dichos s&iacute;mbolos del escenario para obtener un esquema de juego vac&iacute;o.</li>
+						</ul>
+						
+						<p>
+							Utilizando el panel de componentes, inserte un bot&oacute;n en la parte alta izquierda del escenario. Asigne un nombre de instancia  al bot&oacute;n, utilizaremos este bot&oacute;n para empezar la partida as&iacute; que <code>startButton</code> resulta apropiado.
+						</p>
+					</li>  
+					<li>      <!-- codigo cuerpo  -->
+						Vamos ahora a a&ntilde;adir el c&oacute;digo necesario para implementar la l&oacute;gica del juego en el archivo <em>main.as</em>. Para ello:
+						<ul>
+							<li>Primero vamos a importar la librer&iacute;a <code>flash.events.MouseEvent</code> para poder manejar los eventos de rat&oacute;n.</li>
+							<li>Modificamos la funci&oacute;n <code>main</code> para que habilite el bot&oacute;n de inicio de la partida. Implemente el c&oacute;digo necesario bas&aacute;ndose en lo aprendido en paso 1.
+								<p>
+									<em>Opcional</em>: implementar el c&oacute;digo de tal modo que, al empezar el juego el bot&oacute;n de inicio desaparezca del escenario. Volver&aacute; a aparecer al terminar la partida.
+									<ul>
+										<li><em>Sugerencia</em>: la clase <a href="http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/fl/controls/Button.html">Button</a> hereda todos los m&eacute;todos y propiedades de la clase <a href="http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/DisplayObject.html">DisplayObject</a>.</li>
+										<li><em>Recomendaci&oacute;n</em>: Utilice un elemento diferente de <code>stage</code> para delimitar el &aacute;rea de juego (puede ser un sencillo rect&aacute;ngulo que cubra el escenario entero) evitando de este modo suscribir escuchadores de eventos al escenario.</li>
+									</ul>
+								</p>
+							<li>
+								A&ntilde;ada el c&oacute;digo necesario a implementar la l&oacute;gica del juego. Habilite s&oacute;lo una modalidad de juego, donde el jugador se enfrenta al ordenador.</li>
+								<ul>
+									<li>Para a&ntilde;adir nuevos s&iacute;mbolos al escenario desde la clase main, cree una nueva instancia de la clase correspondiente (exportada a la hora de crear el s&iacute;mbolo) y a&ntilde;ada el nuevo elemento al <a href="http://help.adobe.com/es_ES/ActionScript/3.0_ProgrammingAS3/WS5b3ccc516d4fbf351e63e3d118a9b90204-7e26.html">&aacute;lbol de objetos</a> (recuerde que la estructura del fichero se parece a la estructura DOM3).</li>
+									<li>Deber&aacute; utilizar m&eacute;todos de la clase <a href="http://help.adobe.com/es_ES/FlashPlatform/reference/actionscript/3/Math.html#methodSummary">Math</a></li>
+									<li>Existen operadores simb&oacute;licos muy <a href="http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/operators.html#is">&uacute;tiles</a></li>
+								</ul>
+						</ul>
+					</li>
+				</ol>
+			</p>
+		</section>
+		
+		<section id="evaluation">
+			<h2>Preguntas de autoevaluaci&oacute;n</h2>
+			<p>
+				Tr&aacute;s finalizar la practica conteste a las siguientes preguntas para completar/reforzar los conocimientos adquiridos.
+			</p>
+			<ul>
+				<li>&iquest;Porqu&eacute; en el paso 1 se ha insertado una nueva capa a la animaci&oacute;n ya creada? &iquest;Ser&iacute;a posible evitar la creaci&oacute;n de esta capa adicional?</li>
+				<li>&iquest;Cu&aacute;l es el significado de la propiedad <code>CommandKey</code> definido por la clase <code>MouseEvent</code>?</li>
+				<li>&iquest;Qu&eacute; funci&oacute;n se utiliza para hacer visible en el escenario un objeto creado desde un script ActionScript?</li>
+				<li>&iquest;Es posible modificar todos los elementos del escenario desde clases externas? Si no, cu&aacute;les se pueden modificar y porqu&eacute;?</li>
+				<li>&iquest;Es posible crear nuevos objetos (del tipo ya presente en el escenario) desde una clase externa?&iquest;Si es as&iacute;, c&oacute;mo?</li>
+			</ul>
+		</section>
+		
+		<section id="refs">
+	    <h2>Referencias</h2>
+			<ul>
+				<li><a href="http://www.adobe.com/devnet/flash/getting_started_cs4.html">Empezar con Flash (Adobe CS 4)</a></li>
+				<li><a href="http://www.adobe.com/devnet/fireworks/articles/fwcs4_howto.html">Fireworks CS4 How-Tos excerpts: Importing, exporting, symbols, prototyping, scaling</a></li>
+				<li><a href="http://help.adobe.com/es_ES/ActionScript/3.0_ProgrammingAS3/"> Gu&iacute;a completa a ActionScript 3.0 </a>
+				<li><a href="http://help.adobe.com/es_ES/as3/learn/WSf00ab63af761f170-4ed0731912937da73f7-8000.html">Programaci&oacute;n orientada a objetos con ActionScript</a>
+				<li><a href="http://help.adobe.com/es_ES/Flash/10.0_UsingFlash/WS0CC7D962-6484-46f0-9596-BB27B21C4926a.html">Utilizaci&oacute;n de Flash CS4 Professional</a>
+					<ul><li><a href="http://help.adobe.com/es_ES/Flash/10.0_UsingFlash/WSd60f23110762d6b883b18f10cb1fe1af6-7beca.html">ActionScript&reg;</a></li></ul>
+				<li><a href="http://help.adobe.com/es_ES/FlashPlatform/reference/actionscript/3/package-detail.html">ActionScript&reg; 3.0 reference</a></li>
+				<li>http://help.adobe.com/es_ES/ActionScript/3.0_ProgrammingAS3/</li>
+				<p> En los siguientes enlaces podr&aacute; encontrar varios recursos, a menudo en forma de tutorial, para la animaci&oacute;n y programaci&oacute;n en Flash. Algunos puntos est&aacute;n especificamente pensados para el desarollo a trav&eacute;s de la suite CS5, sin embargo, todos son aplicables en su larga mayoria a la suite CS4.
+				<li><a href="http://www.smartwebby.com/Flash/">Recursos Web para aprender Flash 1</a></li>
+				<li><a href="http://www.aulaclic.es/flash-cs5">Recursos Web para aprender Flash 2</a></li>
+			</ul>
+		</section>
+		
+		<footer>
+		  <figure>
+				<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/es/">
+				<img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/es/88x31.png" /></a>
+				<figcaption>Este <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text" rel="dct:type">obra</span> 
+				est&aacute; bajo una <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/es/">licencia Creative Commons 
+				Reconocimiento-CompartirIgual 3.0 Espa&ntilde;a</a>.</figcaption>
+			</figure>
+			<details>
+				<summary>Recurso desarollado por Fabio Sanvido (<a href="mailto:fsanvido@it.uc3m.es">fsanvido@it.uc3m.es</a>), data de <time datetime="2012--02-07">2012-02-07</time>.</summary>
+			</details>
+			<br /><br /><br />
+		</footer>
+		<script type="text/javascript" src="../js/socket.io.min.js"></script>
+		<script type="text/javascript" src="../js/classon.js?session=p6"></script>
+	</body>
+</html>
