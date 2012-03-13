@@ -166,22 +166,23 @@ function sendEventToSession(event, sessionType){
 function sendQueuePositions(userIPs, solvedIP){
 	var clients = io.sockets.clients();
 	for(var i=0; i<clients.length; i++){
-		//TODO: fix fakeIP
-		clients[i].get("fakeIP", function(err, fakeIP){
-			//var position = userIPs.indexOf(clients[i].handshake.address.address);
-			var position = userIPs.indexOf(fakeIP);
-			console.log('sendQueuePositions: check '+userIPs+' and '+fakeIP);
+		//fakeIP
+		//clients[i].get("fakeIP", function(err, fakeIP){
+			var clientIP = clients[i].handshake.address.address;
+			var position = userIPs.indexOf(clientIP);
+			//var position = userIPs.indexOf(fakeIP);
+			//console.log('sendQueuePositions: check '+userIPs+' and '+fakeIP);
 			if(position!=-1){
 				clients[i].emit('update queue', position+1);
-				console.log('emitted update queue to: '+fakeIP);
+				//console.log('emitted update queue to: '+fakeIP);
 			}
 			if(solvedIP){
-				if(solvedIP==fakeIP){
+				if(solvedIP==clientIP){
 					clients[i].emit('update queue', 0);
-					console.log('emitted update queue to: '+fakeIP);
+					//console.log('emitted update queue to: '+fakeIP);
 				}
 			}
-		});
+		//});
 	}
 }
 
@@ -206,8 +207,8 @@ io.sockets.on('connection', function (socket) {
 	socket.on('new event', function(event){
 		eventManager.save(event, function(error, events){
 			var event = events[0];
-			//TODO: delete
-			//event.IP = socket.handshake.address.address;
+			//Comment for testing
+			event.IP = socket.handshake.address.address;
 			console.log('new event:'+JSON.stringify(event));
 			
 			//Forward event to the teachers + other students: old
@@ -380,9 +381,9 @@ io.sockets.on('connection', function (socket) {
 							username: students,
 							exercise: 0,
 							help: false,
-							//TODO:Testing IPs
-							IP: users.IP
-							//IP: socket.handshake.address.address
+							//Testing IPs
+							//IP: users.IP
+							IP: socket.handshake.address.address
 						});
 						console.log('new student '+students+' registered on session:');
 						//console.log(my_session);
@@ -392,8 +393,8 @@ io.sockets.on('connection', function (socket) {
 					}
 					//Save session name to the socket
 					socket.set("sessionStudent", userInfoArray[0].group+users.session);
-					//TODO:Testing IPs
-					socket.set("fakeIP", users.IP);
+					//Testing IPs
+					//socket.set("fakeIP", users.IP);
 				//}
 			}
 		});

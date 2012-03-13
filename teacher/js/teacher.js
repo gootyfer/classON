@@ -189,8 +189,8 @@ var help_needed =  false; //Teacher has work to do
 //Websockets
 var server = document.location.href.substr(0,document.location.href.lastIndexOf(':'));
 server = "163.117.141.206";
-//TODO: delete
-server = "127.0.0.1";
+//local server
+//server = "127.0.0.1";
 var socket = io.connect(server+':80');
 socket.on('connect', function() {
 	var button = document.getElementsByClassName("button")[0];

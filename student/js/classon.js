@@ -306,9 +306,9 @@ var socket;
 function checkUsers(callback){
 	if(!socket){
 		var server = document.location.href.hostname;
-		//TODO:var server = document.location.href.substr(0,document.location.href.lastIndexOf(':'));
+		//var server = document.location.href.substr(0,document.location.href.lastIndexOf(':'));
 		server = "163.117.141.206";
-		server = "127.0.0.1";
+		//server = "127.0.0.1";
 		socket = io.connect(server+':80');
 		socket.on('connect', function() {
 			sendEventToServer('new student', {session: session});
@@ -357,8 +357,8 @@ function sendEventToServer(eventName, event){
 		event.session = usersInfo[0].group + session;
 	}
 	
-	//TODO:Testing IPs
-	event.IP = "163.117.101."+document.location.href.substr(document.location.href.lastIndexOf('?')+1).split("=")[1];
+	//Testing IPs
+	//event.IP = "163.117.101."+document.location.href.substr(document.location.href.lastIndexOf('?')+1).split("=")[1];
 	socket.emit(eventName, event);
 	console.log('new event sent:'+eventName);
 }
