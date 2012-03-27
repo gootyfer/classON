@@ -101,7 +101,7 @@ if(!user){
 	user = user.split(",");
 	checkUsers(function(error){
 		if(error){
-			requestUser("Los NIAs almacenados no son correctos. Por favor, rev�salos y pincha OK.");
+			requestUser("Los NIAs almacenados no son correctos. Por favor, rev&iacute;salos y pincha OK.");
 		}else{
 			usersOK();
 		}
@@ -148,7 +148,7 @@ function saveUsers(){
 	checkUsers(function(error){
 		if(error){
 			$.unblockUI();
-			requestUser("Los NIAs indicados no son correctos. Por favor, rev�salos y pincha OK.");
+			requestUser("Los NIAs indicados no son correctos. Por favor, rev&iacute;salos y pincha OK.");
 		}else{
 			usersOK();
 		}
@@ -337,7 +337,7 @@ function checkUsers(callback){
 			
 			socket.on('update queue', function(position){
 				console.log("new position in queue:"+position);
-				helpButton.innerHTML = "SOLUCIONADO?<br />("+position+")";
+				helpButton.innerHTML = "SOLUCIONADO?<br />(Posición en cola: "+position+")";
 				if(position==0){
 					askForHelp();
 				}
