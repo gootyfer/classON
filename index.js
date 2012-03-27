@@ -81,6 +81,10 @@ var serve_http = function(request, response){
     });
 };
 
+var show_stats = function(request, response){
+	
+}
+
 app.get('/student/*', function (request, response) {
 	serve_http(request, response);
 });
@@ -91,6 +95,10 @@ app.get('/teacher/*', function (request, response) {
 
 app.get('/users/photos/*', function (request, response) {
 	serve_http(request, response);
+});
+
+app.get('/stats', function (request, response){
+	show_stats(request, response);
 });
 
 /*
