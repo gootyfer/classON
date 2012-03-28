@@ -26,7 +26,7 @@ content.appendChild(header);
 
 var menuItems = []; //menu items array
 for(var i=0; i<sections.length; i++){
-	if(sections[i].id != "refs"){ 
+	if(sections[i].id != "refs" && sections[i].id != "bash"){ 
 		var itemName = sections[i].getElementsByTagName("h2")[0].childNodes[0].nodeValue; //collect section names
 		//Create menu item
 		var menuitem = document.createElement("div");
