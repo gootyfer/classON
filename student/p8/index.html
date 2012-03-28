@@ -566,7 +566,8 @@ card 0: Intel [HDA Intel], device 0: STAC92xx Analog [STAC92xx Analog]
 	un único flujo multimedia.
       </p>
       <pre class="code">
-	gst-launch fuente_video ! transformaciones_video ! codificador_video ! queue ! multiplexor name="muxer" \
+	gst-launch fuente_video ! transformaciones_video ! codificador_video \
+    ! queue ! multiplexor name="muxer" \
 	  fuente_audio ! transformaciones_audio ! codificador_audio ! queue ! muxer. \
 	  muxer. ! procesamiento_flujo_multiplexado
       </pre>

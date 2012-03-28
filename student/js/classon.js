@@ -281,7 +281,7 @@ function undoFinishSection(){
 	$.blockUI({
 		theme:     true, 
         title:    "Deshacer progreso", 
-		message: "<div>¿Seguro que deseas volver al apartado anterior?<br /><br />" +
+		message: "<div>&iquest;Seguro que deseas volver al apartado anterior?<br /><br />" +
 		"<div><input type='button' onclick='$.unblockUI();' value='Cancelar' style='margin-left: 0px;' />" +
 		"<input type='button' onclick='undoFinishSection2();' value='OK' style='float:right;' /></div></div>"});
 }

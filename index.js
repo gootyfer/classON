@@ -60,6 +60,9 @@ var serve_http = function(request, response){
 		case '.swf':
 			contentType = 'application/x-shockwave-flash';
 			break;
+		case '.ogg':
+			contentType = 'application/ogg';
+			break;
 			
     }
     
