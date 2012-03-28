@@ -259,8 +259,8 @@ function askForHelp2(){
 function finishSection(){
 	$.blockUI({
 		theme:     true, 
-        title:    "Sección terminada", 
-		message: "<div>¿Seguro que has terminado el apartado correpondiente?<br /><br />" +
+        title:    "Secci&oacute;n terminada", 
+		message: "<div>&iquest;Seguro que has terminado el apartado correpondiente?<br /><br />" +
 		"<div><input type='button' onclick='$.unblockUI();' value='Cancelar' style='margin-left: 0px;' />" +
 		"<input type='button' onclick='finishSection2();' value='OK' style='float:right;' /></div></div>"});
 }
