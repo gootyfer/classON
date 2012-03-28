@@ -214,7 +214,7 @@ h5 {
 
 .desc{
 	width: 30%;
-	heigth: 50px;
+	height: 50px;
 	float: right;
 	position: relative;
 	border: solid 5px black;
@@ -228,6 +228,8 @@ h5 {
 	float: right;
 	margin-left: auto;
 	margin-right: auto;
+	height: 40px;
+	line-height: 3;
 }
 
 .back{
@@ -237,6 +239,8 @@ h5 {
 	margin-right: auto;
 	margin-top: 20px;
 	width: 80%;
+	height: 40px;
+	line-height: 3;
 }
 
 .timer{
