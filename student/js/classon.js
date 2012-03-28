@@ -216,7 +216,7 @@ function indicateProgress(back){
 function askForHelp(){
 	$.blockUI({
 		theme:     true, 
-        title:    (helpNeeded)?'Solución':'Duda', 
+        title:    (helpNeeded)?'Soluci&oacute;n':'Duda', 
 		message: "<div>Por favor, describe brevemente la "+(helpNeeded?'respuesta a tu duda':'duda que vas a preguntar')+".<br /><br />" +
 		"<textarea id='duda' style='width:100%;height:100px'></textarea><br /><br />" +
 		"<div><input type='button' onclick='$.unblockUI();' value='Cancelar' style='float:left;' />" +
@@ -337,7 +337,7 @@ function checkUsers(callback){
 			
 			socket.on('update queue', function(position){
 				console.log("new position in queue:"+position);
-				helpButton.innerHTML = "SOLUCIONADO?<br />(Posición en cola: "+position+")";
+				helpButton.innerHTML = "SOLUCIONADO?<br />(Posici&oacute;n en cola: "+position+")";
 				if(position==0){
 					askForHelp();
 				}
