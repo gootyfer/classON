@@ -238,7 +238,7 @@ function askForHelp2(){
 		*/
 	}else{
 		helpButton.innerHTML = "SOLUCIONADO?";
-		helpButton.className = "button green";
+		helpButton.className = "button blue";
 	}
 	
 	//Send event to the server
@@ -326,7 +326,7 @@ function checkUsers(callback){
 					if(regInfo.help){
 						helpNeeded = true;
 						helpButton.innerHTML = "SOLUCIONADO?";
-						helpButton.className = "button green";
+						helpButton.className = "button blue";
 					}
 					//Connection to the practice event
 					sendEventToServer('new event', {eventType: "connection"});
