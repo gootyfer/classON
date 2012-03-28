@@ -151,47 +151,6 @@
 	<li>Captura de audio</li>
       </ul>
     </section>
-    
-    <section id="bash">
-      <h2>Comandos bash útiles</h2>
-      <ul>
-	<li>
-	  <span class="code">man</span>: 
-	  muestra la ayuda de un comando. Por ejemplo:
-	  <pre class="code">man ls</pre>
-	  Muestra la ayuda sobre el comando ls.
-	  Para salir de la ayuda: pulsa la letra 'q'.
-	  <br /><br />
-	</li>
-	<li>
-	  <span class="code">ls</span>: lista los contenidos de un directorio
-	  <br /><br />
-	</li>
-	<li>
-	  <span class="code">cd</span>: (change directory) cambia de directorio
-	  <ul>
-	    <li><span class="code">.</span>: representa el directorio actual</li>
-	    <li><span class="code">..</span>: representa el directorio padre</li>
-	  </ul>
-	  <br />
-	</li>
-	<li>
-	  <span class="code">grep</span>: 
-	  filtra las líneas que incluyan un determinado texto. Por ejemplo:
-	  <pre class="code">grep palabra nombre_fichero</pre>
-	  filtra el fichero <em>nombre_fichero</em>, presentando sólo las líneas que incluyen el texto <em>palabra</em>.
-	  <p>
-	    Combinado con los <em>pipelines</em> de linux (¡no
-	    confundir con los <em>pipelines</em> de GStreamer, aunque
-	    la idea es similar!), permite filtrar la salida estandar generada por un comando.
-	    Ejemplo:
-	  </p>
-	  <pre class="code">gst-inspect | grep sink</pre>
-	  filtra el resultado del comando gst-inspect, presentando sólo las líneas que incluyen el texto <em>sink</em>.
-	  <br />
-	</li>
-      </ul>
-    </section>
 
     <section id="step1">
       <h2>Paso 1: Inspeccionar elementos</h2>
@@ -655,7 +614,46 @@ card 0: Intel [HDA Intel], device 0: STAC92xx Analog [STAC92xx Analog]
       </p>
 
     </section>
-
+    <section id="bash">
+      <h2>Comandos bash útiles</h2>
+      <ul>
+  <li>
+    <span class="code">man</span>: 
+    muestra la ayuda de un comando. Por ejemplo:
+    <pre class="code">man ls</pre>
+    Muestra la ayuda sobre el comando ls.
+    Para salir de la ayuda: pulsa la letra 'q'.
+    <br /><br />
+  </li>
+  <li>
+    <span class="code">ls</span>: lista los contenidos de un directorio
+    <br /><br />
+  </li>
+  <li>
+    <span class="code">cd</span>: (change directory) cambia de directorio
+    <ul>
+      <li><span class="code">.</span>: representa el directorio actual</li>
+      <li><span class="code">..</span>: representa el directorio padre</li>
+    </ul>
+    <br />
+  </li>
+  <li>
+    <span class="code">grep</span>: 
+    filtra las líneas que incluyan un determinado texto. Por ejemplo:
+    <pre class="code">grep palabra nombre_fichero</pre>
+    filtra el fichero <em>nombre_fichero</em>, presentando sólo las líneas que incluyen el texto <em>palabra</em>.
+    <p>
+      Combinado con los <em>pipelines</em> de linux (¡no
+      confundir con los <em>pipelines</em> de GStreamer, aunque
+      la idea es similar!), permite filtrar la salida estandar generada por un comando.
+      Ejemplo:
+    </p>
+    <pre class="code">gst-inspect | grep sink</pre>
+    filtra el resultado del comando gst-inspect, presentando sólo las líneas que incluyen el texto <em>sink</em>.
+    <br />
+  </li>
+      </ul>
+    </section>
       
     <section id="refs">
       <a name="refs" />
