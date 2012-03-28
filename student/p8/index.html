@@ -1,0 +1,696 @@
+<html>
+  <head>
+    <title>Aplicaciones Multimedia: Práctica GStreamer (I)</title>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <link rel="SHORTCUT ICON" href="http://www.uc3m.es/favicon.ico" /> 
+    <link href="http://www.it.uc3m.es/rcrespo/docencia/asignatura.css" rel="stylesheet" type="text/css" />
+    <link href="http://www.it.uc3m.es/estilo.css" rel="stylesheet" type="text/css" />
+    <link href="http://www.it.uc3m.es/rcrespo/docencia/amm/1112/p3/css/amm.css" rel="stylesheet" type="text/css" />
+    <link href="../css/classon.css" rel="stylesheet" type="text/css" />
+    <link href="../css/jquery-ui.css" rel="stylesheet" type="text/css" />
+    
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.blockUI.js"></script>
+    <style type="text/css">
+      .code {
+        color: blue;
+      }
+    </style>
+  </head>
+  <body>
+    
+    <!-- BEGIN ADD, 21/05/09; to comply with UC3M corporate image requirements -->
+    <div class="headerBorderUc3mblue"></div>
+    <div class="header white">
+      <a href="http://www.uc3m.es/">
+        <img class="logos logoleft" src="http://www.it.uc3m.es/imag/EscudoLogoCorporativo.png" alt="Universidad Carlos III de Madrid" />
+      </a>
+        <a href="http://www.it.uc3m.es">
+          <img class="logos logoright" src="http://www.it.uc3m.es/imag/SpanishLogoIT.png" alt="Departamento de Ingeniería Telemática" />
+        </a>
+    </div>
+    <div class="headerBorderUc3mblue"></div>
+    <!-- END ADD 21/05/09 -->
+    
+    
+    <!-- Tabla encabezado departamento -->
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+      <tr>
+        <td>
+          <table width="100%" border="0" cellspacing="1" cellpadding="0">    
+            <tr>
+              <td bgcolor="#CCD0D6" width="2000" height="22">
+                <div align="right"><a href="http://www.it.uc3m.es/localizacion/localizacion.htm" class="azul">Localizaci&oacute;n</a>
+                  | <a href="#"></a><a href="http://www.it.uc3m.es/personal/directorio.htm"><span class="rojo">Personal</span></a>
+                  | <a href="http://www.it.uc3m.es/docencia/docencia.htm" class="azul">Docencia</a>
+                  | <a href="http://www.it.uc3m.es/investigacion/investigacion.htm" class="azul">Investigaci&oacute;n</a>
+                  | <a href="http://www.it.uc3m.es/novedades/novedades.htm" class="azul">Novedades</a>
+                  | <a href="http://www.it.uc3m.es/intranet/intranet.htm" class="azul">Intranet</a>
+                  &nbsp;&nbsp;</div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <!-- Tabla encabezado departamento (fin) -->
+    
+    <!-- Navegación -->
+    <nav>
+      <p class="nav"><a class="azul"
+      href="http://www.it.uc3m.es/index.html">Home</a> / <a class="azul"
+      href="http://www.it.uc3m.es/docencia/docencia.htm">Docencia</a> / <a
+      class="azul" href="http://www.it.uc3m.es/docencia/grado-audiovisuales.html">Grado en Ingeniería de Sistemas Audiovisuales</a> / 
+      <a class="azul" href="http://www.it.uc3m.es/rcrespo/docencia/amm/1011/">Aplicaciones Multimedia</a>
+      </p>
+    </nav>
+    <!-- Navegación (fin) -->
+    
+    <header>
+      <h1>Pr&aacute;ctica 8: Arquitectura GStreamer</h1>
+    </header>
+    <section id="intro">
+      <h2>Introducci&oacute;n</h2>
+      <h3>Fundamentos tecnológicos</h3>
+
+      <p>
+	GStreamer es un entorno para creación de aplicaciones de
+	streaming multimedia.
+	
+	El diseño de GStreamer está basado en tuberías
+	(<em>pipelines</em>), que definen el flujo de datos,
+	y <em>plugins</em>, elementos que proporcionan las distintas
+	funcionalidades y pueden interconectarse dentro de
+	un <em>pipeline</em>.
+
+	GStreamer permite procesar audio, vídeo y cualquier tipo de
+	flujo de datos.
+	
+	Los formatos soportados incluyen: MP3, Ogg/Vorbis, MPEG-1/2,
+	AVI, Quicktime, mod, etc.
+      </p>
+
+      <p>
+	GStreamer proporciona más de 150 plugins, que pueden
+	clasificarse de acuerdo a la funcionalidad que implementan:
+      </p>
+      <ul>
+	<li>Gestión de protocolos</li>
+	<li>Fuentes</li>
+	<li>Formato: parsers, formateadores, muxers, demuxers, metadatos, subtítulos</li>
+	<li>Codecs: codificadores y decodificadores</li>
+	<li>Filtros: conversores, mixers, efectos, ...</li>
+	<li>Sumideros</li>
+      </ul>
+
+      <figure>
+	<img src="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/manual/html/images/gstreamer-overview.png" />
+        <figcaption><p><em>Figura 1</em>: Arquitectura GStreamer</p></figcaption>
+      </figure>
+
+      <p>
+      </p>
+
+<!--
+*  Tipos de datos: procesa audio, vídeo y cualquier tipo de flujos de datos.
+*  Formatos soportados: MP3, Ogg/Vorbis, MPEG-1/2, AVI, Quicktime, mod, etc.
+*  Aplicaciones:
+  -  Reproducción multimedia
+  -  Edición multimedia
+*  Proporciona:
+  -  API
+  -  Arquitectura de plugins
+  -  Arquitectura pipeline
+  -  Mecanismo para procesamiento y negociación de tipos de medios
+  -  Más de 150 plug-ins
+  -  Conjunto de herramientas
+-->
+
+      <h3>Objetivo</h3>
+      <p>
+	En esta práctica utilizaremos GStreamer y las herramientas de
+	línea de comandos que proporciona para desarrollar algunas
+	aplicaciones multimedia básicas.
+      </p>
+      <ul>
+        <li>gst-launch - construye y ejecuta una tubería GStreamer</li>
+	<li>gst-inspect - muestra información sobre un <em>plugin</em> o elemento GStreamer</li>
+	<!-- <li>gst-inspect-gui - explorador de elementos GStreamer (GUI)</li> -->
+	<li>gst-typefind - muestra el tipo MIME del fichero</li>
+      </ul>
+
+      <p>
+	Definiremos diversos <em>pipelines</em> interconectando
+	algunos <em>plugins</em> proporcionados por el entorno, para
+	implementar algunas funcionalidades básicas:
+      </p>
+      <ul>
+        <li>Reproducción multimedia</li>
+	<li>Conversión de formatos</li>
+	<li>Generación de nuevos medios</li>
+	<li>Captura de audio</li>
+      </ul>
+    </section>
+    
+    <section id="bash">
+      <h2>Comandos bash útiles</h2>
+      <ul>
+	<li>
+	  <span class="code">man</span>: 
+	  muestra la ayuda de un comando. Por ejemplo:
+	  <pre class="code">man ls</pre>
+	  Muestra la ayuda sobre el comando ls.
+	  Para salir de la ayuda: pulsa la letra 'q'.
+	  <br /><br />
+	</li>
+	<li>
+	  <span class="code">ls</span>: lista los contenidos de un directorio
+	  <br /><br />
+	</li>
+	<li>
+	  <span class="code">cd</span>: (change directory) cambia de directorio
+	  <ul>
+	    <li><span class="code">.</span>: representa el directorio actual</li>
+	    <li><span class="code">..</span>: representa el directorio padre</li>
+	  </ul>
+	  <br />
+	</li>
+	<li>
+	  <span class="code">grep</span>: 
+	  filtra las líneas que incluyan un determinado texto. Por ejemplo:
+	  <pre class="code">grep palabra nombre_fichero</pre>
+	  filtra el fichero <em>nombre_fichero</em>, presentando sólo las líneas que incluyen el texto <em>palabra</em>.
+	  <p>
+	    Combinado con los <em>pipelines</em> de linux (¡no
+	    confundir con los <em>pipelines</em> de GStreamer, aunque
+	    la idea es similar!), permite filtrar la salida estandar generada por un comando.
+	    Ejemplo:
+	  </p>
+	  <pre class="code">gst-inspect | grep sink</pre>
+	  filtra el resultado del comando gst-inspect, presentando sólo las líneas que incluyen el texto <em>sink</em>.
+	  <br />
+	</li>
+      </ul>
+    </section>
+
+    <section id="step1">
+      <h2>Paso 1: Inspeccionar elementos</h2>
+      <p>
+        En primer lugar vamos a comprobar la instalación del entorno
+        (al menos, de los componentes fundamentales). Para ello,
+        ejecuta en la línea de comandos de linux (bash):
+      </p>
+      <pre class="code">gst-inspect fakesrc</pre>
+      <p>
+	<span class="code">gst-inspect</span> muestra información
+	sobre un plugin o elemento GStreamer. El comando anterior
+	muestra información sobre el
+	elemento <span class="code">fakesrc</span>, una fuente
+	'ficticia' que crea un buffer vacío de datos. Así que permite
+	verificar que tenemos el registro de plugins funcionando
+	correctamente y que podemos inspeccionar los elementos
+	registrados.
+      </p>
+      <p>
+	Observa que, si se ejecuta sin argumentos,
+	<span class="code">gst-inspect</span> muestra un listado de
+	los elementos disponibles.
+      </p>
+      <p>
+	También puedes consultar la descripción de los plugins de
+	GStreamer en la documentación de referencia (ver sección
+	<a href="#refs">Referencias</a>) y, en concreto, en la 
+	<a href="http://gstreamer.freedesktop.org/documentation/plugins.html">
+	  descripción general de todos los Plug-ins </a>.  Ten cuidado
+	porque no todos los plugins están disponibles para todas las
+	distribuciones o no admiten las mismas propiedades. Utiliza
+	gst-inspect en el ordenador para comprobar la versión concreta
+	disponible en el sistema.
+      </p>
+
+    </section>
+
+
+    <section id="step2">
+      <h2>Paso 2: Pipeline básico</h2>
+      <p>
+	La figura 2 representa la estructura básica de un pipeline, en
+	la que el flujo de datos parte de una fuente, experimenta una
+	serie de transformaciones y finaliza en un sumidero.
+      </p>
+      <figure>
+	<img src="img/pipeline-estructura.png" />
+        <figcaption><p><em>Figura 2</em>: Estructura básica de un pipeline.</p></figcaption>
+      </figure>
+      <p>
+	En este primer apartado debes crear un pipeline básico que
+	simplemente interconecte una fuente y un sumidero. Para no
+	preocuparnos de formatos, simplemente usaremos una fuente y
+	sumidero 'ficticios', que gestionan un flujo de datos vacío.
+      </p>
+      <p>
+	Crea con <span class="code">gst-launch</span> el pipeline de
+	prueba descrito previamente y representado en la figura 3.
+      </p>
+      <figure>
+	<img src="img/pipeline0.png" />
+        <figcaption><p><em>Figura 3</em>: Pipeline básico.</p></figcaption>
+      </figure>
+      <p>
+	Deberías obtener una salida similar a esta:
+      </p>
+      <pre class="code">Estableciendo el conducto a PAUSA  
+El conducto está PREPARÁNDOSE  
+El conducto está PREPARADO  
+Estableciendo el conducto a REPRODUCIENDO  
+New clock: GstSystemClock
+</pre>
+
+            
+      <p>
+	GStreamer proporciona distintos elementos sumidero para enviar el sonido a la tarjeta de sonido, dependiendo del sistema de audio instalado en el sistema operativo:
+      </p>
+      <ul>
+	<li><span class="code">alsasink</span>: envía la salida a la tarjeta de sonido mediante ALSA</span></li>
+	<li><span class="code">osssink</span>: envía la salida a la tarjeta de sonido mediante OSS</span></li>
+	<li><span class="code">autoaudiosink</span>: <em>Wrapper</em> de sumidero audio para detectar automáticamente el sumidero audio. Este elemento se incluye en las versiones más recientes de GStreamer y detecta automáticamente el sumidero audio a utilizar para enviar la salida a la tarjeta de sonido.</span></li>
+      </ul>
+
+      <p>
+	Cambia la fuente del reproductor básico y utiliza en su lugar
+	un elemento <span class="code">audiotestsrc</span>.  Cambia
+	también el sumidero de modo que la salida se envíe a la
+	tarjeta de sonido.  ¿Qué ocurre?
+      </p>
+    </section>
+
+
+    <section id="step3">
+      <h2>Paso 3: Reproducción de audio</h2>
+
+      <h3>Reproductor de audio MP3</h2>
+
+      <p>
+	Construye un reproductor de audio básico interconectando los
+	elementos adecuados. Puedes encontrar archivos de audio
+	compartidos con licencia Creative Commons
+	en <a href="http://freemusicarchive.org/">The Free Music
+	Archive</a>. Por ejemplo, puedes descargarte
+	este <a href="http://freemusicarchive.org/music/Aestrid_Byrne/Laterna/01_Preface">archivo
+	MP3</a> para pruebas.
+      </p>
+      <p>
+	Paso a paso:
+      </p>
+      <ul>
+	<li>
+	  Identifica el elemento GStreamer a utilizar como fuente. Ten
+	  en cuenta que el audio a reproducir está en un archivo local
+	  en el ordenador.
+	  <ul>
+	    <li>
+	      Utiliza gst-inspect para revisar la información del elemento. 
+	      ¿Qué propiedad debe utilizarse para especificar la ruta al fichero?
+	    </li>
+	  </ul>
+	</li>
+	<li>
+	  Identifica el elemento GStreamer a utilizar como sumidero. 
+	</li>
+	<li>
+	  Análisis de recursos:
+	  <ul>
+	    <li>
+	      Utiliza gst-typefind para analizar el formato del
+	      fichero a reproducir
+	    </li>
+	    <li>
+	      Utiliza gst-inspect para revisar
+	      las <em>capabilities</em> de los elementos. ¿Qué
+	      formatos transmiten y/o reciben cada uno?
+	    </li>
+	    <li>
+	      ¿Es necesario realizar alguna transformación del flujo
+	      de audio (por ejemplo, conversión de formato)?
+	    </li>
+	  </ul>
+	  Si es necesario, añade los elementos de proceso necesarios
+	  para realizar las transformaciones adecuadas.
+	  En concreto, revisa el elemento <span class="code">decodebin</span>
+	</li>
+      </ul>
+
+      <h3>Reproductor de audio OGG</h3>
+      <p>
+	Para reproducir archivos OGG, ten en cuenta que dicho formato
+	tiene tanto canal de audio como de video. Por tanto, además de
+	utilizar los codecs adecuados habrá que incluir una etapa
+	previa de demultiplexión para separar el canal de audio.
+      </p>
+      <p>
+	El
+	fichero <a href="res/Pentagon_News_Sample.ogg">Pentagon_News_Sample.ogg</a>
+	contiene un fragmento de audio que puedes utilizar para
+	pruebas (formato audio Ogg Vorbis).
+      </p>
+
+    </section>
+
+
+    <section id="step4">
+      <h2>Paso 4: Reproducción de vídeo (imagen)</h2>
+
+      <h3>Reproductor de la señal de prueba</h3>
+      <p>
+	Además de una fuente de prueba de audio, GStreamer también proporciona una fuente que genera una señal de prueba de video: <span class="code">videotestsrc</span>. Igualmente, proporciona sumideros para visualizar la imagen de una señal:  <span class="code">ximagesink</span>.
+      </p>
+      <p>
+	Crea un pipeline básico que visualice la señal de prueba de vídeo.
+      </p>
+      <p>
+	Prueba a cambiar la propiedad pattern de <span class="code">videotestsrc</span>. Consulta la documentación con gst-inspect para comprobar los posibles valores. 
+      </p>
+
+
+      <h3>Reproductor de video OGG</h3>
+      <p>
+	Prueba el reproductor de audio del paso 3 con este video: <a href="http://download.blender.org/peach/trailer/trailer_400p.ogg">Big Buck Bunny trailer</a> [Fuente: <a href="http://www.bigbuckbunny.org/index.php/trailer-page/">http://www.bigbuckbunny.org/index.php/trailer-page/</a>]
+      </p>
+      <p>
+	Prueba a reproducir directamente el video desde la red, sin descargarlo a un archivo local. Para ello, tendrás que cambiar el elemento fuente. Utiliza gst-inspect para buscar un elemento fuente que reciba datos http.
+      </p>
+      <p>
+	Como verás, el pipeline anterior simplemente reproduce el audio del fichero, pero no muestra la imagen. Modifícalo para mostrar por pantalla la imagen, para ello: 
+      </p>
+      <ul>
+	<li>habrá que cambiar el decodificador (cambia el decodificador de audio Vorbis por el decodificador de vídeo Ogg -Theora-). </li>
+	<li>También habrá que cambiar la fuente para que se visualice la salida a en pantalla en vez de dirigirla a la tarjeta de sonido.</li>
+      </ul>
+
+      <p>
+	Si intentamos conectar el decodificador Theora directamente a un sumidero ximagesink el pipeline falla. Consulta la documentación de ambos elementos. ¿Qué espacio de colores utiliza cada uno? ¿Qué elemento necesitas incluir para hacer la conversión?
+      </p>
+
+      <p>
+	Observa que ahora el reproductor visualiza la imagen del vídeo, pero no reproduce el audio. 
+      </p>
+
+      <p>
+	<em>Curiosidades</em>
+	Prueba a cambiar a utilizar como sumidero <span class="code">aasink</span> (ASCII art video sink).
+      </p>
+
+    </section>
+      
+    <section id="step5">
+      <h2>Paso 5: Filtrado y procesamiento</h2>
+
+      <h3>Efectos de imagen</h3>
+      <p>
+	En el reproductor anterior ya hemos incluido una etapa de
+	procesamiento para transformar la señal de vídeo del espacio
+	de colores YUV (generado por el decodificador de Theora) a RGB
+	(admitido por ximagesink).  En este paso, vamos a añadir
+	alguna etapa de procesamiento más para obtener efectos
+	interesantes.
+      </p>
+
+      <p>
+	Utiliza gst-inspect para comprobar los plugins disponibles del
+	paquete effectv. Prueba a incluir alguno de ellos en el
+	pipeline y observa el efecto.
+      </p>
+
+      <h3>Superposición de texto</h3>
+      <p>
+	GStreamer proporciona distintos elementos para superponer
+	información sobre la imagen, por ejemplo:
+      </p>
+      <ul>
+	<li>Superponer un mensaje de texto determinado.</li>
+	<li>Superponer el tiempo transcurrido (el tiempo de reproducción).</li>
+	<li>Superponer la hora.</li>
+      </ul>
+      <p>
+	Dichos elementos incluyen además propiedades para especificar
+	su posicionamiento, color de fondo, etc.
+      </p>
+      <p>
+	Modifica el pipeline anterior para superponer distintos tipos
+	de información: un mensaje de texto fijo, el tiempo
+	transcurrido, la hora actual...
+      </p>
+
+      <h3>Manipulación del cuadro de imagen</h3>
+      <p>
+	GStreamer proporciona también elementos para manipular el
+	cuadro de visualización del vídeo, permitiendo girarlo o
+	recortarlo entre otros efectos. Identifica y prueba alguno de
+	estos elementos.
+      </p>
+      
+
+    </section>
+
+    <section id="step6">
+      <a name="step6" />
+      <h2>Paso 6: Procesamiento de señales multicanal: reproducción de audio y vídeo</h2>
+
+      <p>
+	Hasta ahora, los reproductores construidos se limitan a
+	procesar una única señal, audio o imagen. Sin embargo, lo
+	ideal sería procesar ambas simultáneamente para reproduccir
+	adecuadamente un vídeo.
+      </p>
+      <p>
+	Para procesar un flujo multimedia en primer lugar tendremos
+	que demultiplexar la señal. Además, necesitaremos que el
+	pipeline procese los distintos canales en paralelo.
+      </p>
+      <p>
+	El demultiplexor recibe una única entrada, pero genera varias
+	salidas por sus distintos <em>pads</em> (cada canal por un
+	pad). Cada una de estas salidas se utilizarán a su vez como
+	entradas para distintos elementos de proceso, de modo que
+	tendremos sub-pipelines para procesar cada uno de los
+	canales. Necesitaremos, pues, asignar un nombre al
+	demultiplexor mediante la propiedad <span class="name"> para
+	poder referirnos a dichas salidas en distintos puntos del
+	pipeline.
+      </p>
+      <p>
+	A continuación se muestra la estructura genérica de un
+	pipeline que procesa una señal compuesta por dos canales
+	(audio y video).
+      </p>
+      <pre class="code">
+	gst-launch fuente ! elemento_demultiplexor name="demuxer" \
+	  demuxer. ! queue ! decodificador ! ... ! sumidero \
+          demuxer. ! queue ! decodificador2 ! ... ! sumidero2
+      </pre>
+      <p>
+	Observa que el nombre asignado al demultiplexor es arbitrario,
+	aunque obviamente se recomienda que sea descriptivo y
+	significativo.
+
+	Observa también que hemos separado en varias líneas el comando
+	utilizando la barra de escape '\', pero es sólo por facilitar
+	la legibilidad (no es necesario).
+
+	Además, observa que para referirnos a las salidas del
+	demultiplexor se utiliza el nombre asignado a dicho elemento
+	seguido de un punto ('.'), con lo que puede reutilizarse en
+	varios puntos del pipeline.
+
+	Finalmente, observa que se ha incluido un elemento queue al
+	inicio de cada sub-pipeline (inmediatamente después de cada
+	salida del multiplexor). De forma simplificada, este elemento
+	se utiliza para garantizar que los buffers se sincronizan
+	adecuadamente cuando el pipeline procesa múltiples canales en
+	paralelo.
+      </p>
+      <p>
+	Siguiendo esta sintaxis, combina los reproductores de audio y
+	video generados en pasos anteriores para reproducir (audio e
+	imagen) del video 
+	<a href="http://download.blender.org/peach/trailer/trailer_400p.ogg">
+	  Big Buck Bunny trailer</a>
+      </p>
+      <p>
+	Prueba a añadir alguno de los efectos de imagen probados previamente. 
+      </p>
+
+    </section>
+
+    <section id="step7">
+      <h2>Paso 7: Captura de audio</h2>
+
+      <p>
+	Hasta ahora nos hemos limitado a reproducir la señal
+	multimedia procesada por el pipeline. Sin embargo, GStreamer
+	proporciona diversas fuentes para implementar distintas
+	acciones con la salida del pipeline: comprobar redundancia,
+	envío de fichero, envío de la señal mediante distintos
+	protocolos, almacenamiento en fichero (uno o varios), etc.  
+      </p>
+      <p>
+	En este paso, vamos a guardar la señal de audio generada en un
+	fichero, en vez de reproducirla con la tarjeta de sonido.
+	Utiliza gst-inspect para identificar el elemento sumidero
+	adecuado, que almacene un flujo multimedia (la salida del
+	pipeline) en un archivo.  Utiliza gst-inspect también para
+	revisar las propiedades de dicho elemento y, en concreto, cómo
+	especificar el nombre del fichero de salida.
+      </p>
+      <p>
+	Además, vamos a capturar la entrada de audio del micrófono, en
+	vez de procesar un archivo multimedia preexistente.  Para
+	ello, utilizaremos la
+	fuente <span class="code">alsasrc</span>, que permite
+	utilizar como origen del flujo multimedia un dispositivo de
+	sonido del sistema (en este caso el micrófono).
+      </p>
+      <p>
+	<span class="code">alsasrc</span> requiere que se especifique
+	el dispositivo que se utilizará como origen. Puedes utilizar
+	el comando <span class="code">arecord -l</span> para listar
+	los dispositivos de captura disponibles en el
+	sistema. Deberías obtener una salida similar a:
+      </p>
+      <pre>
+bash$ arecord -l
+**** List of CAPTURE Hardware Devices ****
+card 0: Intel [HDA Intel], device 0: STAC92xx Analog [STAC92xx Analog]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+      </pre>
+      <p>
+	En nuestro caso, el micrófono está identificado como el
+	dispositivo <span class="code">hw:0</span>.
+      </p>
+      <p>
+	La señal del micrófono requiere algunas transformaciones antes
+	de poder almacenarla en un archivo multimedia válido. En
+	concreto, tendremos que convertirla al formato adecuado. En
+	este caso, queremos grabar el audio en formato Ogg Vorbis.
+      </p>
+      <!-- Este apartado se deja más abierto puesto que el alumno ya
+	   ha trabajado paso a paso con varios pipelines -->
+      <p>
+	<b>Importante:</b> Utiliza el conector posterior para el
+	micrófono (el delantero no funciona). Asegúrate también de que
+	los controles no están silenciados, comprúebalo con el control
+	de volumen (ver figura 4).
+      </p>
+      <figure>
+	<img src="img/control_de_volumen_menu.png" />
+	<img src="img/control_de_volumen.png" />
+        <figcaption><p><em>Figura 4</em>: Control de volumen.</p></figcaption>
+      </figure>
+
+    </section>
+
+    <section id="step8">
+      <h2>Paso 8: Procesamiento de señales multicanal: combinación de múltiples señales en un único flujo multimedia</h2>
+
+      <p>
+	Al igual que puede descomponerse un flujo multimedia en
+	múltiples canales, podemos también combinar múltiples señales
+	en un único flujo (por ejemplo, para integrar audio y
+	video). En este caso, el elemento necesario será un
+	demultiplexor.
+      </p>
+
+      <p>
+	A continuación se muestra la estructura genérica de un
+	pipeline que integra dos canales de entrada (audio y video) en
+	un único flujo multimedia.
+      </p>
+      <pre class="code">
+	gst-launch fuente_video ! transformaciones_video ! codificador_video ! queue ! multiplexor name="muxer" \
+	  fuente_audio ! transformaciones_audio ! codificador_audio ! queue ! muxer. \
+	  muxer. ! procesamiento_flujo_multiplexado
+      </pre>
+
+      <p>
+	Observa que el nombre asignado al multiplexor es arbitrario,
+	aunque obviamente se recomienda que sea descriptivo y
+	significativo.
+
+	Observa también que hemos separado en varias líneas el comando
+	utilizando la barra de escape '\', pero es sólo por facilitar
+	la legibilidad (no es necesario).
+
+	Además, observa que para referirnos al multiplexor se utiliza
+	el nombre asignado a dicho elemento seguido de un punto ('.'),
+	con lo que puede reutilizarse en varios puntos del pipeline. 
+	Verás que el multiplexor aparece tres veces en el pipeline:
+      </p>
+	<ul>
+	  <li>la primera vez recibe como entrada la señal de vídeo</li>
+	  <li>la segunda vez recibe como entrada la señal de audio</li>
+	  <li>
+	    la tercera vez para indicar que se utiliza su salida como
+	    entrada para las siguientes etapas (presta atención que es
+	    necesario repetirlo explícitamente)
+	  </li>
+	</ul>
+
+      <p>
+	Fíjate que también aquí se utiliza un elemento queue en cada
+	entrada del multiplexor.  Finalmente, observa que la
+	etapa <em>procesamiento_flujo_multiplexado</em> puede
+	sustituirse por la secuencia de elementos apropiada. Para
+	almacenar la señal generada en un fichero, simplemente se
+	utilizaría el sumidero adecuado. Si en cambio queremos
+	reproducir la señal generada, tendríamos que encadenar un
+	pipeline similar al construido en pasos anteriores (incluyendo
+	la etapa de demultiplexación).
+      </p>
+
+      <p>
+	Basándote en el esquema proporcionado, construye un pipeline
+	que genere un archivo Ogg combinando las señales de prueba de
+	audio y vídeo.
+      </p>
+
+    </section>
+
+      
+    <section id="refs">
+      <a name="refs" />
+      <h2>Referencias</h2>
+      <ul>
+        <li><a href="http://gstreamer.freedesktop.org/documentation/">Documentación de GStreamer</a>
+	<ul>
+	<li><a href="http://gstreamer.freedesktop.org/documentation/plugins.html">Overview of all Plug-ins</a></li>
+        <li><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/manual/html/index.html">GStreamer Application Development Manual (0.10.36)</a></li>
+	</ul>
+        <li><a href="https://aulaglobal2.uc3m.es/file.php/29384/Tema_8/Tema8._GStreamer_I_.pdf">Apuntes de la asignatura</a></li>
+        <li>Manual de bash</li>
+	<li><a href="http://freemusicarchive.org/">The Free Music Archive</a></li>
+	<li>Documentación sobre Ogg
+	  <ul>
+	<li><a href="http://es.wikipedia.org/wiki/Ogg">Información básica sobre el formato Ogg</a></li>
+	<li><a href="http://www.xiph.org/ogg/doc/">Documentación oficial de Ogg</a></li>
+	</ul>
+      </ul>
+    </section>
+    
+    <footer>
+      <figure>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/es/">
+        <img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/es/88x31.png" /></a>
+        <figcaption>Este <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text" rel="dct:type">obra</span> 
+        está bajo una <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/es/">licencia Creative Commons 
+        Reconocimiento-CompartirIgual 3.0 España</a>.</figcaption>
+      </figure>
+      <details>
+        <summary>Recurso desarollado por Raquel M. Crespo (<a href="www.it.uc3m.es/rcrespo/">www.it.uc3m.es/rcrespo/</a>), data de <time datetime="2012-02-06">2012-02-06</time>.</summary>
+      </details>
+      <br /><br /><br />
+    </footer>
+    <script type="text/javascript" src="../js/socket.io.min.js"></script>
+    <script type="text/javascript" src="../js/classon.js?session=p8"></script>
+  </body>
+</html>
