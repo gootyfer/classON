@@ -376,7 +376,54 @@ Pipeline elements:
       </ul>
 
     </section>
+    <section id="step8">
+      <h2>Paso 8: Procesamiento de flujos multimedia con varios canales</h2>
 
+      <p>
+  Modifica el reproductor Ogg anterior de modo que reproduzca tanto el audio como el vídeo, implementando el siguiente pipeline:
+      </p>
+      <pre class="code">gst-launch filesrc location=trailer_400p.ogg ! oggdemux name="demuxer" \
+ demuxer. ! queue ! vorbisdec ! audioconvert !  autoaudiosink \
+ demuxer. ! queue ! theoradec ! ffmpegcolorspace ! ximagesink</pre>
+
+      <p>
+  Observa que se necesitan dos elementos queue distintos (aunque sean del
+  mismo tipo): uno para el flujo de audio y otro para el de vídeo.
+      </p>
+
+      <p>
+  Observa también que tendrás que modificar la función que maneja la
+  conexión de pads creados dinámicamente, así como la instrucción en que
+  se asocia dicho manejador a la señal PAD_ADDED.  
+      </p>
+      <ul>
+  <li>
+    Respecto al registro del manejador, ahora no se sabe a priori a qué
+    elemento habrá que conectar el demultiplexor (si a la cola de audio o
+    a la de vídeo).  De modo que no puede pasarse como parámetro el
+    elemento destino al registrarlo, sino que se pasa NULL.
+  </li>
+  <li>
+    Respecto a la función, hay que comprobar el tipo de pad creado, por
+    ejemplo comprobando sus capabilities.
+    <ul>
+      <li>La función <em>gst_pad_get_name(GstPad_REFERENCE)</em> devuelve
+      el nombre del pad. </li>
+      <li>La función <em>gst_pad_get_caps(GstPad_REFERENCE)</em> devuelve
+      un objeto GstCaps con las capabilities del pad.</li>
+      <li>La función <em>gst_caps_to_string(GstCaps_REFERENCE)</em>
+      convierte un objeto GstCaps a una cadena de caracteres.</li>
+    </ul>
+    Por tanto, puedes recuperar las capabilities del pad y comprobar si
+    corresponden a un flujo de audio o video. Consulta en
+    el <a href="http://www.gtk.org/api/2.6/glib/index.html">manual de
+    referencia de GLib</a> la documentación
+    sobre <a href="http://www.gtk.org/api/2.6/glib/glib-String-Utility-Functions.html">funciones
+    para manejar Strings</a>.
+  </li>
+      </ul>
+
+    </section>
 
     <section id="bash">
       <h2>Comandos bash útiles</h2>
