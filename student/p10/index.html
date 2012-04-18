@@ -1,0 +1,461 @@
+<html>
+  <head>
+    <title>Aplicaciones Multimedia: Práctica GStreamer (III)</title>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <link rel="SHORTCUT ICON" href="http://www.uc3m.es/favicon.ico" /> 
+    <link href="http://www.it.uc3m.es/rcrespo/docencia/asignatura.css" rel="stylesheet" type="text/css" />
+    <link href="http://www.it.uc3m.es/estilo.css" rel="stylesheet" type="text/css" />
+    <link href="http://www.it.uc3m.es/rcrespo/docencia/amm/1112/p3/css/amm.css" rel="stylesheet" type="text/css" />
+    <link href="../css/classon.css" rel="stylesheet" type="text/css" />
+    <link href="../css/jquery-ui.css" rel="stylesheet" type="text/css" />
+    
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.blockUI.js"></script>
+    <style type="text/css">
+      .code {
+        color: blue;
+        font-size: 80%;
+      }
+    </style>
+  </head>
+  <body>
+    
+    <!-- BEGIN ADD, 21/05/09; to comply with UC3M corporate image requirements -->
+    <div class="headerBorderUc3mblue"></div>
+    <div class="header white">
+      <a href="http://www.uc3m.es/">
+        <img class="logos logoleft" src="http://www.it.uc3m.es/imag/EscudoLogoCorporativo.png" alt="Universidad Carlos III de Madrid" />
+      </a>
+        <a href="http://www.it.uc3m.es">
+          <img class="logos logoright" src="http://www.it.uc3m.es/imag/SpanishLogoIT.png" alt="Departamento de Ingeniería Telemática" />
+        </a>
+    </div>
+    <div class="headerBorderUc3mblue"></div>
+    <!-- END ADD 21/05/09 -->
+    
+    
+    <!-- Tabla encabezado departamento -->
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+      <tr>
+        <td>
+          <table width="100%" border="0" cellspacing="1" cellpadding="0">    
+            <tr>
+              <td bgcolor="#CCD0D6" width="2000" height="22">
+                <div align="right"><a href="http://www.it.uc3m.es/localizacion/localizacion.htm" class="azul">Localizaci&oacute;n</a>
+                  | <a href="#"></a><a href="http://www.it.uc3m.es/personal/directorio.htm"><span class="rojo">Personal</span></a>
+                  | <a href="http://www.it.uc3m.es/docencia/docencia.htm" class="azul">Docencia</a>
+                  | <a href="http://www.it.uc3m.es/investigacion/investigacion.htm" class="azul">Investigaci&oacute;n</a>
+                  | <a href="http://www.it.uc3m.es/novedades/novedades.htm" class="azul">Novedades</a>
+                  | <a href="http://www.it.uc3m.es/intranet/intranet.htm" class="azul">Intranet</a>
+                  &nbsp;&nbsp;</div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <!-- Tabla encabezado departamento (fin) -->
+    
+    <!-- Navegación -->
+    <nav>
+      <p class="nav"><a class="azul"
+      href="http://www.it.uc3m.es/index.html">Home</a> / <a class="azul"
+      href="http://www.it.uc3m.es/docencia/docencia.htm">Docencia</a> / <a
+      class="azul" href="http://www.it.uc3m.es/docencia/grado-audiovisuales.html">Grado en Ingeniería de Sistemas Audiovisuales</a> / 
+      <a class="azul" href="http://www.it.uc3m.es/rcrespo/docencia/amm/1011/">Aplicaciones Multimedia</a>
+      </p>
+    </nav>
+    <!-- Navegación (fin) -->
+    
+    <header>
+      <h1>Pr&aacute;ctica 10: Introducción a la Programación con GStreamer</h1>
+    </header>
+    <section id="intro">
+      <h2>Introducci&oacute;n</h2>
+      <!-- <h3>Fundamentos tecnológicos</h3> -->
+
+<!--
+      <p>
+	GStreamer es un entorno para creación de aplicaciones de
+	streaming multimedia.
+	
+	El diseño de GStreamer está basado en tuberías
+	(<em>pipelines</em>), que definen el flujo de datos,
+	y <em>plugins</em>, elementos que proporcionan las distintas
+	funcionalidades y pueden interconectarse dentro de
+	un <em>pipeline</em>.
+
+	GStreamer permite procesar audio, vídeo y cualquier tipo de
+	flujo de datos.
+	
+	Los formatos soportados incluyen: MP3, Ogg/Vorbis, MPEG-1/2,
+	AVI, Quicktime, mod, etc.
+      </p>
+
+      <p>
+	GStreamer proporciona más de 150 plugins, que pueden
+	clasificarse de acuerdo a la funcionalidad que implementan:
+      </p>
+      <ul>
+	<li>Gestión de protocolos</li>
+	<li>Fuentes</li>
+	<li>Formato: parsers, formateadores, muxers, demuxers, metadatos, subtítulos</li>
+	<li>Codecs: codificadores y decodificadores</li>
+	<li>Filtros: conversores, mixers, efectos, ...</li>
+	<li>Sumideros</li>
+      </ul>
+
+      <figure>
+	<img src="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/manual/html/images/gstreamer-overview.png" />
+        <figcaption><p><em>Figura 1</em>: Arquitectura GStreamer</p></figcaption>
+      </figure>
+
+      <p>
+      </p>
+-->
+
+      <h3>Desarrollo de un programa GStreamer:</h3>
+      <p>
+	Para editar el código fuente, podemos utilizar cualquier editor de texto
+	plano (emacs, vi, etc.).
+      </p>
+      <p>
+	Para compilar y linkar el código fuente para generar el programa
+	ejecutable, utilizaremos las herramientas de desarrollo C de GNU. En
+	particular, el compilador gcc.
+      </p>
+      <p>
+	Observa que si el código fuente está basado en GStreamer, necesitaremos
+	especificar las opciones adecuadas, por ejemplo, para indicarle al
+	compilador dónde encontrar las librerías y ficheros .h.  El programa
+	pkg-config facilita esta tarea, en vez de tener que indicarlo
+	manualmente.  El comando:
+	<pre class="code">pkg-config --cflags --libs gstreamer-0.10</pre>
+	genera los flags adecuados para compilar código fuente C utilizando las librerías gstreamer (versión 0.10).
+      </p>
+      <p>
+	El comando pkg-config puede integrarse directamente en la invocación al
+	compilador:
+      <pre class="code">gcc -Wall [program].c -o [program] $(pkg-config --cflags --libs gstreamer-0.10)</pre>
+      </p>
+
+      <h3>Objetivo</h3>
+      <p>
+	En esta práctica desarrollaremos algunos programas sencillos en C
+	basados en GStreamer para implementar funcionalidades multimedia
+	básicas:
+      </p>
+
+      <ul>
+        <li>Reproducción multimedia</li>
+	<li>Conversión de formatos</li>
+      </ul>
+
+      <p>
+	La mayoría de los pipelines a implementar en los programas se corresponden con los creados en la <a href="https://aulaglobal2.uc3m.es/mod/resource/view.php?id=683924">primera práctica de GStreamer (práctica 8)</a>.
+      </p>
+    </section>
+    
+    
+
+    <section id="step1">
+      <h2>Paso 1: Análisis de un reproductor de audio Ogg</h2>
+      <p>
+	El
+	programa <a href="https://aulaglobal2.uc3m.es/file.php/29384/Tema_8/oggplayer.c">oggplayer.c</a>
+	implementa un reproductor de audio Ogg básico.  Descarga el código
+	fuente, compílalo y prueba el ejecutable.  Puedes utilizar
+	el <a href="http://download.blender.org/peach/trailer/trailer_400p.ogg">trailer
+	de Big Buck Bunny</a> para las pruebas.
+      </p>
+      <p>
+	Abre el programa en el editor y analiza el código.  
+      </p>
+      <p>
+	Analiza cómo se crean el pipeline y los elementos (fuente,
+	demultiplexor, decodificador, conversor, sumidero); y cómo se establecen
+	las propiedades en los elementos que lo requieren.
+      </p>
+      <p>
+	Observa cómo se recupera el bus de mensajes asociado al pipeline y cómo
+	se asocia la función escuchadora que se invocará cada vez que se
+	produzca un mensaje en el bus.
+      </p>
+      <p>
+	Analiza cómo se construye el pipeline agregando los elementos y
+	enlazándolos entre sí. Observa que sólo los PADs estáticos (existen
+	siempre al crear el elemento) pueden conectarse directamente, con
+	gst_element_link o gst_element_link_many.
+      </p>
+      <p>
+	Fíjate que si un PAD de un elemento es creado dinámicamente, al circular
+	el flujo multimedia y no al crear el elemento, no puede enlazarse a
+	priori sino que hay que esperar a que se genere dicho PAD (señal
+	pad-added). Estudia la invocación a la función g_signal_connect, que
+	permite conectar dos elmentos al crearse dinámicamente un PAD, asociando
+	un manejador -función escuchadora- a la señal pad-added. Analiza también
+	la función escuchadora para comprobar cómo se realiza la conexión de
+	ambos elementos.
+      </p>
+      <p>
+	Observa cómo se inicia la reproducción, cambiando el estado del pipeline
+	a "PLAYING". Observa que el cambio de estado se transmite
+	automáticamente a todos los elementos contenidos en el pipeline.
+      </p>
+      <p>
+	Una vez cambiado el estado el programa (como cualquier otro basado en
+	eventos) debe mantenerse en un bucle para escuchar los eventos y lanzar
+	las acciones apropiadas. Para ello, se utiliza el objeto GMainLoop de la
+	librería Glib. Observa cómo se crea el objeto GMainLoop y cómo se inicia
+	el bucle. Dicho bucle se mantendrá en ejecución hasta que se finalice
+	con la función g_main_loop_quit.
+      </p>
+      <p>
+	Observa que según el código del main, el bucle no terminaría nunca.  Es
+	la función escuchadora de los mensajes del bus la encargada de
+	finalizarlo (después de imprimir el mensaje adecuado), cuando se recibe
+	una señal EOS o de error.
+      </p>
+      <p>
+	Finalmente, el programa debe eliminar los objetos y liberar la memoria,
+	una vez termine el bucle.
+      </p>
+
+    </section>
+
+
+    <section id="step2">
+      <h2>Paso 2: Pipeline básico</h2>
+      <p>
+	La figura 2 representa la estructura básica de un pipeline, en
+	la que el flujo de datos parte de una fuente, experimenta una
+	serie de transformaciones y finaliza en un sumidero.
+      </p>
+      <figure>
+	<img src="img/pipeline-estructura.png" />
+        <figcaption><p><em>Figura 2</em>: Estructura básica de un pipeline.</p></figcaption>
+      </figure>
+      <p>
+	En este primer apartado debes crear un pipeline básico que simplemente
+	interconecte una fuente y un sumidero. Para no preocuparnos de formatos,
+	simplemente usaremos una fuente y sumidero 'ficticios' (fakesrc y
+	fakesink), que gestionan un flujo de datos vacío.
+      </p>
+      <p>
+	Escribe un programa que cree el pipeline de prueba descrito previamente
+	y representado en la figura 3.
+	Como se trata de un primer programa de prueba, de momento no es necesario que escuches los mensajes del bus. Simplemente debe crear el pipeline, agregar y conectar los elementos, y empezar a reproducir. 
+      </p>
+      <figure>
+	<img src="img/pipeline0.png" />
+        <figcaption><p><em>Figura 3</em>: Pipeline básico.</p></figcaption>
+      </figure>
+
+      <h3>Acceso a las propiedades de los elementos</h3>
+      <p>
+	Añade el código necesario para imprimir por salida estándar:
+      </p>
+      <ul>
+	<li>Un mensaje indicando que comienza la ejecución del programa</li>
+	<li>El nombre del pipeline y cada uno de los elementos</li>
+	<li>Un mensaje indicando que termina la ejecución del programa (justo antes del return).</li>
+      </ul>
+
+	Deberías obtener una salida similar a esta:
+      </p>
+      <pre class="code">GStreamer test - init!
+
+Pipeline elements:
+--Source: mi_fuente
+--Sink: mi_sumidero</pre>
+
+      <p>
+	Observa que no llega a presentarse el mensaje de finalización del
+	programa. ¿Por qué?
+      </p>
+            
+    </section>
+
+
+    <section id="step3">
+      <h2>Paso 3: Visualización de la señal de vídeo de prueba</h2>
+      <p>
+	Modifica el programa anterior para que el pipeline visualice la señal de
+	vídeo de prueba. De nuevo, no es necesario que el programa atienda los
+	mensajes del bus.
+      </p>
+    </section>
+
+
+    <section id="step4">
+      <h2>Paso 4: Reproducción de audio (MP3) - Manejador del bus</h2>
+
+      <p>
+	Modifica el
+	programa <a href="https://aulaglobal2.uc3m.es/file.php/29384/Tema_8/oggplayer.c">oggplayer.c</a>
+	para que reproduzca un fichero MP3 en vez de Ogg.  Puedes encontrar
+	archivos de audio compartidos con licencia Creative Commons
+	en <a href="http://freemusicarchive.org/">The Free Music
+	Archive</a>. Por ejemplo, puedes descargarte
+	este <a href="http://freemusicarchive.org/music/Aestrid_Byrne/Laterna/01_Preface">archivo
+	MP3</a> para pruebas.
+      </p>
+      <p>
+	Observa que todos los pads de los elementos del pipeline son estáticos
+	en este caso, de modo que no es necesario realizar ningún enlace
+	dinámicamente.
+      </p>
+      <p>
+	Programa el manejador de los mensajes del bus de modo que:
+	<ul>
+	  <li>El programa finalice al terminar el flujo multimedia (señal
+	  EOS).</li>
+	  <li>Si se produce un error, imprima el mensaje correspondiente. Por
+	  ejemplo, prueba a intentar reproducir un archivo que no existe. </li>
+	  <li>Para cualquier otra señal, imprima un mensaje indicando el
+	  elemento que la ha generado y el tipo de mensaje. </li>
+	</ul>
+      </p>
+
+    </section>
+
+
+    <section id="step5">
+      <h2>Paso 5: Conversor de formatos (MP3 -> Ogg)</h2>
+
+      <p>
+	Modifica el programa anterior de modo que en vez de reproducir el audio
+	MP3, lo convierta a formato Ogg (codificado como audio/Vorbis) y lo
+	almacene en un fichero. El programa recibirá como primer argumento el
+	fichero MP3 de entrada y como segundo argumento el nombre del fichero
+	Ogg de salida.
+      </p>
+      <p>
+	Observa que en este caso no sólo habrá que establecer la propiedad
+	location de la fuente, sino también la del sumidero para indicar el
+	nombre del fichero de salida.
+      </p>
+
+    </section>
+
+
+    <section id="step6">
+      <h2>Paso 6: Reproducción de vídeo Ogg</h2>
+
+      <p>
+	Modifica el
+	programa <a href="https://aulaglobal2.uc3m.es/file.php/29384/Tema_8/oggplayer.c">oggplayer.c</a>
+	para que visualice la imagen del vídeo en vez de reproducir el audio.
+	Puedes utilizar
+	el <a href="http://download.blender.org/peach/trailer/trailer_400p.ogg">trailer
+	de Big Buck Bunny</a> para las pruebas.
+      </p>
+      <p>
+	Agrega el código programado en el paso 4 para el manejador del bus, de
+	modo que se presente por pantalla un mensaje cada vez que se recibe una
+	señal del bus.
+      </p>
+      <p>
+	¿Qué mensaje se recibe si se cierra la ventana de visualización antes de
+	completar la reproducción?
+      </p>
+
+    </section>
+
+    <section id="step7">
+      <h2>Paso 7: Reproducción de vídeo Ogg - Efectos de imagen</h2>
+
+      <p>
+	Modifica el
+	programa <a href="https://aulaglobal2.uc3m.es/file.php/29384/Tema_8/oggplayer.c">oggplayer.c</a>
+	agregando los elementos necesarios para aplicar efectos de envejecimimento a la imagen:
+      </p>
+      <ul>
+	<li>videobalance saturation=0.0 : convierte la imagen a blanco y negro</li>
+	<li>agingtv : incorpora efectos de motas y rayas simulando que la película está dañada</li>
+      </ul>
+
+    </section>
+
+
+    <section id="bash">
+      <h2>Comandos bash útiles</h2>
+      <ul>
+  <li>
+    <span class="code">man</span>: 
+    muestra la ayuda de un comando. Por ejemplo:
+    <pre class="code">man ls</pre>
+    Muestra la ayuda sobre el comando ls.
+    Para salir de la ayuda: pulsa la letra 'q'.
+    <br /><br />
+  </li>
+  <li>
+    <span class="code">ls</span>: lista los contenidos de un directorio
+    <br /><br />
+  </li>
+  <li>
+    <span class="code">cd</span>: (change directory) cambia de directorio
+    <ul>
+      <li><span class="code">.</span>: representa el directorio actual</li>
+      <li><span class="code">..</span>: representa el directorio padre</li>
+    </ul>
+    <br />
+  </li>
+  <li>
+    <span class="code">grep</span>: 
+    filtra las líneas que incluyan un determinado texto. Por ejemplo:
+    <pre class="code">grep palabra nombre_fichero</pre>
+    filtra el fichero <em>nombre_fichero</em>, presentando sólo las líneas que incluyen el texto <em>palabra</em>.
+    <p>
+      Combinado con los <em>pipelines</em> de linux (¡no
+      confundir con los <em>pipelines</em> de GStreamer, aunque
+      la idea es similar!), permite filtrar la salida estandar generada por un comando.
+      Ejemplo:
+    </p>
+    <pre class="code">gst-inspect | grep sink</pre>
+    filtra el resultado del comando gst-inspect, presentando sólo las líneas que incluyen el texto <em>sink</em>.
+    <br />
+  </li>
+      </ul>
+    </section>
+
+      
+    <section id="refs">
+      <a name="refs" />
+      <h2>Referencias</h2>
+      <ul>
+        <li><a href="http://gstreamer.freedesktop.org/documentation/">Documentación de GStreamer</a>
+	<ul>
+	<li><a href="http://gstreamer.freedesktop.org/documentation/plugins.html">Overview of all Plug-ins</a></li>
+        <li><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/manual/html/index.html">GStreamer Application Development Manual (0.10.36)</a></li>
+	</ul>
+        <li><a href="https://aulaglobal2.uc3m.es/file.php/29384/Tema_8/Tema8._GStreamer_I_.pdf">GStreamer: Conceptos básicos (Apuntes de la asignatura)</a></li>
+        <li><a href="https://aulaglobal2.uc3m.es/file.php/29384/Tema_8/Tema8._GStreamer_II_.pdf">GStreamer: Introducción a la programación con GStreamer (Apuntes de la asignatura)</a></li>
+        <li>Manual de bash</li>
+	<li><a href="http://freemusicarchive.org/">The Free Music Archive</a></li>
+	<li><a href="http://www.bigbuckbunny.org/">Big Buck Bunny animation movie website</a></li>
+	<li>Documentación sobre Ogg
+	  <ul>
+	<li><a href="http://es.wikipedia.org/wiki/Ogg">Información básica sobre el formato Ogg</a></li>
+	<li><a href="http://www.xiph.org/ogg/doc/">Documentación oficial de Ogg</a></li>
+	</ul>
+      </ul>
+    </section>
+    
+    <footer>
+      <figure>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/es/">
+        <img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/es/88x31.png" /></a>
+        <figcaption>Este <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text" rel="dct:type">obra</span> 
+        está bajo una <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/es/">licencia Creative Commons 
+        Reconocimiento-CompartirIgual 3.0 España</a>.</figcaption>
+      </figure>
+      <details>
+        <summary>Recurso desarollado por Raquel M. Crespo (<a href="www.it.uc3m.es/rcrespo/">www.it.uc3m.es/rcrespo/</a>), data de <time datetime="2012-02-06">2012-02-06</time>.</summary>
+      </details>
+      <br /><br /><br />
+    </footer>
+    <script type="text/javascript" src="../js/socket.io.min.js"></script>
+    <script type="text/javascript" src="../js/classon.js?session=p10"></script>
+  </body>
+</html>
