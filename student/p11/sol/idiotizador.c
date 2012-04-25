@@ -97,7 +97,7 @@ main (int   argc,
 
   /* we set the input filename to the source element */
   g_object_set (G_OBJECT (sink1), "location", argv[1], NULL);
-  g_object_set (G_OBJECT (queue1), "min-threshold-time", 500000000, NULL);
+  g_object_set (G_OBJECT (queue2), "min-threshold-time", 500000000, NULL);
 
   /* we add a message handler */
   bus = gst_pipeline_get_bus (GST_PIPELINE (pipeline));

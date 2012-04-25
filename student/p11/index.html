@@ -228,7 +228,8 @@
 
     <section id="step4">
       <h2>Parte 4: Metadatos</h2>
-      <p>Haremos uso del <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/manual/html/chapter-metadata.html#section-tags-read">código proporcionado</a> en el manual de gstreamer para la lectura de metadatos. Observamos el uso de <em>gst_message_parse_tag</em> para recoger los metadatos de un flujo multimedia y <em>gst_tag_list_foreach</em> para recorrer el listado obtenido. Probaremos a ejecutar el código anterior y ver los metadatos de algún fichero multimedia. ¿A qué elementos están asociados? ¿Qué información podemos obtener?</p>
+      <p>Haremos uso del <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/manual/html/chapter-metadata.html#section-tags-read">código proporcionado</a> en el manual de gstreamer para la lectura de metadatos. Observamos el uso de <em>gst_message_parse_tag</em> para recoger los metadatos de un flujo multimedia y <em>gst_tag_list_foreach</em> para recorrer el listado obtenido. También se hace uso de la función <em><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstBus.html#gst-bus-timed-pop-filtered">gst_bus_timed_pop_filtered</a></em> para filtrar los mensajes que se recogen. Probaremos a ejecutar el código anterior y ver los metadatos de algún fichero multimedia. ¿A qué elementos están asociados? ¿Qué información podemos obtener?</p>
+      <p>Para terminar, modifica el código proporcionado para escuchar eventos de mensajes en el bus, en lugar de hacer espera activa en un bucle (en el ejemplo del manual).</p>
     </section>
       
    <section id="refs">
