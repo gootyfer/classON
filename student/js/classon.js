@@ -11,6 +11,9 @@ var sections = document.getElementsByTagName("section");
 //Create navigation menu
 var menu = document.createElement("div");
 menu.id = "menu";
+var questions_div = document.createElement("div");
+questions_div.id = "questions";
+questions_div.className = "hide";
 var bg = document.createElement("div");
 bg.id = "bg";
 var content = document.createElement("div");
@@ -19,6 +22,7 @@ content.id = "content";
 var header = document.getElementsByTagName("header")[0];
 
 sections[0].parentNode.insertBefore(menu, header);
+sections[0].parentNode.insertBefore(questions_div, header);
 sections[0].parentNode.insertBefore(bg, header);
 sections[0].parentNode.insertBefore(content, header);
 
@@ -112,14 +116,37 @@ var usersInfo = [];
 var info = document.createElement("div");
 info.className = "info";
 menu.appendChild(info);
+
 function usersOK(){
 	window.localStorage.setItem("user", user);
 	//User info
 	info.innerHTML = (usersInfo[0]?(usersInfo[0].surname+" "+usersInfo[0].name):"")+"<br />"+
 	(usersInfo[1]?(usersInfo[1].surname+" "+usersInfo[1].name):"")+"<br />"+
-	"<input type='button' onclick='logout()' value='DESCONECTAR' style='margin: auto;' />";
+	"<input type='button' onclick='logout()' value='DESCONECTAR' style='margin: auto;' />"+
+	"<input type='button' onclick='show_questions()' value='PREGUNTAS' style='margin: auto;' />";
 	
 	$.unblockUI();
+}
+
+//questions[i].description
+//questions[i].votes = ["id1", "id2"]
+var questions = [];
+
+function show_questions(){
+	var sHTML = "<h4>Preguntas</h4><ul>";
+	for(var i=0; i<questions.length;i++){
+		var voted = questions[i].votes.indexOf(user[0])!=-1;
+		sHTML+="<li>"+questions[i].description+" (<span>"+questions[i].votes.length+
+			" votos</span>) <input type='button' value='+1' onclick='vote("+i+")' "+
+			(voted?"disabled='disabled'":"")+" /></li>";
+	}
+	sHTML += "</ul><br><input type='button' value='VOLVER' onclick='back()' />";
+	questions_div.innerHTML = sHTML;
+	questions_div.className="";
+}
+
+function back(){
+	questions_div.className="hide";
 }
 
 function logout(){
@@ -302,6 +329,14 @@ function setExercise(savedSection){
 	}
 }
 
+function vote(qid){
+	sendEventToServer('new event', {eventType: 'vote', qid: qid});
+	if(questions[qid]){
+		questions[qid].votes.push(user[0]);
+	}
+	show_questions();
+}
+
 var socket;
 function checkUsers(callback){
 	if(!socket){
@@ -314,7 +349,7 @@ function checkUsers(callback){
 			sendEventToServer('new student', {session: session});
 			//console.log('new student when connecting');
 			//socket.emit('new student', {user: user, session: session});
-			
+			//Should ba called: init
 			socket.on('student registered', function(regInfo){
 				//console.log("student registered:"+JSON.stringify(regInfo));
 				if(!regInfo.error){
@@ -325,8 +360,11 @@ function checkUsers(callback){
 					}
 					if(regInfo.help){
 						helpNeeded = true;
-						helpButton.innerHTML = "SOLUCIONADO?";
+						helpButton.innerHTML = "SOLUCIONADO?<br />(Posici&oacute;n en cola: "+regInfo.help+")";
 						helpButton.className = "button blue";
+					}
+					if(regInfo.questions){
+						questions = regInfo.questions;
 					}
 					//Connection to the practice event
 					sendEventToServer('new event', {eventType: "connection"});
@@ -341,6 +379,10 @@ function checkUsers(callback){
 				if(position==0){
 					askForHelp();
 				}
+			});
+			socket.on('update questions', function(new_questions){
+				console.log("new questions:"+new_questions);
+				questions = new_questions;
 			});
 		});
 	}else{
@@ -357,8 +399,9 @@ function sendEventToServer(eventName, event){
 		event.session = usersInfo[0].group + session;
 	}
 	
-	//Testing IPs
+	//fakeIP
 	//event.IP = "163.117.101."+document.location.href.substr(document.location.href.lastIndexOf('?')+1).split("=")[1];
+	//example: 
 	socket.emit(eventName, event);
 	console.log('new event sent:'+eventName);
 }

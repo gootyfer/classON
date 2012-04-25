@@ -36,6 +36,8 @@ for (var i=0; i<icons.length;i++){
 		}(i));
 }
 
+document.getElementById("questions").addEventListener("click",showQuestions);
+
 /*
  * Timer in the detail page
  */
@@ -128,10 +130,29 @@ function showUsers(id){
 	
 }
 
+var questions = [];
+
+function showQuestions(){
+	var main = document.getElementById("main");
+	main.classList.add("hide");
+	var users = document.getElementById("users");
+	users.classList.remove("hide");
+	users.innerHTML="";
+
+	var sHTML = "<h4>Questions</h4><ul>";
+	for(var i=0; i<questions.length;i++){
+		sHTML+="<li>"+questions[i].description+" (<span>"+questions[i].votes.length+
+			" votos</span>)</li>";
+	}
+	sHTML += "</ul><br><input type='button' class='button gray back' value='VOLVER' "+
+	"onclick='goBack()' />";
+	users.innerHTML = sHTML;
+}
+
 var helpingStudent =  false;
 
 function goBack(id, button){
-	if(helpingStudent){
+	if(id && helpingStudent){
 		endHelp(id, button);
 	}
 	var users = document.getElementById("users");
@@ -208,6 +229,7 @@ socket.on("init", function(my_session){
 	console.log("queue received:"+my_session.queue);
 	var state = my_session.session;
 	var order = my_session.queue;
+	questions = my_session.questions;
 	for(var i=0; i<pcs.length;i++){
 		var icon = document.getElementsByClassName("comp_icon")[i].firstElementChild;
 		for(var j=0; j<state.length; j++){
@@ -229,7 +251,16 @@ socket.on("init", function(my_session){
 				icon.classList.add("working");
 			}
 		}
-		for(var j=0; j<order.length; j++){
+		
+		
+		//if(pcs_needHelp.length>0){
+		//	pcs_needHelp.shift();
+		//}
+	}
+
+	for(var j=0; j<order.length; j++){
+		for(var i=0; i<pcs.length;i++){
+			var icon = document.getElementsByClassName("comp_icon")[i].firstElementChild;
 			if(pcs[i].IP == order[j]){
 				pcs[i].help = true;
 				
@@ -249,10 +280,6 @@ socket.on("init", function(my_session){
 				}
 			}
 		}
-		
-		//if(pcs_needHelp.length>0){
-		//	pcs_needHelp.shift();
-		//}
 	}
 	//console.log("session in teacher browser:");
 	//console.log(pcs);
@@ -358,4 +385,7 @@ console.log("event (data.IP): "+data.IP+" event:"+data.eventType+" user:"+data.u
 	}
   //console.log(data);
 });
-
+socket.on('update questions', function(new_questions){
+	console.log("new questions:"+new_questions);
+	questions = new_questions;
+});

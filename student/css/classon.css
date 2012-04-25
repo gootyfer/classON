@@ -5,6 +5,31 @@
 	margin: 84px 0 0 0;
 }
 
+#questions {
+	float: left;
+	width: 19%;
+	position: fixed;
+	margin: 84px 0 0 0;
+	z-index: 1;
+	background-color: white;
+	height: 100%;
+	border: solid 1px #555;
+	padding: 0px 2px;
+}
+
+#questions ul{
+	list-style-type: none;
+	padding: 0px 0px 0px 5px;
+}
+
+#questions ul li{
+	font-size: 9pt;
+}
+
+#questions h4{
+	text-align: center;
+}
+
 #bg {
 	float: left;
 	width: 20%;
