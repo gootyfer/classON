@@ -1,0 +1,291 @@
+<html>
+  <head>
+    <title>Aplicaciones Multimedia: Práctica GStreamer (IV)</title>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <link rel="SHORTCUT ICON" href="http://www.uc3m.es/favicon.ico" /> 
+    <link href="http://www.it.uc3m.es/rcrespo/docencia/asignatura.css" rel="stylesheet" type="text/css" />
+    <link href="http://www.it.uc3m.es/estilo.css" rel="stylesheet" type="text/css" />
+    <link href="http://www.it.uc3m.es/rcrespo/docencia/amm/1112/p3/css/amm.css" rel="stylesheet" type="text/css" />
+    <link href="../css/classon.css" rel="stylesheet" type="text/css" />
+    <link href="../css/jquery-ui.css" rel="stylesheet" type="text/css" />
+    
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.blockUI.js"></script>
+    <style type="text/css">
+      .code {
+        color: blue;
+        font-size: 80%;
+      }
+    </style>
+  </head>
+  <body>
+    
+    <!-- BEGIN ADD, 21/05/09; to comply with UC3M corporate image requirements -->
+    <div class="headerBorderUc3mblue"></div>
+    <div class="header white">
+      <a href="http://www.uc3m.es/">
+        <img class="logos logoleft" src="http://www.it.uc3m.es/imag/EscudoLogoCorporativo.png" alt="Universidad Carlos III de Madrid" />
+      </a>
+        <a href="http://www.it.uc3m.es">
+          <img class="logos logoright" src="http://www.it.uc3m.es/imag/SpanishLogoIT.png" alt="Departamento de Ingeniería Telemática" />
+        </a>
+    </div>
+    <div class="headerBorderUc3mblue"></div>
+    <!-- END ADD 21/05/09 -->
+    
+    
+    <!-- Tabla encabezado departamento -->
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+      <tr>
+        <td>
+          <table width="100%" border="0" cellspacing="1" cellpadding="0">    
+            <tr>
+              <td bgcolor="#CCD0D6" width="2000" height="22">
+                <div align="right"><a href="http://www.it.uc3m.es/localizacion/localizacion.htm" class="azul">Localizaci&oacute;n</a>
+                  | <a href="#"></a><a href="http://www.it.uc3m.es/personal/directorio.htm"><span class="rojo">Personal</span></a>
+                  | <a href="http://www.it.uc3m.es/docencia/docencia.htm" class="azul">Docencia</a>
+                  | <a href="http://www.it.uc3m.es/investigacion/investigacion.htm" class="azul">Investigaci&oacute;n</a>
+                  | <a href="http://www.it.uc3m.es/novedades/novedades.htm" class="azul">Novedades</a>
+                  | <a href="http://www.it.uc3m.es/intranet/intranet.htm" class="azul">Intranet</a>
+                  &nbsp;&nbsp;</div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <!-- Tabla encabezado departamento (fin) -->
+    
+    <!-- Navegación -->
+    <nav>
+      <p class="nav"><a class="azul"
+      href="http://www.it.uc3m.es/index.html">Home</a> / <a class="azul"
+      href="http://www.it.uc3m.es/docencia/docencia.htm">Docencia</a> / <a
+      class="azul" href="http://www.it.uc3m.es/docencia/grado-audiovisuales.html">Grado en Ingeniería de Sistemas Audiovisuales</a> / 
+      <a class="azul" href="http://www.it.uc3m.es/rcrespo/docencia/amm/1011/">Aplicaciones Multimedia</a>
+      </p>
+    </nav>
+    <!-- Navegación (fin) -->
+    
+    <header>
+      <h1>Pr&aacute;ctica 11: Introducción a la Programación con GStreamer (II)</h1>
+    </header>
+    <section id="intro">
+      <h2>Introducci&oacute;n</h2>
+
+      <h3>Desarrollo de un programa GStreamer:</h3>
+      <p>
+	Para editar el código fuente, podemos utilizar cualquier editor de texto
+	plano (emacs, vi, etc.).
+      </p>
+      <p>
+	Para compilar y linkar el código fuente para generar el programa
+	ejecutable, utilizaremos las herramientas de desarrollo C de GNU. En
+	particular, el compilador gcc.
+      </p>
+      <p>
+	Observa que si el código fuente está basado en GStreamer, necesitaremos
+	especificar las opciones adecuadas, por ejemplo, para indicarle al
+	compilador dónde encontrar las librerías y ficheros .h.  El programa
+	pkg-config facilita esta tarea, en vez de tener que indicarlo
+	manualmente.  El comando:
+	<pre class="code">pkg-config --cflags --libs gstreamer-0.10</pre>
+	genera los flags adecuados para compilar código fuente C utilizando las librerías gstreamer (versión 0.10).
+      </p>
+      <p>
+	El comando pkg-config puede integrarse directamente en la invocación al
+	compilador:
+      <pre class="code">gcc -Wall [program].c -o [program] $(pkg-config --cflags --libs gstreamer-0.10)</pre>
+      </p>
+
+      <h3>Objetivo</h3>
+      <p>
+	En esta práctica desarrollaremos algunos programas sencillos en C
+	basados en GStreamer para implementar funcionalidades multimedia
+	básicas:
+      </p>
+
+      <ul>
+        <li>Reproducción paralela de audio y video</li>
+	      <li>Clonación de flujos para enviar a distintos sumideros</li>
+        <li>Uso de funciones de tiempo</li>
+      </ul>
+    </section>
+    
+    <section id="step1">
+       <h2>Parte 1: Procesamiento de flujos multimedia con varios canales</h2>
+
+      <p>
+  Crearemos un reproductor Ogg de modo que reproduzca audio y vídeo sincronizados. Puedes utilizar
+  el <a href="http://download.blender.org/peach/trailer/trailer_400p.ogg">trailer
+  de Big Buck Bunny</a> para las pruebas. El pipeline a implementar será el siguiente:
+      </p>
+      <pre class="code">gst-launch filesrc location=trailer_400p.ogg ! oggdemux name="demuxer" \
+ demuxer. ! queue ! vorbisdec ! audioconvert !  autoaudiosink \
+ demuxer. ! queue ! theoradec ! ffmpegcolorspace ! ximagesink</pre>
+
+      <p>
+  Observa que se necesitan dos elementos <em>queue</em> distintos : uno para el flujo de audio y otro para el de vídeo. Estos elementos sirven para paralelizar tareas concronizadas.
+      </p>
+
+      <p>
+  Observa también que tendrás que modificar la función que maneja la
+  conexión de pads creados dinámicamente (pad dinámicos del demultiplexor), así como la instrucción en que
+  se asocia dicho manejador a la señal <em>PAD_ADDED</em>.  
+      </p>
+      <ul>
+  <li>
+    Respecto al registro del manejador, ahora no se sabe a priori a qué
+    elemento habrá que conectar el demultiplexor (si a la cola de audio o
+    a la de vídeo).  De modo que no puede pasarse como parámetro el
+    elemento destino al registrarlo, sino que se pasa NULL.
+  </li>
+  <li>
+    Respecto a la función, hay que comprobar el tipo de pad creado, por
+    ejemplo comprobando sus capabilities.
+    <ul>
+      <li>La función <em>gst_pad_get_name(GstPad_REFERENCE)</em> devuelve
+      el nombre del pad. </li>
+      <li>La función <em>gst_pad_get_caps(GstPad_REFERENCE)</em> devuelve
+      un objeto GstCaps con las capabilities del pad.</li>
+      <li>La función <em>gst_caps_to_string(GstCaps_REFERENCE)</em>
+      convierte un objeto GstCaps a una cadena de caracteres.</li>
+    </ul>
+    Por tanto, puedes recuperar las capabilities del pad y comprobar si
+    corresponden a un flujo de audio o video. Consulta en
+    el <a href="http://www.gtk.org/api/2.6/glib/index.html">manual de
+    referencia de GLib</a> la documentación
+    sobre <a href="http://www.gtk.org/api/2.6/glib/glib-String-Utility-Functions.html">funciones
+    para manejar Strings</a>.
+  </li>
+      </ul>
+    </section>
+
+
+    <section id="step2">
+      <h2>Parte 2: El idiotizador</h2>
+      <p>
+	El <em>idiotizador</em> consiste es un aplicación que consigue que quien la use parezca idiota. Este efecto se consigue al hacer llegar a sus oídos su propia voz con cierto retardo. De esta forma, le será muy difícil concentrarse en lo que está diciendo. Para aumentar la diversión, grabaremos el audio generado en un fichero. En este apartado vamos a implementar un idiotizador en gstreamer, haciendo uso de los siguientes elementos en el pipeline:
+      </p>
+
+      <ul>
+	<li>Captura de audio, de forma similar a la <a href="https://aulaglobal2.uc3m.es/mod/resource/view.php?id=683924">primera práctica de GStreamer (práctica 8)</a> (elemento alsasrc con un parámetro)</li>
+  <li>Elemento <em>tee</em>, que permite clonar un flujo multimedia, de forma que podamos grabarlo en un fichero a la vez que se reproduce en la tarjeta de sonido.</li>
+	<li>Elemento <em>queue</em> para tratar los flujos clonados de forma paralela y sincronizada.</li>
+	<li>El mismo objeto queue tiene un parámetro <em>min-threshold-time</em> que nos permite definir el tamaño en tiempo del buffer del elemento. Puede usarse para crear un retardo (mirar cómo usarlo con gst-launch). Iremos probando distintos retardos hasta conseguir que nuestra aplicación ¡idiotice de verdad!</li>
+      </ul>
+            
+    </section>
+
+
+    <section id="step3">
+      <h2>Parte 3: Temporizando el idiotizador</h2>
+      <p>
+	Trabajaremos sobre el ejemplo anterior para temporizar el tiempo de funcionamiento del idiotizador, de forma que pasados X segundo se pare el programa. Haremos uso de la función g_timeout_add como en el <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/manual/html/chapter-queryevents.html#section-querying">ejemplo del manual de gstreamer</a>.
+      </p>
+    </section>
+
+    <section id="bash">
+      <h2>Comandos bash útiles</h2>
+      <ul>
+  <li>
+    <span class="code">man</span>: 
+    muestra la ayuda de un comando. Por ejemplo:
+    <pre class="code">man ls</pre>
+    Muestra la ayuda sobre el comando ls.
+    Para salir de la ayuda: pulsa la letra 'q'.
+    <br /><br />
+  </li>
+  <li>
+    <span class="code">ls</span>: lista los contenidos de un directorio
+    <br /><br />
+  </li>
+  <li>
+    <span class="code">cd</span>: (change directory) cambia de directorio
+    <ul>
+      <li><span class="code">.</span>: representa el directorio actual</li>
+      <li><span class="code">..</span>: representa el directorio padre</li>
+    </ul>
+    <br />
+  </li>
+  <li>
+    <span class="code">grep</span>: 
+    filtra las líneas que incluyan un determinado texto. Por ejemplo:
+    <pre class="code">grep palabra nombre_fichero</pre>
+    filtra el fichero <em>nombre_fichero</em>, presentando sólo las líneas que incluyen el texto <em>palabra</em>.
+    <p>
+      Combinado con los <em>pipelines</em> de linux (¡no
+      confundir con los <em>pipelines</em> de GStreamer, aunque
+      la idea es similar!), permite filtrar la salida estandar generada por un comando.
+      Ejemplo:
+    </p>
+    <pre class="code">gst-inspect | grep sink</pre>
+    filtra el resultado del comando gst-inspect, presentando sólo las líneas que incluyen el texto <em>sink</em>.
+    <br />
+  </li>
+      </ul>
+    </section>
+
+    <section id="step4">
+      <h2>Parte 4: Metadatos</h2>
+      <p>Haremos uso del <a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/manual/html/chapter-metadata.html#section-tags-read">código proporcionado</a> en el manual de gstreamer para la lectura de metadatos. Observamos el uso de <em>gst_message_parse_tag</em> para recoger los metadatos de un flujo multimedia y <em>gst_tag_list_foreach</em> para recorrer el listado obtenido. Probaremos a ejecutar el código anterior y ver los metadatos de algún fichero multimedia. ¿A qué elementos están asociados? ¿Qué información podemos obtener?</p>
+    </section>
+      
+   <section id="refs">
+      <a name="refs" />
+      <h2>Referencias</h2>
+      <ul>
+        <li>Apuntes de la asignatura
+    <ul>
+      <li><a href="https://aulaglobal2.uc3m.es/file.php/29384/Tema_8/Tema8._GStreamer_I_.pdf">GStreamer: Conceptos básicos (Apuntes de la asignatura)</a></li>
+            <li><a href="https://aulaglobal2.uc3m.es/file.php/29384/Tema_8/Tema8._GStreamer_II_.pdf">GStreamer: Introducción a la programación con GStreamer (Apuntes de la asignatura)</a></li>
+            <li><a href="https://aulaglobal2.uc3m.es/file.php/29384/Tema_8/Tema8._GStreamer_III_.pdf">GStreamer: Aspectos avanzados de GStreamer (Apuntes de la asignatura)</a></li>
+    </ul>
+  </li>
+        <li><a href="http://gstreamer.freedesktop.org/documentation/">Documentación de GStreamer</a>
+    <ul>
+      <li><a href="http://gstreamer.freedesktop.org/documentation/plugins.html">Overview of all Plug-ins</a></li>
+            <li><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/manual/html/index.html">GStreamer Application Development Manual (0.10.36)</a></li>
+            <li><a href="http://gstreamer.freedesktop.org/data/doc/gstreamer/head/manual/html/chapter-checklist-element.html#section-checklist-programming">Good programming habits</a></li>
+    </ul>
+  </li>
+  <li>
+    <a href="http://www.gtk.org/api/2.6/glib/index.html">Manual de
+      referencia de GLib</a>
+    <ul>
+      <li><a href="http://www.gtk.org/api/2.6/glib/glib-String-Utility-Functions.html">Funciones
+    para manejar Strings</a></li>
+    </ul>
+  </li>
+        <li>Manual de Bash</li>
+  <li>Documentación sobre Ogg
+    <ul>
+      <li><a href="http://es.wikipedia.org/wiki/Ogg">Información básica sobre el formato Ogg</a></li>
+      <li><a href="http://www.xiph.org/ogg/doc/">Documentación oficial de Ogg</a></li>
+    </ul>
+  </li>
+  <li>Recursos multimedia:
+    <ul>
+      <li><a href="http://freemusicarchive.org/">The Free Music Archive</a></li>
+      <li><a href="http://www.bigbuckbunny.org/">Big Buck Bunny animation movie website</a></li>
+    </ul>
+  </li>
+      </ul>
+    </section>
+    <footer>
+      <figure>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/es/">
+        <img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/es/88x31.png" /></a>
+        <figcaption>Este <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text" rel="dct:type">obra</span> 
+        está bajo una <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/es/">licencia Creative Commons 
+        Reconocimiento-CompartirIgual 3.0 España</a>.</figcaption>
+      </figure>
+      <details>
+        <summary>Recurso desarollado por Israel Gutiérrez (<a href="http://www.it.uc3m.es/igrojas/">www.it.uc3m.es/igrojas/</a>), data de <time datetime="2012-04-20">2012-04-20</time>.</summary>
+      </details>
+      <br /><br /><br />
+    </footer>
+    <script type="text/javascript" src="../js/socket.io.min.js"></script>
+    <script type="text/javascript" src="../js/classon.js?session=p11"></script>
+  </body>
+</html>
