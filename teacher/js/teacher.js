@@ -286,20 +286,20 @@ function problemSolved(index){
 		}
 	}
 }
-
+/*
 function changeColor(index){
 	var icon = document.getElementsByClassName("comp_icon")[index].firstElementChild;
 	var color = pcs[index].color;
 	if (color==0){
 		icon.style.backgroundColor = "";
-		clearInterval(pcs[index].interval);
+		//clearInterval(pcs[index].interval);
 	}else{
 		color--;
 		icon.style.backgroundColor = "#f5"+color.toString(16)+"00";
 		pcs[index].color = color;
 	}
 }
-
+*/
 socket.on('event', function (data) {
 	//alert(data.IP);
 console.log("event (data.IP): "+data.IP+" event:"+data.eventType+" user:"+data.user);
@@ -333,7 +333,7 @@ console.log("event (data.IP): "+data.IP+" event:"+data.eventType+" user:"+data.u
 				icon.classList.add("waiting_start");
 
 				pcs[i].color = 0x90;
-				pcs[i].interval = setInterval("changeColor("+i+")", 10000);
+				//pcs[i].interval = setInterval("changeColor("+i+")", 10000);
 				//FIFO
 				if(!help_needed){//Nobody is being attended
 					help_needed = true;
