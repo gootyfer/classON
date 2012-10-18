@@ -1,0 +1,10 @@
+{
+	"server": {
+		"url": "localhost",
+		"port": 80
+	},
+	"database":{
+		"url": "localhost",
+		"port": 27017
+	}
+}

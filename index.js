@@ -1,25 +1,29 @@
-//Used modules
-var http = require('http');
-var path = require('path');
-var fs = require('fs');
+//Nodejs modules
 var express = require('express');
-var EventManager = require('./eventmanager').EventManager;
-
-//Express init
-var app = express.createServer();
-//Websockets init thorough express
-var io = require('socket.io').listen(app);
+var app = express()
+  , http = require('http')
+  , server = http.createServer(app)
+  , io = require('socket.io').listen(server);
+//Socket IO: silent log
 io.set('log level', 1);
-
-//Database connection for events
-var eventManager = new EventManager('localhost', 27017);
-
 //Use express config
 app.configure(function(){
     app.use(express.methodOverride());
     app.use(express.bodyParser());
     app.use(app.router);
 });
+
+//File and path modules
+var path = require('path');
+var fs = require('fs');
+
+//Use own modules
+var EventManager = require('./eventmanager').EventManager;
+//Database connection for events
+var eventManager = new EventManager(config.database.url, config.database.port);
+//Load configuration
+var config = require('./config.json');
+
 
 /*
  * HTTP server init
@@ -66,7 +70,7 @@ var serve_http = function(request, response){
 			
     }
     
-    path.exists(filePath, function(exists) {
+    fs.exists(filePath, function(exists) {
     	if (exists) {
             fs.readFile(filePath, function(error, content) {
                 if (error) {
@@ -222,7 +226,6 @@ function sendQuestions(event, sessionType){
 
 //Connection of the new websocket client
 io.sockets.on('connection', function (socket) {
-	
 	//Event to request user list (TEACHER)
 	socket.on('userList', function (userParams) {
 		//console.log('userList:'+JSON.stringify(userParams));
@@ -486,6 +489,6 @@ io.sockets.on('connection', function (socket) {
 });
 
 //Launch app
-app.listen(80);
-console.log('Server running...');
+server.listen(config.server.port);
+console.log('Server running on port '+config.server.port+'...');
 
