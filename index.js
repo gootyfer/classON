@@ -17,12 +17,17 @@ app.configure(function(){
 var path = require('path');
 var fs = require('fs');
 
-//Use own modules
-var EventManager = require('./eventmanager').EventManager;
-//Database connection for events
-var eventManager = new EventManager(config.database.url, config.database.port);
 //Load configuration
 var config = require('./config.json');
+
+//Use own modules
+var EventManager = require('./eventmanager').EventManager;
+var UserManager = require('./usermanager').UserManager;
+var SessionManager = require('./sessionmanager').SessionManager;
+//Database connections
+var eventManager = new EventManager(config.database.url, config.database.port);
+var userManager = new UserManager(config.database.url, config.database.port);
+var sessionManager = new SessionManager(config.database.url, config.database.port);
 
 
 /*
@@ -146,35 +151,6 @@ function getQuestions(id){
 	return questions[id];
 }
 
-//User manager
-function getUserByParam(userParams, handler){
-	var mongodb = require('mongodb');
-	var server = new mongodb.Server("127.0.0.1", 27017, {});
-	new mongodb.Db('classon', server, {}).open(function (error, client) {
-		  if (error) throw error;
-		  var collection = new mongodb.Collection(client, 'users');
-		  collection.find(userParams).toArray(function(err, docs) {
-			  handler(err, docs);
-			  client.close();
-		  });
-	});
-}
-//Get user info of an array of users
-function getUsersByUsername(usernameArray, userInfoArray, handler){
-	if(usernameArray.length>0){
-		var username = usernameArray.pop();
-		getUserByParam({username: username}, function(error, userInfo){
-			if(!error && userInfo.length>0){
-				userInfoArray.push(userInfo[0]);
-				getUsersByUsername(usernameArray, userInfoArray, handler);
-			}else{
-				handler("error");
-			}
-		});
-	}else{
-		handler(null, userInfoArray);
-	}
-}
 //Send event to teacher
 function sendEventToSession(event, sessionType){
 	var clients = io.sockets.clients();
@@ -229,7 +205,7 @@ io.sockets.on('connection', function (socket) {
 	//Event to request user list (TEACHER)
 	socket.on('userList', function (userParams) {
 		//console.log('userList:'+JSON.stringify(userParams));
-		getUserByParam(userParams, function(err, docs){
+		userManager.find(userParams, function(err, docs){
 			if(err){
 				  console.log('Error: while retrieveing user list');
 				  socket.emit('userListResp', []);
@@ -240,6 +216,57 @@ io.sockets.on('connection', function (socket) {
 		});
 	});
 	
+	//New teacher event (TEACHER)
+	socket.on("new teacher", function(session){
+		var my_session = getSession(session.session);
+		var my_queue = getQueue(session.session);
+		var my_questions = getQuestions(session.session);
+		//console.log('new event(my_session):'+JSON.stringify(my_session));
+		//console.log('new event(my_queue):'+JSON.stringify(my_queue));
+		//Save session name to the socket
+		socket.set("sessionTeacher", session.session);
+		socket.emit('init', {session: my_session, queue: my_queue, questions: my_questions});
+		console.log('new teacher: at session '+session.session);
+	});
+	
+	//End help event (TEACHER)
+	socket.on('teacher event', function(event){
+		if(event.eventType=="endHelp" && event.user){
+			var IP = event.IP;
+			delete event.IP;
+			
+			var my_session = getSession(event.session);
+			var my_queue = getQueue(event.session);
+			//console.log('teacher event before loop'+JSON.stringify(event));
+			var students = event.user;
+			//for(var i=0; i<students.length; i++){
+				for(var j=0; j<my_session.length; j++){
+					//check by first username only
+					if(my_session[j].username.indexOf(students[0])!=-1){
+						//console.log('teacher event found student for'+students[i]);
+						my_session[j].help = false;
+						if(my_queue.indexOf(IP)!=-1){
+							my_queue.splice(my_queue.indexOf(IP),1);
+						}
+						sendQueuePositions(my_queue, IP);
+						break;
+					}
+				}
+			//}
+			console.log("sessions after the event:");
+			console.log(my_session);
+			console.log("queue after the event:");
+			console.log(my_queue);
+		}
+		eventManager.save(event, function(error, events){
+			var event = events[0];
+			console.log('teacher event'+JSON.stringify(event));
+		});
+		
+	});
+
+	
+
 	//Learning event (STUDENT)
 	socket.on('new event', function(event){
 		eventManager.save(event, function(error, events){
@@ -358,50 +385,13 @@ io.sockets.on('connection', function (socket) {
 		});
 	});
 	
-	
-	//End help event (TEACHER)
-	socket.on('teacher event', function(event){
-		if(event.eventType=="endHelp" && event.user){
-			var IP = event.IP;
-			delete event.IP;
-			
-			var my_session = getSession(event.session);
-			var my_queue = getQueue(event.session);
-			//console.log('teacher event before loop'+JSON.stringify(event));
-			var students = event.user;
-			//for(var i=0; i<students.length; i++){
-				for(var j=0; j<my_session.length; j++){
-					//check by first username only
-					if(my_session[j].username.indexOf(students[0])!=-1){
-						//console.log('teacher event found student for'+students[i]);
-						my_session[j].help = false;
-						if(my_queue.indexOf(IP)!=-1){
-							my_queue.splice(my_queue.indexOf(IP),1);
-						}
-						sendQueuePositions(my_queue, IP);
-						break;
-					}
-				}
-			//}
-			console.log("sessions after the event:");
-			console.log(my_session);
-			console.log("queue after the event:");
-			console.log(my_queue);
-		}
-		eventManager.save(event, function(error, events){
-			var event = events[0];
-			console.log('teacher event'+JSON.stringify(event));
-		});
-		
-	});
-	
 	//New student event (STUDENT)
 	socket.on("new student", function(users){
 		students = users.user;
 		console.log('new student:'+students.join(","));
 		//Check info of the first student, suppose the second is in the same group
 		//Slice is used to make a copy of the array
-		getUsersByUsername(students.slice(0), [], function(error, userInfoArray){
+		userManager.findByUsername(students.slice(0), function(error, userInfoArray){
 			if(error){
 				console.log('student registered: error emitted');
 				socket.emit('student registered',{error:error});
@@ -457,19 +447,6 @@ io.sockets.on('connection', function (socket) {
 				//}
 			}
 		});
-	});
-	
-	//New teacher event (TEACHER)
-	socket.on("new teacher", function(session){
-		var my_session = getSession(session.session);
-		var my_queue = getQueue(session.session);
-		var my_questions = getQuestions(session.session);
-		//console.log('new event(my_session):'+JSON.stringify(my_session));
-		//console.log('new event(my_queue):'+JSON.stringify(my_queue));
-		//Save session name to the socket
-		socket.set("sessionTeacher", session.session);
-		socket.emit('init', {session: my_session, queue: my_queue, questions: my_questions});
-		console.log('new teacher: at session '+session.session);
 	});
 	
 	//Client disconnected!
