@@ -19,6 +19,7 @@ var fs = require('fs');
 
 //Load configuration
 var config = require('./config.json');
+var rooms = require('./rooms.json');
 
 //Use own modules
 var EventManager = require('./eventmanager').EventManager;
@@ -93,9 +94,6 @@ var serve_http = function(request, response){
     });
 };
 
-var show_stats = function(request, response){
-	
-}
 
 app.get('/student/*', function (request, response) {
 	serve_http(request, response);
@@ -109,363 +107,202 @@ app.get('/users/photos/*', function (request, response) {
 	serve_http(request, response);
 });
 
-app.get('/stats', function (request, response){
-	show_stats(request, response);
-});
-
 /*
  * HTTP server end
  */
 
-
-//sessions: list of users in the session, including their status
-//queues: list of the users in the waiting queue (identified by IP)
-/*	session_item = { 
-		username: ["username", ..],
-		exercise: 0,
-		help: false,
-		IP: "IP"
+function getStation(room, IP){
+	for(var i=0; i<rooms.length; i++){
+		if(rooms[i].name === room){
+			return rooms[i].ips.indexOf(IP) +1;
+		}
 	}
-	queue_item = IPs
-	question_item = {
-		description: "blah",
-		votes: ["user1", "user2"]
-	}
- */
-var sessions = {};
-var queues = {};
-var questions = {};
-
-function getSession(id){
-	if(sessions[id]==undefined) sessions[id] = [];
-	return sessions[id];
-}
-
-function getQueue(id){
-	if(queues[id]==undefined) queues[id] = [];
-	return queues[id];
-}
-
-function getQuestions(id){
-	if(questions[id]==undefined) questions[id] = [];
-	return questions[id];
-}
-
-//Send event to teacher
-function sendEventToSession(event, sessionType){
-	var clients = io.sockets.clients();
-	for(var i=0; i<clients.length; i++){
-		clients[i].get(sessionType, function(err, session){
-			if(session == event.session){//Check the teacher
-				clients[i].emit('event', event);
-				console.log('emit new event to teacher in session:'+session);
-			}
-		});
-	}
-}
-//Send queue position to connected students
-function sendQueuePositions(userIPs, solvedIP){
-	var clients = io.sockets.clients();
-	for(var i=0; i<clients.length; i++){
-		//fakeIP
-		//clients[i].get("fakeIP", function(err, fakeIP){
-			var clientIP = clients[i].handshake.address.address;
-			//clientIP = fakeIP;
-			var position = userIPs.indexOf(clientIP);
-			//console.log('sendQueuePositions: check '+userIPs+' and '+fakeIP);
-			if(position!=-1){
-				clients[i].emit('update queue', position+1);
-				//console.log('emitted update queue to: '+fakeIP);
-			}
-			if(solvedIP){
-				if(solvedIP==clientIP){
-					clients[i].emit('update queue', 0);
-					//console.log('emitted update queue to: '+fakeIP);
-				}
-			}
-		//});
-	}
-}
-
-//To be refactorized
-function sendQuestions(event, sessionType){
-	var clients = io.sockets.clients();
-	for(var i=0; i<clients.length; i++){
-		clients[i].get(sessionType, function(err, session){
-			if(session == event.session){
-				clients[i].emit('update questions', event.questions);
-				console.log('emit new questions to session:'+session);
-			}
-		});
-	}
+	return null;
 }
 
 //Connection of the new websocket client
 io.sockets.on('connection', function (socket) {
+
 	//Event to request user list (TEACHER)
-	socket.on('userList', function (userParams) {
+	socket.on('user list', function (userParams) {
 		//console.log('userList:'+JSON.stringify(userParams));
 		userManager.find(userParams, function(err, docs){
 			if(err){
-				  console.log('Error: while retrieveing user list');
-				  socket.emit('userListResp', []);
-				}else{
-					//console.log('docs:'+JSON.stringify(docs));
-					socket.emit('userListResp', docs);
-				}
+				console.log('Error: while retrieveing user list');
+				socket.emit('userListResp', []);
+			}else{
+				//console.log('docs:'+JSON.stringify(docs));
+				socket.emit('userListResp', docs);
+			}
 		});
 	});
 	
 	//New teacher event (TEACHER)
-	socket.on("new teacher", function(session){
-		var my_session = getSession(session.session);
-		var my_queue = getQueue(session.session);
-		var my_questions = getQuestions(session.session);
-		//console.log('new event(my_session):'+JSON.stringify(my_session));
-		//console.log('new event(my_queue):'+JSON.stringify(my_queue));
-		//Save session name to the socket
-		socket.set("sessionTeacher", session.session);
-		socket.emit('init', {session: my_session, queue: my_queue, questions: my_questions});
-		console.log('new teacher: at session '+session.session);
-	});
-	
-	//End help event (TEACHER)
-	socket.on('teacher event', function(event){
-		if(event.eventType=="endHelp" && event.user){
-			var IP = event.IP;
-			delete event.IP;
-			
-			var my_session = getSession(event.session);
-			var my_queue = getQueue(event.session);
-			//console.log('teacher event before loop'+JSON.stringify(event));
-			var students = event.user;
-			//for(var i=0; i<students.length; i++){
-				for(var j=0; j<my_session.length; j++){
-					//check by first username only
-					if(my_session[j].username.indexOf(students[0])!=-1){
-						//console.log('teacher event found student for'+students[i]);
-						my_session[j].help = false;
-						if(my_queue.indexOf(IP)!=-1){
-							my_queue.splice(my_queue.indexOf(IP),1);
-						}
-						sendQueuePositions(my_queue, IP);
-						break;
-					}
-				}
-			//}
-			console.log("sessions after the event:");
-			console.log(my_session);
-			console.log("queue after the event:");
-			console.log(my_queue);
-		}
-		eventManager.save(event, function(error, events){
-			var event = events[0];
-			console.log('teacher event'+JSON.stringify(event));
-		});
-		
-	});
-
-	
-
-	//Learning event (STUDENT)
-	socket.on('new event', function(event){
-		eventManager.save(event, function(error, events){
-			var event = events[0];
-			//fakeIP
-			event.IP = socket.handshake.address.address;
-			console.log('new event:'+JSON.stringify(event));
-			
-			//Forward event to the teachers + other students: old
-			//socket.broadcast.emit('event', event);
-
-			if(event.eventType == "vote"){
-				var my_questions = getQuestions(event.session);
-				my_questions[event.qid].votes.push(event.user[0]);
-				event.questions = my_questions;
-				sendQuestions(event, "sessionStudent");
-				sendQuestions(event, "sessionTeacher");
-			}else{
-				var my_session = getSession(event.session);
-				var my_queue = getQueue(event.session);
-				
-				//console.log('new event(my_session):'+JSON.stringify(my_session));
-				//console.log('new event(my_queue):'+JSON.stringify(my_queue));
-				
-				//console.log('new event(sessions):'+JSON.stringify(sessions));
-				//console.log('new event(queues):'+JSON.stringify(queues));
-				
-				var students = event.user;
-				
-				//for(var i=0; i<students.length; i++){
-					var found = false;
-					for(var j=0; j<my_session.length; j++){
-						//check by first username only
-						if(my_session[j].username.indexOf(students[0])!=-1){
-							switch(event.eventType){
-							
-							case "connection":
-								break;
-							case "finishSection":
-								my_session[j].exercise +=1;
-								break;
-							case "undoFinishSection":
-								my_session[j].exercise -=1;
-								break;
-							case "help":
-								my_session[j].help = true;
-								my_session[j].description = event.description;
-								//Update questions
-								var my_questions = getQuestions(event.session);
-								my_questions.push({description: event.description, votes: [event.user[0]]});
-								event.questions = my_questions;
-								sendQuestions(event, "sessionStudent");
-								sendQuestions(event, "sessionTeacher");
-								//Update queue
-								my_queue.push(event.IP);
-								//Send event to this group
-								socket.emit("update queue", my_queue.length);
-								break;
-							case "solved":
-								my_session[j].help = false;
-								if(my_queue.indexOf(event.IP)!=-1){
-									my_queue.splice(my_queue.indexOf(event.IP),1);
-								}
-								sendQueuePositions(my_queue);
-								break;
-							}
-							found = true;
-							break;
-						}
-					}
-					if(!found){
-						//Error situation: Not found!
-						console.log("Error: not found info about students "+students.join(","));
-						my_session.push({ 
-							username: students,
-							exercise: 0,
-							help: false,
-							IP: event.IP
-						});
-					}
-					
-				//}
-				
-				console.log("sessions after the event:");
-				console.log(my_session);
-				console.log("queue after the event:");
-				console.log(my_queue);
-				
-				sendEventToSession(event, "sessionTeacher");
-				/*
-				//Test retransmission of messages:done
-				var clients = io.sockets.clients();
-				//console.log('sockets:'+clients);
-				//console.log('sockets:'+JSON.stringify(clients));
-				//console.log('sockets.length:'+clients.length);
-				//console.log(clients[0]);
-				//io.sockets.emit('event', event);
-				
-				for(var i=0; i<clients.length; i++){
-					//console.log('sockets[i]:'+JSON.stringify(io.sockets[i]));
-					clients[i].get("session", function(err, teacher_session){
-						if(teacher_session == event.session){//Check the teacher
-							clients[i].emit('event', event);
-							//clients[i].emit('init', {session: my_session, queue: my_queue});
-							console.log('emit new event to teacher in session:'+teacher_session);
-							//console.log(event);
-							//console.log(my_session);
-							//console.log(my_queue);
-						}
-					});
-				}
-				*/
-
+	socket.on('new teacher', function(session){
+		sessionManager.findOrCreate(session, function(error, currentSession){
+			if(!error && results.length > 0){
+				socket.join(currentSession._id);
+				socket.emit('init', currentSession.sessionData);
+				console.log('new teacher: at session '+session.subject+' '+session.group+' '+session.assignment);
 			}
-			
 		});
 	});
-	
+
 	//New student event (STUDENT)
-	socket.on("new student", function(users){
-		students = users.user;
-		console.log('new student:'+students.join(","));
+	/*
+		1. check user in the database
+		2. find/create current session
+		3. if user not in session, save to the session
+		4. broadcast data
+	*/
+	socket.on("new student", function(session){
 		//Check info of the first student, suppose the second is in the same group
-		//Slice is used to make a copy of the array
-		userManager.findByUsername(students.slice(0), function(error, userInfoArray){
+		userManager.findByUsername(session.userNames, function(error, userInfoArray){
 			if(error){
 				console.log('student registered: error emitted');
 				socket.emit('student registered',{error:error});
-			}else{
-				if(userInfoArray.length==0) return;
-				var my_session = getSession(userInfoArray[0].group+users.session);
-				var my_queue = getQueue(userInfoArray[0].group+users.session);
-				var my_questions = getQuestions(userInfoArray[0].group+users.session);
-				//console.log('new student:'+students.join(","));
-				//console.log('new student(userInfoArray):'+userInfoArray);
-				//for(var i=0; i<students.length; i++){
-					var found = false;
-					
-					for(var j=0; j<my_session.length; j++){
-						//check by first username only
-						if(my_session[j].username.indexOf(students[0])!=-1){
-							console.log('student '+students+' found in session');
-							var my_queue_pos = my_queue.indexOf(socket.handshake.address.address);
-							//fakeIP
-							//my_queue_pos = my_queue.indexOf(users.IP);
-							//console.log("Position("+my_queue_pos+") of "+socket.handshake.address.address+" in queue "+my_queue);
-							socket.emit('student registered', {
-								userInfoArray : userInfoArray,
-								exercise: my_session[j].exercise, 
-								help: (my_queue_pos===-1)?false:(my_queue_pos+1),
-								questions: my_questions
-							});
-							found = true;
-							break;
-						}
-					}
-					if(!found){
-						//Not found
-						my_session.push({ 
-							username: students,
-							exercise: 0,
-							help: false,
-							//fakeIP
-							//IP: users.IP
-							IP: socket.handshake.address.address
-						});
-						console.log('new student '+students+' registered on session:');
-						//console.log(my_session);
-						socket.emit('student registered', {
-							userInfoArray : userInfoArray,
-							questions: my_questions
-						});
-					}
-					//Save session name to the socket
-					socket.set("sessionStudent", userInfoArray[0].group+users.session);
-					//fakeIP
-					//socket.set("fakeIP", users.IP);
-				//}
+				return;
 			}
+			if(userInfoArray.length==0){
+				console.log('student not found: error emitted');
+				socket.emit('student registered',{error:'not found'});
+				return;
+			}
+			var sessionParams = {
+				subject:session.subject, 
+				group:userInfoArray[0].group, 
+				assignment:session.assignment
+			};
+			sessionManager.findOrCreate(sessionParams, function(error, currentSession){
+				var users = currentSession.sessionData.users;
+				var station = session.station || getStation(currentSession.room, socket.handshake.address.address);
+				if(!station){
+					console.log('IP not found: error emitted');
+					socket.emit('student registered',{error:'not station'});
+					return;
+				}
+				//Add user to room
+				socket.join(currentSession._id);
+				//TODO: check if students registered in a previous station
+				var user = users[station];
+				if(!user){//New user
+					user = { 
+						username: session.userNames,
+						exercise: 0,
+						currentQuestion: null,
+						station: station
+					};
+					users[station] = user;
+					sessionManager.update(currentSession._id, currentSession.sessionData, function(){
+						console.log('new student '+session.userNames.join(',')+' registered on session');
+					});
+				}
+				//Answer back: registration OK
+				socket.emit('student registered', {
+					currentUser : users[i],
+					queue: currentSession.sessionData.users, 
+					questions: currentSession.sessionData.questions,
+					session: sessionParams
+				});
+
+				//Broadcast updated users
+				io.socket.in(currentSession._id).emit('update users', users);
+			});
+		});
+	});
+
+	//Init help event (TEACHER)
+	socket.on('init help', function(event){
+		eventManager.save(event, function(error, events){
+			console.log('teacher init help '+JSON.stringify(events[0]));
+		});
+	});
+
+	//End help event (TEACHER)
+	socket.on('end help', function(event){
+		eventManager.save(event, function(error, events){
+			console.log('teacher end help '+JSON.stringify(events[0]));
+		});
+		sessionManager.findOrCreate(event.session, function(error, currentSession){
+			//Not update user until they enter the answer
+			//var user = currentSession.sessionData.users[event.station];
+			//user.currentQuestion = null;
+			var queue = currentSession.sessionData.queue;
+			if(queue.indexOf(station)!=-1){
+				queue.splice(queue.indexOf(station),1);
+			}
+			//io.socket.in(currentSession._id).emit('update users', currentSession.sessionData.users);
+			io.socket.in(currentSession._id).emit('update queue', queue);
+
+			sessionManager.update(currentSession._id, currentSession.sessionData, function(){});
+		});
+	});
+
+	//Learning event (STUDENT)
+	socket.on('student event', function(event){
+		eventManager.save(event, function(error, events){
+			console.log('new event:'+JSON.stringify(event));
+		});
+
+		sessionManager.findOrCreate(event.session, function(error, currentSession){
+			switch(event.type){
+				case "new vote":
+					currentSession.sessionData.questions[event.qid].votes.push(event.userNames[0]);
+					io.socket.in(currentSession._id).emit('update questions', currentSession.sessionData.questions);
+					break;
+				case "new question":
+					var question = {
+						description: event.description,
+						votes: [event.userNames[0]],
+						answers: [],
+						exercise: event.exercise
+					};
+					currentSession.sessionData.questions.push(question);
+					currentSession.sessionData.queue.push(event.station);
+					currentSession.sessionData.users[event.station].currentQuestion = currentSession.sessionData.questions.length -1;
+					io.socket.in(currentSession._id).emit('update questions', currentSession.sessionData.questions);
+					io.socket.in(currentSession._id).emit('update queue', currentSession.sessionData.queue);
+					io.socket.in(currentSession._id).emit('update users', currentSession.sessionData.users);
+					break;
+				case "new answer":
+					var answer = {
+						description: event.description,
+						votes: [event.userName[0]]
+					}
+					var question = currentSession.sessionData.questions[event.qid];
+					question.answers.push(answer);
+					io.socket.in(currentSession._id).emit('update questions', currentSession.sessionData.questions);
+					var user = currentSession.sessionData.users[event.station];
+					if(user.currentQuestion == event.qid){
+						user.currentQuestion = null;
+						var queue = currentSession.sessionData.queue;
+						if(queue.indexOf(event.station)!=-1){
+							queue.splice(queue.indexOf(event.station),1);
+						}
+						io.socket.in(currentSession._id).emit('update users', currentSession.sessionData.users);
+						io.socket.in(currentSession._id).emit('update queue', queue);
+					}
+					break;
+				case "progression":
+					var user = currentSession.sessionData.users[event.station];
+					user.exercise +=1;
+					io.socket.in(currentSession._id).emit('update users', currentSession.sessionData.users);
+					break;
+				case "regression":
+					var user = currentSession.sessionData.users[event.station];
+					user.exercise -=1;
+					io.socket.in(currentSession._id).emit('update users', currentSession.sessionData.users);
+					break;
+			}
+			sessionManager.update(currentSession._id, currentSession.sessionData, function(){});
 		});
 	});
 	
 	//Client disconnected!
 	socket.on("disconnect", function(){
-		/*
-		socket.get('username', function(err, students){
-			var index = 0; //Grupo 66
-			if(students_66.indexOf(students[0])==-1){//67
-				index = 1;
-			}
-			for(var i=0; i<students.length; i++){
-				sessions[index].splice(sessions[index].indexOf(students[i]),1);
-			}
-		});
-		*/
 	});
 });
 
 //Launch app
 server.listen(config.server.port);
 console.log('Server running on port '+config.server.port+'...');
-

@@ -4,8 +4,10 @@ var Server = require('mongodb').Server;
 var BSON = require('mongodb').BSON;
 var ObjectID = require('mongodb').ObjectID;
 
+var rooms = require('./rooms.json');
+
 SessionManager = function(host, port) {
-  this.db= new Db('classon', new Server(host, port, {auto_reconnect: true, safe:false}, {}));
+  this.db= new Db('classon2', new Server(host, port, {auto_reconnect: true, safe:false}, {}));
   this.db.open(function(){});
 };
 
@@ -33,7 +35,9 @@ SessionManager.prototype.getCollection= function(callback) {
 	    this.getCollection(function(error, sessions_collection) {
 	      if( error ) callback(error);
 	      else {
-	        sessions_collection.findOne({_id: sessions_collection.db.bson_serializer.ObjectID.createFromHexString(id)}, function(error, result) {
+	        sessions_collection.findOne({
+	        	_id: sessions_collection.db.bson_serializer.ObjectID.createFromHexString(id)
+	        }, function(error, result) {
 	          if( error ) callback(error);
 	          else callback(null, result);
 	        });
@@ -42,15 +46,42 @@ SessionManager.prototype.getCollection= function(callback) {
 	};
 
 	//Search given subject, group and assignment number in the groupObj
-	SessionManager.prototype.findLast = function(groupObj, callback) {
+	SessionManager.prototype.findOrCreate = function(sessionDef, callback) {
+		var that = this;
 	    this.getCollection(function(error, sessions_collection) {
 	      if( error ) callback(error);
 	      else {
-	      	sessions_collection.find(groupObj).sort({"timestamp":-1}).limit(1).toArray(function(error, results) {
+	      	sessions_collection.find(sessionDef).sort({"timestamp":-1}).limit(1).toArray(function(error, results) {
 	        	//console.log('findLastActivity: resp');
 	          if( error ) callback(error);
-	          else callback(null, results);
-	          //this.client.close();
+	          else{
+	          	if(results.length>0){
+	          		callback(null, results);
+	          	}else{
+	          		var room = "7.0.J03";
+	          		for(var i=0;i<rooms.length;i++){
+	          			if(rooms[i].groups.indexOf(sessionDef.group)!=-1){
+	          				room = rooms[i].name;
+	          				break;
+	          			}
+	          		}
+	          		var new_session = {
+						sessionData:{
+							users: [],
+							queue: [],
+							questions: []
+						},
+						room:room,
+						subject:sessionDef.subject, 
+						group:sessionDef.group, 
+						assignment:sessionDef.assignment
+					};
+	          		that.save(new_session, function(error, saved_session){
+	          			if( error ) callback(error);
+	          			else callback(null, saved_session);
+	          		});
+	          	}
+	          }
 	        });
 	      }
 	    });
@@ -75,15 +106,16 @@ SessionManager.prototype.getCollection= function(callback) {
 	    });
 	};
 
-	SessionManager.prototype.update = function(id, session, callback) {
+	SessionManager.prototype.update = function(id, sessionData, callback) {
 	    this.getCollection(function(error, sessions_collection) {
 	      if( error ) callback(error);
 	      else {
 	        sessions_collection.update(
 	        	{_id: id}, 
-	        	{"$set": {"sessionData": game}}, 
-	        	function(error, updated_game) {
-	        		callback(null, updated_game);
+	        	{"$set": {"sessionData": sessionData}}, 
+	        	function(error, updated_session) {
+	        		if(error) callback(error);
+	        		else callback(null, updated_session);
 	          		//this.client.close();
 	        });
 	      }
