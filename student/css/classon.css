@@ -2,14 +2,12 @@
 	float: left;
 	width: 250px;
 	position: fixed;
-	margin: 84px 0 0 0;
 }
 
 #questions {
 	float: left;
 	width: 250px;
 	position: fixed;
-	margin: 84px 0 0 0;
 	z-index: 1;
 	background-color: white;
 	height: 60%;
