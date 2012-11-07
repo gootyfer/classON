@@ -6,7 +6,8 @@ var express = require('express');
 var EventManager = require('./eventmanager').EventManager;
 
 //Express init
-var app = express();
+//var app = express();
+var app = express.createServer();
 //Websockets init thorough express
 //var server = http.createServer(app);
 var io = require('socket.io').listen(app);
