@@ -8,8 +8,8 @@ var EventManager = require('./eventmanager').EventManager;
 //Express init
 var app = express();
 //Websockets init thorough express
-var server = http.createServer(app);
-var io = require('socket.io').listen(server);
+//var server = http.createServer(app);
+var io = require('socket.io').listen(app);
 io.set('log level', 1);
 
 //Database connection for events
@@ -491,6 +491,6 @@ io.sockets.on('connection', function (socket) {
 });
 
 //Launch app
-server.listen(80);
+app.listen(80);
 console.log('Server running...');
 
