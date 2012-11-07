@@ -6,9 +6,10 @@ var express = require('express');
 var EventManager = require('./eventmanager').EventManager;
 
 //Express init
-var app = express.createServer();
+var app = express();
 //Websockets init thorough express
-var io = require('socket.io').listen(app);
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
 io.set('log level', 1);
 
 //Database connection for events
@@ -92,6 +93,10 @@ app.get('/student/*', function (request, response) {
 	serve_http(request, response);
 });
 
+app.get('/CSS/*', function (request, response) {
+	serve_http(request, response);
+});
+
 app.get('/teacher/*', function (request, response) {
 	serve_http(request, response);
 });
@@ -145,8 +150,8 @@ function getQuestions(id){
 //User manager
 function getUserByParam(userParams, handler){
 	var mongodb = require('mongodb');
-	var server = new mongodb.Server("127.0.0.1", 27017, {});
-	new mongodb.Db('classon', server, {}).open(function (error, client) {
+	var server = new mongodb.Server("127.0.0.1", 27017);
+	new mongodb.Db('classon', server, {safe:false}).open(function (error, client) {
 		  if (error) throw error;
 		  var collection = new mongodb.Collection(client, 'users');
 		  collection.find(userParams).toArray(function(err, docs) {
@@ -486,6 +491,6 @@ io.sockets.on('connection', function (socket) {
 });
 
 //Launch app
-app.listen(80);
+server.listen(80);
 console.log('Server running...');
 

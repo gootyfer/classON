@@ -7,6 +7,8 @@ var session = src.substr(src.indexOf('=')+1);
 
 //Load sections
 var sections = document.getElementsByTagName("section");
+sections = $("div.activity > div.workplan > div.section");
+$.merge(sections, $("div.evaluation"));
 
 //Create navigation menu
 var menu = document.createElement("div");
@@ -14,24 +16,40 @@ menu.id = "menu";
 var questions_div = document.createElement("div");
 questions_div.id = "questions";
 questions_div.className = "hide";
-var bg = document.createElement("div");
-bg.id = "bg";
-var content = document.createElement("div");
-content.id = "content";
+//var bg = document.createElement("div");
+//bg.id = "bg";
+//var content = document.createElement("div");
+//content.id = "content";
 
 var header = document.getElementsByTagName("header")[0];
+header = $("div.workplan > div.titlepage")[1];
+var parent = $("div.chapter")[0];
+parent.className += " content";
+parent.parentNode.style.overflow = "auto";
 
-sections[0].parentNode.insertBefore(menu, header);
-sections[0].parentNode.insertBefore(questions_div, header);
-sections[0].parentNode.insertBefore(bg, header);
-sections[0].parentNode.insertBefore(content, header);
+parent.parentNode.insertBefore(menu, parent);
+parent.parentNode.insertBefore(questions_div, parent);
+//parent.parentNode.insertBefore(bg, parent);
+//parent.parentNode.insertBefore(content, parent);
 
-content.appendChild(header);
+var timeInfo = $("div.adagio_submit_form_duration_select")[1];
+timeInfo.classList.add("hide");
+
+//content.appendChild(header);
 
 var menuItems = []; //menu items array
 for(var i=0; i<sections.length; i++){
-	if(sections[i].id != "refs" && sections[i].id != "bash"){ 
-		var itemName = sections[i].getElementsByTagName("h2")[0].childNodes[0].nodeValue; //collect section names
+	if(sections[i].id != "refs" && sections[i].id != "bash"){
+		var itemName;
+		if(sections[i].getElementsByTagName("h4")[0]){
+			itemName = sections[i].getElementsByTagName("h4")[0];
+		}else{
+			itemName = sections[i].getElementsByTagName("h3")[0];
+		}
+		//console.log(itemName);
+		itemName = itemName.childNodes[1].childNodes[0].nodeValue;
+		sections[i].id = "s"+i;
+		//var itemName = sections[i].getElementsByTagName("h2")[0].childNodes[0].nodeValue; //collect section names
 		//Create menu item
 		var menuitem = document.createElement("div");
 		menuitem.innerHTML = "<a class='menuitem' href='#"+sections[i].id+"'>"+itemName+"</a> ";
@@ -44,8 +62,9 @@ for(var i=0; i<sections.length; i++){
 		menu.appendChild(progress);
 		menuItems.push(menuitem);
 		sections[i].classList.add("hide");
+
 	}
-	content.appendChild(sections[i]); //append sections to the new content div
+	//content.appendChild(sections[i]); //append sections to the new content div
 }
 
 //Waypoints
@@ -62,8 +81,14 @@ $('section').waypoint(function(event, direction){
 });
 */
 
-var footer = document.getElementsByTagName("footer")[0];
-content.appendChild(footer);
+//var footer = document.getElementsByTagName("footer")[0];
+var footer = $("#adagio_page_footer")[0];
+footer.style.clear="both";
+//content.appendChild(footer);
+//footer = $("div.adagio_submit_form_duration_select")[1];
+//content.appendChild(footer);
+//footer = $("#adagio_page_footer")[0];
+//content.appendChild(footer);
 
 var progressdiv = document.createElement("div");
 progressdiv.className = "progressdiv";
@@ -189,6 +214,9 @@ function indicateProgress(back){
 		if(currentSection==(menuItems.length-1)){
 			progressdiv.removeChild(progressdiv.lastElementChild);
 		}else{
+			if(currentSection==menuItems.length-2){
+				timeInfo.classList.add("hide");
+			}
 			sections[currentSection+1].classList.add("hide");
 			var nextIcon = menuItems[currentSection+1].nextElementSibling;
 			nextIcon.removeEventListener("click", finishSection);
@@ -207,7 +235,7 @@ function indicateProgress(back){
 		}
 		
 	}else{
-		sections[currentSection].classList.remove("hide");
+		
 		
 		if(currentSection>1){ //Remove listener in former former icon
 			var formerformerIcon = menuItems[currentSection-2].nextElementSibling;
@@ -228,10 +256,14 @@ function indicateProgress(back){
 			completedDiv.innerHTML = "&iexcl;COMPLETADO!";
 			progressdiv.appendChild(completedDiv);
 		}else{
+			sections[currentSection].classList.remove("hide");
 			if(currentSection>0){
 				$('html, body').animate({
 			         scrollTop: $("#"+sections[currentSection].id).offset().top
 			     }, 2000);
+			}
+			if(currentSection==menuItems.length-1){
+				timeInfo.classList.remove("hide");
 			}
 			var currentIcon = menuItems[currentSection].nextElementSibling;
 			currentIcon.addEventListener("click", finishSection);
@@ -343,7 +375,7 @@ function checkUsers(callback){
 		var server = document.location.href.hostname;
 		//var server = document.location.href.substr(0,document.location.href.lastIndexOf(':'));
 		server = "163.117.141.206";
-		//server = "127.0.0.1";
+		server = "127.0.0.1";
 		socket = io.connect(server+':80');
 		socket.on('connect', function() {
 			sendEventToServer('new student', {session: session});

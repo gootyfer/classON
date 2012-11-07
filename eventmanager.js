@@ -5,7 +5,7 @@ var BSON = require('mongodb').BSON;
 var ObjectID = require('mongodb').ObjectID;
 
 EventManager = function(host, port) {
-  this.db= new Db('classon', new Server(host, port, {auto_reconnect: true}, {}));
+  this.db= new Db('classon', new Server(host, port, {auto_reconnect: true}, {safe:false}));
   this.db.open(function(){});
 };
 
