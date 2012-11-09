@@ -147,8 +147,8 @@ function usersOK(){
 	//User info
 	info.innerHTML = (usersInfo[0]?(usersInfo[0].surname+" "+usersInfo[0].name):"")+"<br />"+
 	(usersInfo[1]?(usersInfo[1].surname+" "+usersInfo[1].name):"")+"<br />"+
-	"<input type='button' onclick='logout()' value='DESCONECTAR' style='margin: auto;' />"+
-	"<input type='button' onclick='show_questions()' value='PREGUNTAS' style='margin: auto;' />";
+	"<input type='button' onclick='logout()' value='DESCONECTAR' style='width: 50%; margin: 15px 0;' />"+
+	"<input type='button' onclick='show_questions()' value='PREGUNTAS' style='width: 50%;' />";
 	
 	$.unblockUI();
 }
@@ -158,14 +158,17 @@ function usersOK(){
 var questions = [];
 
 function show_questions(){
-	var sHTML = "<h4>Preguntas</h4><ul>";
+	var sHTML = "<h2>Preguntas</h2><ul>";
+	questions.sort(function(a,b){
+		return b.votes.length - a.votes.length;
+	});
 	for(var i=0; i<questions.length;i++){
 		var voted = questions[i].votes.indexOf(user[0])!=-1;
-		sHTML+="<li>"+questions[i].description+" (<span>"+questions[i].votes.length+
-			" votos</span>) <input type='button' value='+1' onclick='vote("+i+")' "+
+		sHTML+="<li>"+questions[i].description+" (<span><strong>"+questions[i].votes.length+
+			" votos</strong></span>) <input type='button' value='+1' onclick='vote("+i+")' "+
 			(voted?"disabled='disabled'":"")+" /></li>";
 	}
-	sHTML += "</ul><br><input type='button' value='VOLVER' onclick='back()' />";
+	sHTML += "</ul><br><input type='button' value='VOLVER' onclick='back()' style='width: 100%; margin: 20px 0;' />";
 	questions_div.innerHTML = sHTML;
 	questions_div.className="";
 }
@@ -434,7 +437,7 @@ function sendEventToServer(eventName, event){
 	}
 	
 	//fakeIP
-	//event.IP = "163.117.101."+document.location.href.substr(document.location.href.lastIndexOf('?')+1).split("=")[1];
+	//event.IP = "163.117.171."+document.location.href.substr(document.location.href.lastIndexOf('?')+1).split("=")[1];
 	//example: 
 	socket.emit(eventName, event);
 	console.log('new event sent:'+eventName);

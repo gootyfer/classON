@@ -64,7 +64,7 @@ for (var i=0; i<icons.length;i++){
 		}(i));
 }
 
-document.getElementById("questions").addEventListener("click",showQuestions);
+document.getElementById("questions_button").addEventListener("click",showQuestions);
 
 /*
  * Timer in the detail page
@@ -167,13 +167,15 @@ function showQuestions(){
 	var users = document.getElementById("users");
 	users.classList.remove("hide");
 	users.innerHTML="";
-
-	var sHTML = "<h4>Questions</h4><ul>";
+	var sHTML = "<div id='questions'><h2>Preguntas</h2><ul>";
+	questions.sort(function(a,b){
+		return b.votes.length - a.votes.length;
+	});
 	for(var i=0; i<questions.length;i++){
-		sHTML+="<li>"+questions[i].description+" (<span>"+questions[i].votes.length+
-			" votos</span>)</li>";
+		sHTML+="<li>"+questions[i].description+" (<span><strong>"+questions[i].votes.length+
+			" votos</strong></span>)</li>";
 	}
-	sHTML += "</ul><br><input type='button' class='button gray back' value='VOLVER' "+
+	sHTML += "</ul></div><input type='button' class='button gray back' value='VOLVER' "+
 	"onclick='goBack()' />";
 	users.innerHTML = sHTML;
 }

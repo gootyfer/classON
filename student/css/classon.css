@@ -6,26 +6,27 @@
 
 #questions {
 	float: left;
-	width: 250px;
+	width: 240px;
 	position: fixed;
 	z-index: 1;
 	background-color: white;
-	height: 60%;
+	height: 500px;
 	border: solid 1px #555;
-	padding: 0px 2px;
 	overflow: scroll;
 }
 
 #questions ul{
 	list-style-type: none;
-	padding: 0px 0px 0px 5px;
+	padding: 0;
 }
 
 #questions ul li{
 	font-size: 9pt;
+	border-bottom: thin solid black;
+	padding: 10px 5px;
 }
 
-#questions h4{
+#questions h2{
 	text-align: center;
 }
 
@@ -366,6 +367,7 @@ meter{
 
 .info{
 	//border: solid 1px black;
+	font-size: 14px;
 	margin: 10px 5px;
 	width: 90%;
 }
