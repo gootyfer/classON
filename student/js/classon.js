@@ -406,10 +406,12 @@ function checkUsers(callback){
 			});
 			
 			socket.on('update queue', function(position){
-				console.log("new position in queue:"+position);
-				helpButton.innerHTML = "SOLUCIONADO?<br />(Posici&oacute;n en cola: "+position+")";
-				if(position==0){
-					askForHelp();
+				if(helpNeeded){
+					console.log("new position in queue:"+position);
+					helpButton.innerHTML = "SOLUCIONADO?<br />(Posici&oacute;n en cola: "+position+")";
+					if(position==0){
+						askForHelp();
+					}
 				}
 			});
 			socket.on('update questions', function(new_questions){
