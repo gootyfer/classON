@@ -1,0 +1,393 @@
+<html> 
+  <head> 
+    <title>Aplicaciones Multimedia: Práctica 1 - Introducción a HTML 5</title> 
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" /> 
+    
+    <link rel="SHORTCUT ICON" href="http://www.uc3m.es/favicon.ico" /> 
+    <link href="http://www.it.uc3m.es/rcrespo/docencia/asignatura.css" rel="stylesheet" type="text/css" /> 
+    <link href="http://www.it.uc3m.es/estilo.css" rel="stylesheet" type="text/css" /> 
+    <link href="css/amm.css" rel="stylesheet" type="text/css" />
+    <link href="../css/classon.css" rel="stylesheet" type="text/css" />
+	<link href="../css/jquery-ui.css" rel="stylesheet" type="text/css" />
+	
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.blockUI.js"></script>
+    <style> 
+      h2 {
+      text-align: left; 
+      }
+      
+      ul.level2 {
+      list-style-type:circle;
+      }
+      
+      figure div img{
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      }
+      
+      figcaption p{
+      text-align: center;
+      }
+      
+      .bordeNegro{
+      border-style:solid;
+      border-width:5px;
+      border-color: black;
+      }
+      
+      section {
+      padding: 0 20px 20px;
+      margin: 0 0 30px;
+      border: 2px solid black;
+      border-radius: 10px;
+      -moz-border-radius: 10px;
+      -webkit-border-radius: 10px;
+      }
+
+      .header.white2{
+      	background-color: white;
+      }
+      
+    </style> 
+  </head> 
+  <body> 
+
+    <header> 
+    
+    <!-- BEGIN ADD, 21/05/09; to comply with UC3M corporate image requirements --> 
+    <div class="headerBorderUc3mblue"></div> 
+    <div class="header white2"> 
+      <a href="http://www.uc3m.es/"> 
+	<img class="logos logoleft" src="http://www.it.uc3m.es/imag/EscudoLogoCorporativo.png" alt="Universidad Carlos III de Madrid" /> 
+      </a> 
+      <a href="http://www.it.uc3m.es"> 
+	<img class="logos logoright" src="http://www.it.uc3m.es/imag/SpanishLogoIT.png" alt="Departamento de Ingeniería Telemática" /> 
+      </a> 
+    </div> 
+    <div class="headerBorderUc3mblue"></div> 
+    <!-- END ADD 21/05/09 --> 
+    
+		
+    <!-- Tabla encabezado departamento --> 
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000"> 
+      <tr> 
+	<td> 
+	  <table width="100%" border="0" cellspacing="1" cellpadding="0">  	
+	    <tr> 
+	      <td bgcolor="#CCD0D6" width="2000" height="22"> 
+		<div align="right"><a href="http://www.it.uc3m.es/localizacion/localizacion.htm" class="azul">Localizaci&oacute;n</a> 
+		  | <a href="#"></a><a href="http://www.it.uc3m.es/personal/directorio.htm"><span class="rojo">Personal</span></a> 
+		  | <a href="http://www.it.uc3m.es/docencia/docencia.htm" class="azul">Docencia</a> 
+		  | <a href="http://www.it.uc3m.es/investigacion/investigacion.htm" class="azul">Investigaci&oacute;n</a> 
+		  | <a href="http://www.it.uc3m.es/novedades/novedades.htm" class="azul">Novedades</a> 
+		  | <a href="http://www.it.uc3m.es/intranet/intranet.htm" class="azul">Intranet</a> 
+		  &nbsp;&nbsp;</div> 
+	      </td> 
+	    </tr> 
+	  </table> 
+	</td> 
+      </tr> 
+    </table> 
+    <!-- Tabla encabezado departamento (fin) --> 
+    
+    <!-- Navegación --> 
+    <nav> 
+      <p class="nav">
+	<a class="azul" href="http://www.it.uc3m.es/index.html">Home</a> / 
+	<a class="azul" href="http://www.it.uc3m.es/docencia/docencia.htm">Docencia</a> / 
+	<a class="azul" href="http://www.it.uc3m.es/docencia/grado-audiovisuales.html">Grado en Ingeniería de Sistemas Audiovisuales</a> / 
+	<a class="azul" href="http://www.it.uc3m.es/rcrespo/docencia/amm/1011/">Aplicaciones Multimedia</a> 
+      </p> 
+    </nav> 
+    <!-- Navegación (fin) --> 
+    
+    <hgroup>
+      <h1>Pr&aacute;ctica 1: Introducci&oacute;n a HTML 5</h1> 
+      <h1>Diseño de una página web básica con HTML y CSS</h1>
+    </hgroup>
+
+    </header> 
+
+    <section name="ej1"> 
+      <!-- autor: Raquel M. Crespo García -->
+      <h2>Ejercicio 1: Análisis de una página web</h2> 
+      <p>
+	En este ejercicio se pide que analices el código fuente de una página web sencilla. En concreto, la <a href="../index.html">página web de la asignatura</a>.
+      </p>
+
+      <h3 class="minititulo">Apartado 1: Análisis del aspecto de la página</h3> 
+
+      <p>
+	En primer lugar, revisa el aspecto general de la página: 
+      </p>
+      <ul>
+	<li>Analiza la estructura y contenido de la página:
+	<ul>
+	  <li>Qué información contiene y cómo está estructurada.</li>
+	  <li>Piensa qué etiquetas utilizarías. </li>
+	</ul>
+	</li>
+	<li>Analiza el formato y presentación:
+	<ul>
+	  <li>¿Qué cambios de formato identificas?</li>
+	  <li>¿Cómo los implementarías?</li>
+	  <li>En concreto, fíjate en dos elementos y piensa cómo los implementarías:
+	    <ul>
+	      <li>La marca ¡NUEVO! que resalta las noticias.</li>
+	      <li>La tabla de planificación, que marca en distintos colores las sesiones dependiendo del tipo de clases.</li>
+	    </ul>
+	  </li>
+	</ul>
+	</li>
+      </ul>
+
+
+      <h3 class="minititulo">Apartado 2: Análisis de la implementación</h3> 
+
+      <p>
+	Una vez familiarizado con el diseño de la página, visualiza el código fuente para analizar la implementación. 
+      </p>
+      <ul>
+	<li>Sin contar las imágenes, ¿cuántos ficheros se utilizan para definir la página?</li>
+	<li>En el fichero <em>index.html</em>, revisa las etiquetas HTML utilizadas. Compáralas con las que habías seleccionado tú y justifica qué solución es más apropiada en cada caso.</li>
+	<li>¿Qué otros ficheros se utilizan para la implementación? Indica su nombre y extensión.</li>
+	<li>Abre uno de los ficheros CSS enlazados desde <em>index.html</em>. ¿Por qué la sintaxis es distinta?</li>
+	<li>¿Por qué crees que se utilizan dos ficheros CSS en vez de agrupar todas las reglas en uno?</li>
+	<li>Analiza cómo se especifica el formato de un elemento concreto. Por ejemplo, ¿cómo se hace para que las tablas tengan distintos formatos?</li>
+      </ul>
+      
+      <h3 class="minititulo">Apartado 3: Mejoras HTML 5</h3> 
+
+      <p>
+	HTML 5 introduce nuevas etiquetas para definir la estructura y contenido de una página web. En este apartado veremos cómo se aplicarían en la página con la que estamos trabajando.
+      </p>
+      <ul>
+	<li>La información de la página se estructura en varios bloques: objetivos, programa, planificación, evaluación, etc. ¿Qué etiqueta HTML 5 usarías para definir cada uno de ellos?</li>
+	<li>Una de las ventajas de la etiqueta &lt;NAV&gt; es que mejora la accesibilidad. ¿En qué parte (o partes) de la página la utilizarías?</li>
+	<li>¿En qué parte (o partes) de la página usarías la etiqueta &lt;ARTICLE&gt;? ¿Por qué?</li>
+      </ul>
+
+    <section name="entregable"> 
+      <h3 class="minititulo">Cuestionario entregable</h3> 
+      <p><a href="https://aulaglobal2.uc3m.es/mod/quiz/view.php?id=899894">Cuestionario en Aula Global</a></p>
+      <p>Se recomienda que cada componente de la pareja abra sesión en AG en un navegador distinto para que podáis rellenar ambos el cuestionario.</p>
+    </section>
+
+      
+    </section>	
+
+    <section name="ej2"> 
+      <!-- autor: Raquel M. Crespo García -->
+      <h2>Ejercicio 2: Diseño y desarrollo de una página web</h2> 
+
+      <p>
+	A lo largo del curso, se pide que desarrolléis dos proyectos en equipo. 
+	El objetivo de este ejercicio es diseñar la página web de dicho equipo, como si de una empresa se tratara. 
+      </p>
+
+      <h3 class="minititulo">Diseño</h3>
+      <p>
+	En primer lugar, pensad (¡sin escribir aún código!) qué información queréis publicar: nombre de la empresa, logo, información de contacto, personal, objetivos, áreas de trabajo, productos, etc. Dibujad en papel un diseño esquemático. 
+      </p>
+
+      <h3 class="minititulo">Contenidos</h3>
+      <p>
+	A continuación, plasmad dicha información de forma estructurada en un fichero HTML. 
+      </p>
+		
+      <p>
+	Crea un fichero de texto plano, con extensión <em>html</em>. 
+	Puedes usar cualquier editor de texto plano o bien Dreamweaver, que es un editor específico de páginas web. Si usas Dreamweaver, asegúrate de utilizar la pestaña de edición de código fuente.
+      </p>
+		
+      <p>
+	Estructura la información utilizando las etiquetas adecuadas (no te preocupes por ahora por el formato):
+      </p>
+      <ul>
+	<li>Utiliza una etiqueta <em>header</em> para agrupar la información genérica de la empresa.</li>
+	<li>Utiliza un elemento <em>nav</em> para definir el menú de navegación de la página, con enlaces a los distintos subapartados.</li>
+	<li>Utiliza elementos <em>article</em> para encapsular contenidos susceptibles de ser sindicados por RSS (por ejemplo, ofertas de trabajo, alertas de nuevos productos, noticias sobre la empresa...)</li>
+	<li>Utiliza elementos <em>section</em> para definir los distintos bloques de información.</li>
+	<li>Utiliza encabezados de distintos niveles para definir los títulos.</li>
+	<li>Asegúrate de incluir enlaces (tanto a otros puntos de la página como a páginas externas) e imágenes.</li>
+	<li>Utiliza una etiqueta <em>footer</em> para definir el pie de página.</li>
+	<li>Añade metadatos a la página: título, sistema de codificación (utf-8), autor, etc.</li>
+      </ul>
+
+      <p>
+	Visualiza la página web creada. Observa que se aplica el formato por defecto. 
+      </p>
+
+      <h3 class="minititulo">Presentación (formato)</h3>
+      <p>
+	<strong>Recuerda que un buen diseño web separa el contenido de la presentación.</strong> Por tanto, en HTML 5 se recomienda especificar el formato mediante reglas CSS, prescindiendo de etiquetas de formato correspondientes a versiones anteriores del lenguaje. 
+      </p>
+
+      <p>
+	Las reglas CSS pueden definirse incrustadas en la propia página HTML, mediante la etiqueta <em>STYLE</em> en la cabecera de la página (<em>head</em>). Escribe las reglas CSS necesarias para:
+      </p>
+      <ul>
+	<li>Definir el color de fondo de la página.</li>
+	<li>Cambiar el tipo de letra.</li>
+	<li>Cambiar el color de los títulos (encabezados)</li>
+      </ul>
+
+      <p>
+	La principal desventaja de definir las reglas CSS incrustadas en la propia página HTML, mediante la etiqueta <em>STYLE</em>, es que habría que repetirlas para cada una de las páginas de un sitio web si se quiere mantener un estilo uniforme. Por ello, lo más habitual es definirlas en un fichero aparte. 
+      </p>
+
+      <p>
+	Crea un nuevo fichero, también de texto plano, pero con extensión CSS. 
+	Puedes editarlo con cualquier editor de texto plano, incluido Dreamweaver. 
+	Copia las reglas CSS que habías definido al nuevo fichero y elimínalas del fichero html. 
+	Enlaza el fichero CSS desde el fichero HTML, con la etiqueta <em>LINK</em> (en la cabecera <em>head</em>). 
+	Comprueba que el resultado es el mismo que cuando estaban definidas en la propia página. 
+      </p>
+
+      <p>
+	Añade una regla para eliminar el subrayado de los enlaces. 
+	A cambio, define (mediante reglas css) un formato que los resalte en vez del subrayado de modo que el usuario pueda localizarlos fácilmente. 
+      </p>
+
+      <p>
+	Añade libremente las reglas necesarias para formatear la página de acuerdo a tu diseño original. 
+      </p>
+	
+
+    </section>	
+    
+    
+    <section name="ej3"> 
+      <!-- autor: Israel Gutierrez Rojas -->
+      <h2>Ejercicio Complementario: Formularios</h2> 
+      <p> 
+	El objetivo de esta ejercicio es dise&ntilde;ar un formulario web que pueda servir a modo de formulario de registro de usuarios de la empresa anterior.
+	El formulario debe tener las siguientes caracter&iacute;sticas:
+      </p> 
+      <ul> 
+	<li> 
+	  Estructuraci&oacute;n del contenido usando nuevos elementos HTML5. Usar&aacute;, al menos, los elementos header, 
+	  section, footer
+	</li> 
+	<li> 
+	  Uso de campos de formulario nuevo en HTML5. Al menos se usar&aacute;n campos de tipo email, tel, date, range, number
+	</li> 
+	<li> 
+	  Se comprobar&aacute; el contenido del campo de tel&eacute;fono mediante nuevos atributos de HTML5 y 
+	  el uso de expresiones regulares (no mediante scripts JavaScript).
+	</li> 
+	<li> 
+	  Se har&aacute; uso de hojas de estilo CSS para
+	  <ul class="level2"> 
+	    <li>poner borde rojo a los campos no v&aacute;lidos</li> 
+	    <li>poner boder verde al campo de email cuando su contenido sea v&aacute;lido</li> 
+	    <li>usar el efecto espejo sobre alg&uacute;n elemento</li> 
+	  </ul> 
+	</li> 
+	<li> 
+	  Se programar&aacute; un script en JavaScript para que al enviar el formulario se muestre una alerta (alert) 
+	  agradeciendo al usuario su participaci&oacute;n. Por ejemplo, "Gracias Señor XX por su participaci&oacute;n", 
+	  siendo XX el nombre que el usuario introdujo en un campo del formulario.					
+	</li> 
+      </ul> 
+      
+      <p>
+	<figure> 
+	  <div class="bordeNegro"> 
+	    <img height="509.0" src="images/image0.png" width="718.0" /><br /> 
+	    <img height="459.0" src="images/image1.png" width="717.0" /> 
+	  </div> 
+	  <figcaption><p><em>Figura 1</em>: Ejemplo de formulario similar al que debe programarse</p></figcaption> 
+      </figure></p> 
+      
+      <h3 class="minititulo">Recomendaciones</h3> 
+      <ul> 
+	<li> 
+	  Antes de comenzar a programar, dedicad 5 minutos a definir (&iquest;en papel?) la estructura del formulario y los 
+	  campos que vais a necesitar.
+	</li> 
+	<li> 
+	  Existen varios editores de HTML en las aulas. Aunque puede utilizarse cualquier editor de texto plano, se recomienda el uso de Dreamweaver. 
+	</li> 
+	<li> 
+	  Durante la fase de implementación, se recomienda el uso de las herramientas para desarrolladores de Google Chrome, 
+	  accesibles desde el men&uacute; Herramientas.
+	</li> 
+      </ul>
+
+    <section name="self-assessment"> 
+      <h3 class="minititulo">Preguntas de Autoevaluaci&oacute;n</h3> 
+      <p>Tras la finalizaci&oacute;n de la pr&aacute;ctica, deber&iacute;ais ser capaces de 
+	contestar a estas preguntas:</p> 
+      <ul> 
+	<li>Describe las ventajas de los siguientes artefactos de HTML5 que no estaban en versiones anteriores:</li> 
+	<ul class="level2"> 
+	  <li>Campos de tipo tel, email, number, search, date, month, week, time</li> 
+	  <li>Los atributos del elemento input: required, autofocus</li> 
+	</ul> 
+	<li>Enumera las diferencias y el uso espec&iacute;fico de los siguientes artefactos HTML5:</li> 
+	<ul class="level2"> 
+	  <li>Atributos placeholder y value del elemento input</li> 
+	  <li>Campos de tipo radio y checkbutton</li> 
+	  <li>Elementos meter y progress</li> 
+	</ul> 
+	<li> 
+	  &iquest;Para qu&eacute; sirve el atributo pattern del elemento input? &iquest;Qu&eacute; es una expresi&oacute;n 
+	  regular? &iquest;Puede citar las ventajas de utilizar este atributo respecto a hacer la validaci&oacute;n en el 
+	  lado del servidor?
+	</li> 
+	<li> 
+	  Al pulsar el bot&oacute;n de enviar, &iquest;a qu&eacute; URL se accede? &iquest;se env&iacute;an los datos en 
+	  el formato adecuado?
+	</li> 
+      </ul> 
+    </section> 
+	
+    </section>     
+    
+    <section id="refs"> 
+      <h2>Referencias</h2> 
+      <ul> 
+	<li><a href="http://www.w3schools.com/html5/default.asp">Tutorial de HTML5 en w3schools</a></li> 
+	<li><a href="http://www.w3.org/TR/html5/forms.html">Formularios en el draft de HTML5</a></li> 
+	<li><a href="http://www.it.uc3m.es/rcrespo/docencia/css/frames.html">Introducci&oacute;n a CSS</a></li> 
+	<li>Efecto espejo en <a href="http://www.phpguru.org/webkit-css-reflections">webkit</a> (no disponible aún para Mozilla)</li> 
+	<li><a href="http://www.librosweb.es/javascript/">Introducci&oacute;n a Javascript</a></li> 
+	<li><a href="http://www.librosweb.es/javascript/capitulo6/modelo_basico_de_eventos1.html"> 
+	    Modelo de eventos b&aacute;sico en Javascript</a></li> 
+      </ul> 
+    </section> 
+    
+    <footer> 
+      <figure> 
+	<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/es/"> 
+	  <img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/es/88x31.png" /></a> 
+	<figcaption>Este <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text" rel="dct:type">obra</span> 
+	  está bajo una <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/es/">licencia Creative Commons 
+	    Reconocimiento-CompartirIgual 3.0 España</a>.</figcaption> 
+      </figure> 
+      <details> 
+	<summary>Este recurso data de <time datetime="2012-01-24">2012-01-24</time>.</summary> 
+      </details> 
+      <br /><br /><br /> 
+    </footer>
+    <script type="text/javascript" src="../js/socket.io.min.js"></script>
+	<script type="text/javascript" src="../js/classon.js?session=p1"></script>
+  </body> 
+</html>
+
+<!--
+Preguntas:
+
+** Indica aspectos mejorables de la página analizada (respecto a las buenas prácticas de diseño web)
+  - CSS en la página, que probablemente haya que repetir en otras páginas
+  - formato embebido en el código html
+  
+** qué elemento usarías para indicar el autor de la página. Escribe el código (con vuestros nombres) y dónde lo colocarías
+
+** qué elemento se usa/usarías para incluir un menú de navegación en la página
+
+** 
+-->

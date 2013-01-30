@@ -7,8 +7,9 @@ var session = src.substr(src.indexOf('=')+1);
 
 //Load sections
 var sections = document.getElementsByTagName("section");
-sections = $("div.activity > div.workplan > div.section");
-$.merge(sections, $("div.evaluation"));
+sections = Array.prototype.slice.call(sections);
+//sections = $("div.activity > div.workplan > div.section");
+//$.merge(sections, $("div.evaluation"));
 
 //Create navigation menu
 var menu = document.createElement("div");
@@ -18,71 +19,74 @@ questions_div.id = "questions";
 questions_div.className = "hide";
 //var bg = document.createElement("div");
 //bg.id = "bg";
-//var content = document.createElement("div");
-//content.id = "content";
+var content = document.createElement("div");
+content.className = "content";
 
-var header = document.getElementsByTagName("header")[0];
-header = $("div.workplan > div.titlepage")[1];
-var parent = $("div.chapter")[0];
-parent.className += " content";
-parent.parentNode.style.overflow = "auto";
+//var header = document.getElementsByTagName("hgroup")[0];
+//header = $("div.workplan > div.titlepage")[1];
+var parent = $("body")[0];
+//parent.className += " content";
+//parent.parentNode.style.overflow = "auto";
 
-parent.parentNode.insertBefore(menu, parent);
-parent.parentNode.insertBefore(questions_div, parent);
+//parent.parentNode.insertBefore(menu, parent);
+//parent.parentNode.insertBefore(questions_div, parent);
 //parent.parentNode.insertBefore(bg, parent);
 //parent.parentNode.insertBefore(content, parent);
+sections[0].parentNode.insertBefore(menu, sections[0]);
+sections[0].parentNode.insertBefore(questions_div, sections[0]);
+//sections[0].parentNode.insertBefore(bg, sections[0]);
+sections[0].parentNode.insertBefore(content, sections[0]);
 
-var timeInfo = $("div.adagio_submit_form_duration_select")[1];
-timeInfo.classList.add("hide");
+//var timeInfo = $("div.adagio_submit_form_duration_select")[1];
+//timeInfo.classList.add("hide");
 
 //content.appendChild(header);
 
 var menuItems = []; //menu items array
+var badSections = [];
 for(var i=0; i<sections.length; i++){
 	if(sections[i].id != "refs" && sections[i].id != "bash"){
 		var itemName;
-		if(sections[i].getElementsByTagName("h4")[0]){
+		if(sections[i].getElementsByTagName("h2")[0]){
+			itemName = sections[i].getElementsByTagName("h2")[0].childNodes[0].nodeValue; //collect section names
+			//console.log(itemName);
+			//itemName = itemName.childNodes[1].childNodes[0].nodeValue;
+			sections[i].id = "s"+i;
+			//var itemName = sections[i].getElementsByTagName("h2")[0].childNodes[0].nodeValue; //collect section names
+			//Create menu item
+			var menuitem = document.createElement("div");
+			menuitem.innerHTML = "<a class='menuitem' href='#"+sections[i].id+"'>"+itemName+"</a> ";
+			menuitem.className = "menuitem";
+			menu.appendChild(menuitem);
+			//Create led indicator
+			var progress = document.createElement("div");
+			//progress.innerHTML = "<img src='images/white-off-16.png' />";
+			progress.className = "progressIcon off";
+			menu.appendChild(progress);
+			menuItems.push(menuitem);
+			sections[i].classList.add("hide");
+			content.appendChild(sections[i]); //append sections to the new content div
+		}else{
+			badSections.push(i);
+		}
+		/*if(sections[i].getElementsByTagName("h4")[0]){
 			itemName = sections[i].getElementsByTagName("h4")[0];
 		}else{
 			itemName = sections[i].getElementsByTagName("h3")[0];
-		}
-		//console.log(itemName);
-		itemName = itemName.childNodes[1].childNodes[0].nodeValue;
-		sections[i].id = "s"+i;
-		//var itemName = sections[i].getElementsByTagName("h2")[0].childNodes[0].nodeValue; //collect section names
-		//Create menu item
-		var menuitem = document.createElement("div");
-		menuitem.innerHTML = "<a class='menuitem' href='#"+sections[i].id+"'>"+itemName+"</a> ";
-		menuitem.className = "menuitem";
-		menu.appendChild(menuitem);
-		//Create led indicator
-		var progress = document.createElement("div");
-		//progress.innerHTML = "<img src='images/white-off-16.png' />";
-		progress.className = "progressIcon off";
-		menu.appendChild(progress);
-		menuItems.push(menuitem);
-		sections[i].classList.add("hide");
+		}*/
 
+	}else{
+		content.appendChild(sections[i]); //append sections to the new content div
 	}
-	//content.appendChild(sections[i]); //append sections to the new content div
+	
 }
 
-//Waypoints
-/*
-$('section').waypoint(function(event, direction){
-	for(var i=0; i<sections.length; i++){
-		if(sections[i]==this){
-			var link = document.getElementsByClassName("menuitem")[i];
-			link.classList.add("selected");
-			$('.selected').removeClass('selected');
-			break;
-		}
-	}
+badSections.forEach(function(index){
+	sections.splice(index,1);
 });
-*/
 
-//var footer = document.getElementsByTagName("footer")[0];
-var footer = $("#adagio_page_footer")[0];
+var footer = document.getElementsByTagName("footer")[0];
+//var footer = $("#adagio_page_footer")[0];
 footer.style.clear="both";
 //content.appendChild(footer);
 //footer = $("div.adagio_submit_form_duration_select")[1];
@@ -217,9 +221,9 @@ function indicateProgress(back){
 		if(currentSection==(menuItems.length-1)){
 			progressdiv.removeChild(progressdiv.lastElementChild);
 		}else{
-			if(currentSection==menuItems.length-2){
-				timeInfo.classList.add("hide");
-			}
+			// if(currentSection==menuItems.length-2){
+			// 	timeInfo.classList.add("hide");
+			// }
 			sections[currentSection+1].classList.add("hide");
 			var nextIcon = menuItems[currentSection+1].nextElementSibling;
 			nextIcon.removeEventListener("click", finishSection);
@@ -265,9 +269,9 @@ function indicateProgress(back){
 			         scrollTop: $("#"+sections[currentSection].id).offset().top
 			     }, 2000);
 			}
-			if(currentSection==menuItems.length-1){
-				timeInfo.classList.remove("hide");
-			}
+			// if(currentSection==menuItems.length-1){
+			// 	timeInfo.classList.remove("hide");
+			// }
 			var currentIcon = menuItems[currentSection].nextElementSibling;
 			currentIcon.addEventListener("click", finishSection);
 			currentIcon.className = "progressIcon progress active";
