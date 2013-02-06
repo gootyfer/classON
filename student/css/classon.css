@@ -207,7 +207,7 @@ meter{
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#575757', endColorstr='#888888');
 }
 
-/* white */
+/* white 
 .white {
 	color: #606060;
 	border: solid 1px #b7b7b7;
@@ -228,7 +228,7 @@ meter{
 	background: -moz-linear-gradient(top,  #ededed,  #fff);
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#ffffff');
 }
-
+*/
 /* orange */
 .orange {
 	color: #fef4e9;
