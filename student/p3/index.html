@@ -81,11 +81,7 @@
 			</p>
 			<h3>Objetivo</h3>
 			<p>
-				En el objeto video de HTML5 no existe soporte nativo para subtítulos por el momento, aunque se está estudiando el tema en 
-				diversas discusiones del W3C y WHATWG (
-				<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/video.html#the-track-element">posible implementación</a>
-				). Olvidándonos de ese posible soporte futuro, esta práctica consiste en, dado un video y un fichero de subtítulos en formato SRT, 
-				crear una página web que reproduzca el video y los subtítulos sincronizados.
+			 En HTML5 se ha añadido soporte nativo para subtítulos recientemente, mediante el elemento <a href="http://www.w3.org/wiki/HTML/Elements/track">track</a>, que permite especificar pistas sincronizadas externas para elementos multimedia (audio y video) (puedes ver aquí un <a href="http://www.html5rocks.com/en/tutorials/track/basics/">ejemplo de aplicación</a>). Olvidándonos de ese soporte nativo, esta práctica consiste en, dado un video y un fichero de subtítulos en formato SRT, crear una página web que reproduzca el video y los subtítulos sincronizados.
 			</p>
 			<p class="minititulo">Recomendaciones</p>
 			<ul>
@@ -103,7 +99,7 @@
 				En primer lugar vamos a crear el marcado HTML correspondiente a la página, que constará de 3 elementos:
 			</p>
 			<ul>
-				<li>El elemento <code>video</code> de HTML5 para reporducir el video. Por ejemplo, podéis usar 
+				<li>El elemento <code>video</code> de HTML5 para reproducir el video. Por ejemplo, podéis usar 
 				este <a href="http://mooplay.challet.eu/media/video/sintel-1024-stereo.mp4">video de ejemplo</a>.
 				Jugad con los distintos atributos vistos en la clase de teoría (controles, precarga, etc.)</li>
 				<li>Un objeto contenedor de HTML5 (<code>div</code>, <code>span</code>) donde aparecerá el texto de los subtítulos, 
