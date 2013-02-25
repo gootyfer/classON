@@ -1,419 +1,193 @@
+<!DOCTYPE html>
 <html>
 <head>
   <title>Aplicaciones Multimedia</title>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <meta name="author" content="Raquel M. Crespo Garc√≠a, rcrespo@it.uc3m.es" />
-  <link REL="SHORTCUT ICON" HREF="http://www.uc3m.es/favicon.ico" /> 
-  
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+  <meta name="author" content="Israel GutiÈrrez Rojas, igrojas@it.uc3m.es" />
+  <link REL="SHORTCUT ICON" HREF="http://www.uc3m.es/favicon.ico"> 
   <link href="http://www.it.uc3m.es/rcrespo/docencia/asignatura.css" rel="stylesheet" type="text/css" />
   <link href="http://www.it.uc3m.es/estilo.css" rel="stylesheet" type="text/css" />
 <link href="http://www.it.uc3m.es/rcrespo/docencia/amm/1112/p3/css/amm.css" rel="stylesheet" type="text/css" />
-		<link href="../css/classon.css" rel="stylesheet" type="text/css" />
+<link href="../css/classon.css" rel="stylesheet" type="text/css" />
 		<link href="../css/jquery-ui.css" rel="stylesheet" type="text/css" />
-		<style TYPE="text/css">
-  <!--
-  @import url(http://www.it.uc3m.es/rcrespo/docencia/apuntes.css);
-  --> 
-
-  .note {
-    /* color: navy; */
-    font-style: italic;
-  }
-  .opt {
-    color: DimGrey;
-  }
-  .code {
-    font-style: italic;
-  }
-  p.pimg {
-    text-align : center;
-  }
-  img {
-    border : solid gray;
-  }
-  </style> 
-  
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		<script type="text/javascript" src="../js/jquery.blockUI.js"></script>
-		</head>
+
+
+</head>
 
 <body>
 
 <!-- BEGIN ADD, 21/05/09; to comply with UC3M corporate image requirements -->
-		<div class="headerBorderUc3mblue"></div>
-		<div class="header white">
-		  <a href="http://www.uc3m.es/">
-		  	<img class="logos logoleft" src="http://www.it.uc3m.es/imag/EscudoLogoCorporativo.png" alt="Universidad Carlos III de Madrid" />
-		  </a>
-	      <a href="http://www.it.uc3m.es">
-	      	<img class="logos logoright" src="http://www.it.uc3m.es/imag/SpanishLogoIT.png" alt="Departamento de Ingenier√≠a Telem√°tica" />
-	      </a>
-		</div>
-		<div class="headerBorderUc3mblue"></div>
-		<!-- END ADD 21/05/09 -->
-		
-		
-		<!-- Tabla encabezado departamento -->
-		<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
-		  <tr>
-		    <td>
-		      <table width="100%" border="0" cellspacing="1" cellpadding="0">  	
-		        <tr>
-		          <td bgcolor="#CCD0D6" width="2000" height="22">
-		            <div align="right"><a href="http://www.it.uc3m.es/localizacion/localizacion.htm" class="azul">Localizaci&oacute;n</a>
-		              | <a href="#"></a><a href="http://www.it.uc3m.es/personal/directorio.htm"><span class="rojo">Personal</span></a>
-		              | <a href="http://www.it.uc3m.es/docencia/docencia.htm" class="azul">Docencia</a>
-		              | <a href="http://www.it.uc3m.es/investigacion/investigacion.htm" class="azul">Investigaci&oacute;n</a>
-		              | <a href="http://www.it.uc3m.es/novedades/novedades.htm" class="azul">Novedades</a>
-		              | <a href="http://www.it.uc3m.es/intranet/intranet.htm" class="azul">Intranet</a>
-		              &nbsp;&nbsp;</div>
-		          </td>
-		        </tr>
-		      </table>
-		    </td>
-		  </tr>
-		</table>
-		<!-- Tabla encabezado departamento (fin) -->
-		
-		<!-- Navegaci√≥n -->
-		<nav>
-			<p class="nav"><a class="azul"
-			href="http://www.it.uc3m.es/index.html">Home</a> / <a class="azul"
-			href="http://www.it.uc3m.es/docencia/docencia.htm">Docencia</a> / <a
-			class="azul" href="http://www.it.uc3m.es/docencia/grado-audiovisuales.html">Grado en Ingenier√≠a de Sistemas Audiovisuales</a> / 
-			<a class="azul" href="http://www.it.uc3m.es/rcrespo/docencia/amm/1011/">Aplicaciones Multimedia</a>
-			</p>
-		</nav>
-		<!-- Navegaci√≥n (fin) -->
+<div class="headerBorderUc3mblue">&nbsp;</div>
+<div class="header white">
+  <table class="header white">
+  <tr>
+  <td width="25%"><a href="http://www.uc3m.es/"><img class="logos logoleft" src="http://www.it.uc3m.es/imag/EscudoLogoCorporativo.png" alt="Universidad Carlos III de Madrid"></a></td>
+  <td class="header txtcntr" align="center">
+  <span class="minititulo">Aplicaciones Multimedia - Curso 2012-13</a>
+  <!-- <a href="/rcrespo/docencia/amm/1112/" class="minititulo">Aplicaciones Multimedia - Curso 2011-12</a> -->
+  </td>
+  <td width="25%"><a href="http://www.it.uc3m.es"><img class="logos logoright" src="http://www.it.uc3m.es/imag/SpanishLogoIT.png" alt="Departamento de IngenierÌa Telem·tica"></td>
+</div>
+<div class="headerBorderUc3mblue"></div>
+<!-- END ADD 21/05/09 -->
+
+
+<!-- Tabla encabezado departamento -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+  <tr>
+    <td>
+
+<!-- BEGIN SUBSTITUTE, 21/05/09 -->
+<!--
+      <table width="100%" border="0" cellspacing="1" cellpadding="0" height="50">
+-->
+      <table width="100%" border="0" cellspacing="1" cellpadding="0">  
+<!-- END SUBSTITUTE, 21/05/09 -->
+
+
+        <tr>
+          <td bgcolor="#CCD0D6" width="2000" height="22">
+            <div align="right"><a href="http://www.it.uc3m.es/localizacion/localizacion.htm" class="azul">Localizaci&oacute;n</a>
+              | <a href="#"></a><a href="http://www.it.uc3m.es/personal/directorio.htm"><span class="rojo">Personal</span></a>
+              | <a href="http://www.it.uc3m.es/docencia/docencia.htm" class="azul">Docencia</a>
+
+              | <a href="http://www.it.uc3m.es/investigacion/investigacion.htm" class="azul">Investigaci&oacute;n</a>
+              | <a href="http://www.it.uc3m.es/novedades/novedades.htm" class="azul">Novedades</a>
+              | <a href="http://www.it.uc3m.es/intranet/intranet.htm" class="azul">Intranet</a>
+              &nbsp;&nbsp;</div>
+          </td>
+
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<!-- Tabla encabezado departamento (fin) -->
+
+
+<!-- NavegaciÛn -->
+<p class="nav"><a class="azul"
+href="http://www.it.uc3m.es/index.html">Home</a> / <a class="azul"
+href="http://www.it.uc3m.es/docencia/docencia.htm">Docencia</a> / <a
+class="azul" href="http://www.it.uc3m.es/docencia/grado-audiovisuales.html">Grado en IngenierÌa de Sistemas Audiovisuales</a> / <a class="azul" href="/rcrespo/docencia/amm/1112/">Aplicaciones Multimedia</a> <!-- <span class="peq">Aplicaciones Multimedia</span> -->
+</p>
+<!-- NavegaciÛn (fin) -->
+
 <header>
-<h1>HTML5: Im√°genes vectoriales SVG</h1>
+<h1>HTML5: Aspectos avanzados</h1>
 </header>
 
+<!-- Demos -->
 <section id="intro">
-<h2 class="minititulo">Objetivo: juego de reconocimiento de formas</h2>
-
-<div class="boxed">
+<h2 class="minititulo">Objetivo: realizar un programa de captura y procesaro de imagen de video, estilo instagram</h2>
 
 <p>
-  SVG (Scalable Vector Graphics) es un lenguaje de representaci√≥n gr√°fica 2D que permite combinar gr√°ficos vectoriales, im√°genes <em>"rasterizadas"</em> (basadas en mapas de bits) y texto. SVG incluye tambi√©n un modelo de eventos que permite escribir scripts manejadores (generalmente Javascript) que manipulan el modelo de documento DOM del fichero SVG. As√≠ como elementos de animaci√≥n nativos que permiten animar el gr√°fico sin necesidad de scripts. 
+ HTML5 introduce varios aspectos avanzados, desde almacenamiento offline y comunicaciÛn en tiempo real, hasta acceso al hardware y selecciÛn de elementos en JavaScript.
 </p>
 
 <p>
- En esta pr√°ctica vamos a usar SVG para implementar un juego de reconocimiento de formas.
+ En esta pr·ctica vamos a hacer uso de la API de acceso a medios locales (MediaStream) para acceder a una webcam conectada al equipo desde nuestro navegador. El objetivo ser· desarrollar un aplicaciÛn similar a Instagram, que permita al usuario probar distintos efectos en el video capturado con una webcam y hacer una captura de la imagen de la c·mara con un efecto aplicado. 
 </p>
 
-<p>
-  Se trata del t√≠pico juego infantil en el que hay bloques y moldes con distintas formas (c√≠rculo, tri√°ngulo, cuadrado, estrella, etc.). Se trata de encajar cada forma en el molde correspondiente.
-</p>
+<p>El correcto funcionamiento de las webcam en la sala de ordenadores ha sido probado en la instalaciÛn de Windows 7 de los equipos administrados por el departamento de inform·tica. PodÈis realizar la pr·ctica en el entorno que quer·is, pero quiz· teng·is que instalar los drivers de las webcam para que funcione.</p>
 
-<p>
- En el apartado final (<a href="#refs">Referencias</a>) puedes encontrar enlaces a diversos recursos: documentaci√≥n, tutoriales y algunos ejemplos demostrativos.
-</p>
-
-</div>
 </section>
+
 <section id="step1">
-<h2 class="minititulo">Paso 1: crear un fichero SVG</h2>
-
-<div class="boxed">
+<h2 class="minititulo">Paso 1: acceso a medios locales</h2>
 
 <p>
-  En este caso vamos a crear nuestro gr√°fico en un fichero independiente. 
-  Recuerda que tambi√©n se puede crear empotrado en la propia p√°gina HTML. 
+  Como primer paso para la creaciÛn de nuestra aplicaciÛn, tendremos que acceder a los medios locales mediante el API MediaStream. Para ello, usaremos la funciÛn <em>navigator.webkitUserMedia</em> como se vio en <a href="http://www.it.uc3m.es/igrojas/amm/html5-avanzado/template/#35">clase de teorÌa</a>. Cuando el acceso al medio sea exitoso, habr· que vincular el stream creado con un elemento video que hayamos creado en el HTML de la p·gina mediante la funciÛn <em>webkitURL.createObject</em>, que crea una fuente de datos a partir del stream que podemos asignar como fuente(<em>src</em>) del elemento video.
 </p>
 
 <p>
-  Crea un fichero de texto plano con el esqueleto de un documento SVG. 
-  Ten cuenta que el gr√°fico deber√° tener un tama√±o total de 400 p√≠xeles de alto por 400 de ancho. 
+  Adem·s crearemos dos botones en la p·gina, uno para iniciar el acceso a medios (como se ha descrito en el p·rrafo anterior). Y otro apra detener el acceso, para lo cual borraremos la fuente del stream del elemento de video.
 </p>
-</div>
+
+<p>
+  Para que el acceso a medios funcione correctamente debe accederse a la p·gina desarrollada desde un servidor web. Para ello tenÈis varias alternativas:
+  <ul>
+    <li>Poner las p·ginas las p·ginas en el servidor web de vuestra cuenta de Telem·tica, en la carpeta ~/lib/www/ como explican en la <a href="http://www.etl.it.uc3m.es/Web_alumnos">wiki del equipo tÈcnico de laboratorio</a></li>
+    <li>Descargar un servidor web simple. Por ejemplo, podÈis descargar <a href="https://code.google.com/p/mongoose/">mongoose</a> y ponerlo en la carpeta donde estÈ vuestro cÛdigo HTML. Por defecto usa el puerto 8080 de la m·quina local que est· cerrado en vuestras m·quinas, usad <a href="mongoose.conf">este fichero de configuraciÛn</a> para poder acceder al servidor en <a href="http://localhost:5800/">http://localhost:5800/</a>.</li>
+  </ul>
+</p>
 </section>
+
 <section id="step2">
-<h2 class="minititulo">Paso 2: coordenadas y formas b√°sicas</h2>
+<h2 class="minititulo">Paso 2: uso del canvas para el procesado de la seÒal de video</h2>
 
-<div class="boxed">
-
-<p class="opt">
-  En este paso nos limitaremos simplemente a dibujar las figuras, con el tama√±o y en la posici√≥n adecuados, sin preocuparnos de aspectos como el color, relleno, etc. 
+<p>
+  En este apartado haremos uso del elemento <em>canvas</em> para procesar la seÒal de video que viene de la webcam. Para ello se crear·n dos elementos canvas: uno secundario para hacer el procesamiento de los datos, que no crearemos en el HTML sino en JavaScript porque no nos interesa mostrarlo en la p·gina. Y otro primario en la p·gina web donde mostraremos los resultados del procesamiento. Al crear los elementos canvas usaremos el mismo tamaÒo que para el elemento video, de forma que se haga un procesado para todos los pÌxeles del video.
 </p>
 
 <p>
-  La distribuci√≥n del espacio en la imagen seguir√° el patr√≥n que se muestra en la imagen.
-  Cada figura tendr√° como tama√±o 100x100 
-  (por ejemplo, un c√≠rculo tendr√° radio 50). 
-  El espacio de separaci√≥n entre regiones ser√° de 25.
-</p>
-
-<p class="pimg">
-  <img src="img/layout.png"  />
-</p>
-
-<p>
-  Dibuja un c√≠rculo en el centro de la imagen. Esta figura central ser√° la que deba encajarse en el molde correspondiente.
+  El procesamiento de la seÒal de video consta de los siguientes pasos:
+  <ul>
+    <li>En primer lugar, capturaremos el frame actual del elemento video y lo pintaremos en el canvas secundario. Para ello usaremos la funciÛn <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#drawing-images">drawImage</a> cuyo primer par·metro puede ser un elemento de video en cuyo caso captura el frame actual del video.</li>
+    <li>A continuaciÛn accederemos a la informaciÛn de los pÌxeles pintados en el canvas secundario. Para ello usaremos la funciÛn <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#pixel-manipulation">getImageData</a>, que nos devuelve un objeto cuyo atributo <em>data</em> es un array uni-dimensional con informaciÛn RGB de cada pÌxel de la imagen del canvas.</li>
+    <li>En tercer lugar haremos el procesado de pÌxeles sobre el array RGB para aplicar el efecto deseado: blanco y negro, negativo, sepia, etc. Para ello se proporciona una librerÌa JS (<a href="effects.js">effects.js</a>) con funciones que aplican varios efectos.</li>
+    <li>Finalmente, se pintar· el array RGB obtenido tras el procesamiento mediante la funciÛn <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#pixel-manipulation">putImageData</a> en el canvas primario, visible por el usuario.</li>
+  </ul>
 </p>
 
 <p>
-  Dibuja tres figuras m√°s en la parte inferior de la imagen (moldes). 
-  Una tiene que coincidir con la figura central (c√≠rculo). 
-  Dibuja adem√°s un rect√°ngulo y un tri√°ngulo como formas alternativas.
+  Para que en el canvas aparezca el video con el procesado requerido, tendremos que repetir el proceso anterior continuamente mientras el video se estÈ reproduciendo. Para ello usaremos alguna funciÛn que nos permita hacerlo cada cierto tiempo, como <em>setTimeout</em> o <em>setInterval</em>.
 </p>
-
-<p>
-  El resultado deber√≠a ser algo as√≠:
-</p>
-
-<p class="pimg">
-  <img src="img/formas-1.png" width="200" height="200" />
-</p>
-
-
-<div class="opt">
-<p>
-  <em>Posibles mejoras:</em> 
-</p>
-<ul>
-  <li>Prueba a dibujar otras figuras, por ejemplo una estrella.</li>
-</ul>
-</div>
-
-</div>
 </section>
+
 <section id="step3">
-<h2 class="minititulo">Paso 3: texto</h2>
-
-<div class="boxed">
+<h2 class="minititulo">Paso 3: AdecuaciÛn de la interfaz</h2>
 
 <p>
-  A√±ade en la parte superior el texto con el t√≠tulo del juego y los autores (etiqueta <span class="code">text</span>). 
-  Recuerda que la etiqueta <span class="code">tspan</span> permite dividir en texto en bloques, por ejemplo para dividir en l√≠neas. 
+  En este paso simplemente debÈis adecuar la interfaz al de una aplicaciÛn para realizar fotografÌas con efectos. Se sugieren realizar una serie de mejoras visuales con el objetivo de mejorar la experiencia del usuario:
+  <ul>
+    <li>Que el elemento video aparezca oculto para que el usuario sÛlo vea el video procesado.</li>
+    <li>Botones para la interacciÛn del usuario: inicio del video, para pararlo, para aplicar cada uno de los efectos, etc.</li>
+    <li>Un botÛn para tomar una instant·nea, que haremos funcionar en el paso siguiente.</li>
+  </ul>
 </p>
 
-<p class="note">
-  SVG permite usar CSS, sin embargo, el soporte es opcional para los visualizadores de SVG. No obstante, SVG define atributos de presentaci√≥n con el mismo nombre que los atributos CSS correspondientes, duplicando su funci√≥n.
-</p>
-
-<p class="pimg"><img src="img/formas-3.png" width="200" height="200" /></p>
-
-<div class="opt">
-<p>
-  <em>Posibles mejoras:</em> 
-</p>
-<ul>
-  <li>Usa atributos de presentaci√≥n basados en propiedades CSS para modificar el aspecto del texto, por ejemplo <span class="code">font-size</span>, <span class="code">font-weight</span>. </li>
-</ul>
-</div>
-
-</div>
 </section>
+
 <section id="step4">
-<h2 class="minititulo">Paso 4: color</h2>
+<h2 class="minititulo">Paso 4: Captura de la foto</h2>
 
-<div class="boxed">
-
-<p>Modifica el color de las figuras dibujadas, as√≠ como del texto. </p>
-
-<div class="note">
-
-<p> Recuerda que:</p>
-
-<p class="note">
-  Se puede definir el color de los elementos SVG mediante los atributos <span class="code">stroke</span> y <span class="code">fill</span>. <span class="code">stroke</span> define el color de l√≠nea (borde exterior). <span class="code">fill</span> define el color de relleno. Como valores, puede indicarse un color, <span class="code">none</span> o <span class="code">currentColor</span>. Todas las formas SVG (incluyendo los elementos de texto) tienen estos dos atributos.
-</p>
-
-<p class="note">
-  Adem√°s, puede especificarse el grado de transparencia mediante el atributo <span class="code">opacity</span> (o sus derivados <span class="code">fill-opacity</span>, <span class="code">stroke-opacity</span>, <span class="code">stop-opacity</span> -este √∫ltimo para gradientes-).
-</p>
-
-<p class="note">
-  Se pueden conseguir efectos de color m√°s complejos usando gradientes, patrones y m√°scaras. 
-</p>
-
-</div>
-
-<div class="opt">
 <p>
-  <em>Posibles mejoras:</em>
+  Finalmente desarrollaremos una funciÛn asociada al botÛn de tomar una fotografÌa. Para ello accederemos a los datos de la imagen del canvas primario cuando se pulse el botÛn mediante la funciÛn <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#dom-canvas-todataurl">toDataURL</a>. Con la URL obtenida, mostraremos la foto en un elemento imagen de la p·gina.
 </p>
-<ul>
- <li>Prueba a utilizar gradientes para colorear las figuras. </li>
-</ul>
-</div>
-
-
-
-<p class="pimg"><img src="img/formas-4.png" width="200" height="200" /></p>
-
-</div>
 </section>
-<section id="step5">
-<h2 class="minititulo">Paso 5: grupos</h2>
 
-<div class="boxed">
-
-<p>
-  En este paso vamos a convertir cada figura inferior en su vaciado, de modo que realmente parezca un molde. Para ello, combinaremos cada figura con un rect√°ngulo de fondo. Y agruparemos cada pareja rect√°ngulo-figura usando grupos (etiqueta <span class="code">g</span>), de modo que puedan tratarse como una unidad.
-</p>
-
-<p>
-  Usa transparencias para conseguir el efecto de vaciado.
-</p>
-
-<p class="pimg"><img src="img/formas-5.png" width="200" height="200" /></p>
-
-</div>
-</section>
-<section id="step6">
-<h2 class="minititulo">Paso 6: caminos (path) y definiciones (defs)</h2>
-
-<div class="boxed">
-
-<p>
-  Usaremos caminos para definir la trayectoria de la animaci√≥n de la figura, desde la posici√≥n central hasta el molde seleccionado
-</p>
-
-<p>
-  Por tanto, deber√°s definir (<span class="code">defs</span>) 3 caminos (<span class="code">path</span>):
-</p>
-
-<ol>
-  <li>Trayectoria desde la posici√≥n central al molde izquierdo</li>
-  <li>Trayectoria desde la posici√≥n central al molde central</li>
-  <li>Trayectoria desde la posici√≥n central al molde derecho</li>
-</ol>
-
-<p>
-  Prueba a visualizar los caminos definidos, para comprobar que se dibujan correctamente. En la versi√≥n final no deber√°n verse, s√≥lo se definen para usarse despu√©s en las animaciones. 
-</p>
-
-<p class="pimg"><img src="img/formas-6.png" width="200" height="200" /></p>
-
-<div class="opt">
-<p>
-  <em>Posibles mejoras:</em>
-</p>
-<ul>
- <li>Alinea el texto del t√≠tulo siguiendo una trayectoria ondulada. </li>
-</ul>
-</div>
-
-</div>
-</section>
-<section id="step7">
-
-<h2 class="minititulo">Paso 7: animaciones</h2>
-
-<div class="boxed">
-<p>
-  Utiliza el elemento <span class="code">animateMotion</span> para animar la figura central, de modo que se desplace sobre la trayectoria correspondiente al hacer click sobre uno de los moldes.
-</p>
-
-<p>
-  Ten en cuenta que al usar un camino para la trayectoria de la animaci√≥n, ese camino pasa a ser la referencia para las coordenadas (en vez del origen). Como inicialmente la figura central est√° situada en el punto (200, 200), para que la animaci√≥n funcione como se espera hay que cambiar el valor de sus coordenadas a (0,0) tambi√©n al pulsar sobre el molde. Para ello, lo m√°s sencillo es usar el elemento <span class="name">set</span> (un "atajo" de <span class="name">animate</span> para cambiar el valor de un atributo).
-</p>
-
-<p>
-  Para detectar que se ha hecho click sobre un elemento svg, se usa el evento <span class="name">click</span> del objeto correspondiente (por ejemplo, <span class="name">molde1.click</span>).
-</p>
-
-<div class="opt">
-<p>
-  <em>Posibles mejoras - Prueba a aplicar otros efectos de animaci√≥n:</em>
-</p>
-<ul>
- <li>Aumentar el tama√±o de la figura (y volver a disminuirlo).</li>
- <li>Girar el molde y la figura una vez se coloca √©sta √∫ltima sobre el primero.</li>
-</ul>
-</div>
-
-</div>
-</section>
-<section id="step8">
-<h2 class="minititulo">Paso 8: l√≥gica del juego</h2>
-
-<div class="boxed">
-
-<p>
-  Agrega el c√≥digo Javascript necesario para controlar el n√∫mero de intentos hasta que el usuario selecciona el molde correcto. 
-</p>
-
-<p>
-  Tendr√°s que a√±adir un elemento de texto para representar esta informaci√≥n. 
-</p>
-
-<p class="pimg"><img src="img/formas-8.png" width="200" height="200" /></p>
-
-<div class="opt">
-<p>
-  <em>Posibles mejoras:</em>
-</p>
-<ul>
- <li>Puedes utilizar Javascript para seleccionar aleatoriamente la figura central (de modo que no siempre sea un c√≠rculo). Lo mismo para variar los moldes as√≠ como el orden en que aparecen.</li>
-</ul>
-</div>
-</div>
-
-<h2 class="minititulo">Casos de uso</h2>
-
-<div class="boxed">
-
-<p>
-  Puedes utilizar SVG para crear una imagen representativa de tu proyecto (juego), que podr√≠a incluirse como logo o banner publicitario en otras p√°ginas web.
-</p>
-
-<p>
-  Tambi√©n puedes utilizar SVG en tu proyecto para representar elementos gr√°ficos del mismo (personajes, objetos, etc.).
-</p>
-
-<p>
-  Finalmente, tambi√©n puedes utilizarlo para representar gr√°ficamente estad√≠sticas del juego.
-</p>
-
-</div>
-
-<!--
-<a name="eval" />
-<div class="boxed">
-  <h2>Preguntas de Autoevaluaci√≥n</h2>
-<ul>
-  <li>¬øQu√© alternativas hay para incluir un gr√°fico SVG en una p√°gina HTML?</li>
-</ul>
-</div>
-
-</div>
--->
-</section>
 <section id="refs">
 
 <h2 class="minititulo">Referencias</h2>
 
-<div class="boxed">
-
 <ul>
-
-<li>
-<a href="https://aulaglobal2.uc3m.es/file.php/18311/html5_svg.pdf">Apuntes sobre SVG</a>
-</li>
-
-<li><a href="http://apike.ca/prog_svg.html">Tutorial sobre SVG</a></li>
-
-<li><a href="http://www.svgbasics.com/index.html">Tutorial sobre SVG</a></li>
-
-<li><a href="http://www.w3.org/TR/SVG11/types.html#ColorKeywords">Nombres de colores en SVG</a></li>
-
-<li><a href="http://apike.ca/prog_svg_presattr.html">Resumen de atributos de presentaci√≥n</a></li>
-
-<li><a href="http://apike.ca/prog_svg_presattr_anim.html">Atributos de animaci√≥n (resumen)</a></li>
-
-<li><a href="http://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_random">Generaci√≥n de n√∫meros aleatorios con Javascript (ejemplo pr√°ctico)</a></li>
-
+  <li><a href="http://www.it.uc3m.es/igrojas/amm/html5-avanzado/template/">Apuntes de clase sobre aspectos avanzados de HTML5</a></li>
+  <li><a href="http://html5doctor.com/video-canvas-magic/">video + canvas = magic</a></li>
+  <li><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#pixel-manipulation">The canvas element: pixel manipulation</a></li>
+  <li><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#drawing-images">The canvas element: drawing images</a></li>
+  <li><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#dom-canvas-todataurl">The canvas element: toDataURL</a></li>
 </ul>
-
-</div>
 </section>
+
 <footer>
-<p></p>
-</footer>
+      <figure>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/es/">
+        <img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/es/88x31.png" /></a>
+        <figcaption>Este <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text" rel="dct:type">obra</span> 
+        est· bajo una <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/es/">licencia Creative Commons 
+        Reconocimiento-CompartirIgual 3.0 EspaÒa</a>.</figcaption>
+      </figure>
+      <details>
+        <summary>Recurso desarollado por Israel GutiÈrrez (<a href="mailto:igrojas@it.uc3m.es">igrojas@it.uc3m.es</a>), data de <time datetime="2013-02-25">2013-02-25</time>.</summary>
+      </details>
+      <br /><br /><br />
+    </footer>
 <script type="text/javascript" src="../js/socket.io.min.js"></script>
-		<script type="text/javascript" src="../js/classon.js?session=p5"></script>
+<script type="text/javascript" src="../js/classon.js?session=p5"></script>
 </body>
 </html>
