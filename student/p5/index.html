@@ -83,7 +83,7 @@ class="azul" href="http://www.it.uc3m.es/docencia/grado-audiovisuales.html">Grad
 
 <!-- Demos -->
 <section id="intro">
-<h2 class="minititulo">Objetivo: realizar un programa de captura y procesado de imagen de video, estilo instagram</h2>
+<h2 class="minititulo">Objetivo: realizar un programa de captura y procesado de imagen de video, estilo Instagram</h2>
 
 <p>
  HTML5 introduce varios aspectos avanzados, desde almacenamiento offline y comunicación en tiempo real, hasta acceso al hardware y selección de elementos en JavaScript.
@@ -109,14 +109,14 @@ class="azul" href="http://www.it.uc3m.es/docencia/grado-audiovisuales.html">Grad
 </p>
 
 <p>
-  Además crearemos dos botones en la página, uno para iniciar el acceso a medios (como se ha descrito en el párrafo anterior). Y otro apra detener el acceso, para lo cual borraremos la fuente del stream del elemento de video.
+  Además crearemos dos botones en la página, uno para iniciar el acceso a medios (como se ha descrito en el párrafo anterior). Y otro para detener el acceso, para lo cual borraremos la fuente del stream del elemento de video.
 </p>
 
 <p>
   Para que el acceso a medios funcione correctamente debe accederse a la página desarrollada desde un servidor web. Para ello tenéis varias alternativas:
   <ul>
     <li>Poner las páginas las páginas en el servidor web de vuestra cuenta de Telemática, en la carpeta ~/lib/www/ como explican en la <a href="http://www.etl.it.uc3m.es/Web_alumnos">wiki del equipo técnico de laboratorio</a></li>
-    <li>Descargar un servidor web simple. Por ejemplo, podéis descargar <a href="https://code.google.com/p/mongoose/">mongoose</a> y ponerlo en la carpeta donde esté vuestro código HTML. Por defecto usa el puerto 8080 de la máquina local que está cerrado en vuestras máquinas, usad <a href="mongoose.conf">este fichero de configuración</a> para poder acceder al servidor en <a href="http://localhost:5800/">http://localhost:5800/</a>.</li>
+    <li>Descargar un servidor web simple. Por ejemplo, podéis descargar <a href="https://code.google.com/p/mongoose/">mongoose</a> y ponerlo en la carpeta donde esté vuestro código HTML. Por defecto usa el puerto 8080 de la máquina local que está cerrado en los equipos del aula de ordenadores, usad <a href="mongoose.conf">este fichero de configuración</a> (copiadlo en la misma carpeta del ejecutable) para poder acceder al servidor en <a href="http://localhost:5800/">http://localhost:5800/</a>.</li>
   </ul>
 </p>
 </section>
@@ -132,37 +132,37 @@ class="azul" href="http://www.it.uc3m.es/docencia/grado-audiovisuales.html">Grad
   El procesamiento de la señal de video consta de los siguientes pasos:
   <ul>
     <li>En primer lugar, capturaremos el frame actual del elemento video y lo pintaremos en el canvas secundario. Para ello usaremos la función <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#drawing-images">drawImage</a> cuyo primer parámetro puede ser un elemento de video en cuyo caso captura el frame actual del video.</li>
-    <li>A continuación accederemos a la información de los píxeles pintados en el canvas secundario. Para ello usaremos la función <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#pixel-manipulation">getImageData</a>, que nos devuelve un objeto cuyo atributo <em>data</em> es un array uni-dimensional con información RGB de cada píxel de la imagen del canvas.</li>
+    <li>A continuación accederemos a la información de los píxeles pintados en el canvas secundario. Para ello usaremos la función <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#pixel-manipulation">getImageData</a>, que nos devuelve un objeto cuyo atributo <em>data</em> es un array uni-dimensional con información RGB de cada píxel de la imagen del canvas. Podéis comprobarlo imprimiendo el array en la consola JavaScript del navegador mediante la función <em>console.log()</em>.</li>
     <li>En tercer lugar haremos el procesado de píxeles sobre el array RGB para aplicar el efecto deseado: blanco y negro, negativo, sepia, etc. Para ello se proporciona una librería JS (<a href="effects.js">effects.js</a>) con funciones que aplican varios efectos.</li>
     <li>Finalmente, se pintará el array RGB obtenido tras el procesamiento mediante la función <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#pixel-manipulation">putImageData</a> en el canvas primario, visible por el usuario.</li>
   </ul>
 </p>
 
 <p>
-  Para que en el canvas aparezca el video con el procesado requerido, tendremos que repetir el proceso anterior continuamente mientras el video se esté reproduciendo. Para ello usaremos alguna función que nos permita hacerlo cada cierto tiempo, como <em>setTimeout</em> o <em>setInterval</em>.
+  Para que en el canvas aparezca el video procesado de forma continua, tendremos que repetir el proceso anterior mientras el video se esté reproduciendo (no esté parado o en pausa) Para comprobarlo, revisad los eventos del elemento video. Para la reproducción continua usaremos alguna función que nos permita hacerlo cada cierto tiempo, como <em>setTimeout</em> o <em>setInterval</em> que también hemos usado en prácticas anteriores.
 </p>
 </section>
 
 <section id="step3">
-<h2 class="minititulo">Paso 3: Adecuación de la interfaz</h2>
+<h2 class="minititulo">Paso 3: Captura de la foto</h2>
 
 <p>
-  En este paso simplemente debéis adecuar la interfaz al de una aplicación para realizar fotografías con efectos. Se sugieren realizar una serie de mejoras visuales con el objetivo de mejorar la experiencia del usuario:
-  <ul>
-    <li>Que el elemento video aparezca oculto para que el usuario sólo vea el video procesado.</li>
-    <li>Botones para la interacción del usuario: inicio del video, para pararlo, para aplicar cada uno de los efectos, etc.</li>
-    <li>Un botón para tomar una instantánea, que haremos funcionar en el paso siguiente.</li>
-  </ul>
+  A continuación desarrollaremos una función para una fotografía y crearemos un botón en el HTML para realizar esta acción. Para ello accederemos a los datos de la imagen del canvas primario cuando se pulse el botón mediante la función <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#dom-canvas-todataurl">toDataURL</a>. Con la URL obtenida, mostraremos la foto en un elemento imagen de la página.
 </p>
-
 </section>
 
 <section id="step4">
-<h2 class="minititulo">Paso 4: Captura de la foto</h2>
+<h2 class="minititulo">Paso 4: Adecuación de la interfaz</h2>
 
 <p>
-  Finalmente desarrollaremos una función asociada al botón de tomar una fotografía. Para ello accederemos a los datos de la imagen del canvas primario cuando se pulse el botón mediante la función <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#dom-canvas-todataurl">toDataURL</a>. Con la URL obtenida, mostraremos la foto en un elemento imagen de la página.
+  Finalmente adecuaremos la interfaz de nuestra aplicación al de una aplicación para realizar fotografías con efectos. Se sugieren realizar una serie de mejoras visuales con el objetivo de mejorar la experiencia del usuario:
+  <ul>
+    <li>Que los elementos del principales del interfaz aparezca alineados (video, canvas primario, foto)</li>
+    <li>Organización de los botones para la interacción del usuario: inicio y parada del video junto al objeto vodeo, los botones para aplicar cada uno de los efectos junto al canvas, etc.</li>
+    <li>Cualquier otra mejora visual que se os ocurra: efecto de cierre de obturador al tomar la foto, efecto de movimiento de la imagen capturada desde el video hasta la posición final de la foto, etc.</li>
+  </ul>
 </p>
+
 </section>
 
 <section id="refs">
