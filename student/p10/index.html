@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Aplicaciones Multimedia: Práctica GStreamer (III)</title>
+    <title>Aplicaciones Multimedia: Práctica GStreamer (II)</title>
     <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
     <link rel="SHORTCUT ICON" href="http://www.uc3m.es/favicon.ico" /> 
     <link href="http://www.it.uc3m.es/rcrespo/docencia/asignatura.css" rel="stylesheet" type="text/css" />
@@ -15,6 +15,10 @@
       .code {
         color: blue;
         font-size: 80%;
+      }
+      .metadatos {
+        color: green;
+        font-style: italic;
       }
     </style>
   </head>
@@ -68,7 +72,7 @@
     <!-- Navegación (fin) -->
     
     <header>
-      <h1>Pr&aacute;ctica 10: Introducción a la Programación con GStreamer</h1>
+      <h1>Pr&aacute;ctica 7: Introducción a la Programación con GStreamer</h1>
     </header>
     <section id="intro">
       <h2>Introducci&oacute;n</h2>
@@ -131,7 +135,7 @@
 	pkg-config facilita esta tarea, en vez de tener que indicarlo
 	manualmente.  El comando:
 	<pre class="code">pkg-config --cflags --libs gstreamer-0.10</pre>
-	genera los flags adecuados para compilar código fuente C utilizando las librerías gstreamer (versión 0.10).
+	genera los flags adecuados para compilar código fuente C utilizando las librerías GStreamer versión 0.10.
       </p>
       <p>
 	El comando pkg-config puede integrarse directamente en la invocación al
@@ -152,7 +156,7 @@
       </ul>
 
       <p>
-	La mayoría de los pipelines a implementar en los programas se corresponden con los creados en la <a href="https://aulaglobal2.uc3m.es/mod/resource/view.php?id=683924">primera práctica de GStreamer (práctica 8)</a>.
+	La mayoría de los pipelines a implementar en los programas se corresponden con los creados en la <a href="https://aulaglobal2.uc3m.es/mod/resource/view.php?id=942123">primera práctica de GStreamer</a>.
       </p>
     </section>
     
@@ -162,7 +166,7 @@
       <h2>Paso 1: Análisis de un reproductor de audio Ogg</h2>
       <p>
 	El
-	programa <a href="https://aulaglobal2.uc3m.es/file.php/29384/Tema_8/oggplayer.c">oggplayer.c</a>
+	programa <a href="src/oggplayer.c">oggplayer.c</a>
 	implementa un reproductor de audio Ogg básico.  Descarga el código
 	fuente, compílalo y prueba el ejecutable.  Puedes utilizar
 	el <a href="http://download.blender.org/peach/trailer/trailer_400p.ogg">trailer
@@ -173,14 +177,16 @@
       </p>
       <p>
 	Analiza cómo se crean el pipeline y los elementos (fuente,
-	demultiplexor, decodificador, conversor, sumidero); y cómo se establecen
+	demultiplexor, decodificador, conversor, sumidero) y cómo se establecen
 	las propiedades en los elementos que lo requieren.
       </p>
+      <!--
       <p>
 	Observa cómo se recupera el bus de mensajes asociado al pipeline y cómo
 	se asocia la función escuchadora que se invocará cada vez que se
 	produzca un mensaje en el bus.
       </p>
+      -->
       <p>
 	Analiza cómo se construye el pipeline agregando los elementos y
 	enlazándolos entre sí. Observa que sólo los PADs estáticos (existen
@@ -203,7 +209,7 @@
 	automáticamente a todos los elementos contenidos en el pipeline.
       </p>
       <p>
-	Una vez cambiado el estado el programa (como cualquier otro basado en
+	Una vez cambiado el estado, el programa (como cualquier otro basado en
 	eventos) debe mantenerse en un bucle para escuchar los eventos y lanzar
 	las acciones apropiadas. Para ello, se utiliza el objeto GMainLoop de la
 	librería Glib. Observa cómo se crea el objeto GMainLoop y cómo se inicia
@@ -211,21 +217,39 @@
 	con la función g_main_loop_quit.
       </p>
       <p>
-	Observa que según el código del main, el bucle no terminaría nunca.  Es
-	la función escuchadora de los mensajes del bus la encargada de
+	Observa que según el código del main, el bucle no termina nunca (incluso
+	aunque finalice el flujo multimedia).  
+	Más adelante veremos qué mecanismos proporciona GStreamer para detectar
+	errores o que ha terminado el flujo multimedia y así finalizar
+	adecuadamente el programa.
+	<!--
+	Es la función escuchadora de los mensajes del bus la encargada de
 	finalizarlo (después de imprimir el mensaje adecuado), cuando se recibe
 	una señal EOS o de error.
+	-->
+      </p>
+      <p>
+	Puedes forzar manualmente la finalización de un programa
+	pulsando <span class="code">CTRL+C</span> en la consola de comandos
+	donde se esté ejecutando. Esta señal simplemente interrumpe la ejecución
+	del programa (obviamente no terminará de forma ordenada).
       </p>
       <p>
 	Finalmente, el programa debe eliminar los objetos y liberar la memoria,
-	una vez termine el bucle.
+	una vez termine el bucle (aunque en este caso no llega nunca a ejecutar
+	esta parte del código).
       </p>
 
     </section>
 
 
     <section id="step2">
-      <h2>Paso 2: Pipeline básico</h2>
+      <h2>Paso 2: Pipeline básico </h2>
+      <p class="metadatos">
+	Nivel básico. Este apartado es opcional. Si tienes clara la estructura
+	de un pipeline y de un programa GStreamer, puedes pasar al apartado
+	siguiente. Puedes utilizarlo después para repaso.
+      </p>
       <p>
 	La figura 2 representa la estructura básica de un pipeline, en
 	la que el flujo de datos parte de una fuente, experimenta una
@@ -244,7 +268,14 @@
       <p>
 	Escribe un programa que cree el pipeline de prueba descrito previamente
 	y representado en la figura 3.
-	Como se trata de un primer programa de prueba, de momento no es necesario que escuches los mensajes del bus. Simplemente debe crear el pipeline, agregar y conectar los elementos, y empezar a reproducir. 
+
+	Puedes basarte en el código de ejemplo proporcionado en
+	el <a href="#step1">apartado 1</a>, eliminando el código innecesario y
+	modificando los elementos del pipeline.
+
+	<!-- Como se trata de un primer programa de prueba, de momento no es
+	necesario que escuches los mensajes del bus. Simplemente debe crear el
+	pipeline, agregar y conectar los elementos, y empezar a reproducir.  -->
       </p>
       <figure>
 	<img src="img/pipeline0.png" />
@@ -257,7 +288,7 @@
       </p>
       <ul>
 	<li>Un mensaje indicando que comienza la ejecución del programa</li>
-	<li>El nombre del pipeline y cada uno de los elementos</li>
+	<li>El nombre del pipeline y de cada uno de los elementos</li>
 	<li>Un mensaje indicando que termina la ejecución del programa (justo antes del return).</li>
       </ul>
 
@@ -281,8 +312,10 @@ Pipeline elements:
       <h2>Paso 3: Visualización de la señal de vídeo de prueba</h2>
       <p>
 	Modifica el programa anterior para que el pipeline visualice la señal de
-	vídeo de prueba. De nuevo, no es necesario que el programa atienda los
-	mensajes del bus.
+	vídeo de prueba. 
+	<!--
+	De nuevo, no es necesario que el programa atienda los mensajes del bus.
+	-->
       </p>
     </section>
 
@@ -292,12 +325,12 @@ Pipeline elements:
 
       <p>
 	Modifica el
-	programa <a href="https://aulaglobal2.uc3m.es/file.php/29384/Tema_8/oggplayer.c">oggplayer.c</a>
+	programa <a href="src/oggplayer.c">oggplayer.c</a>
 	para que reproduzca un fichero MP3 en vez de Ogg.  Puedes encontrar
 	archivos de audio compartidos con licencia Creative Commons
 	en <a href="http://freemusicarchive.org/">The Free Music
 	Archive</a>. Por ejemplo, puedes descargarte
-	este <a href="http://freemusicarchive.org/music/Aestrid_Byrne/Laterna/01_Preface">archivo
+	este <a href="media/Aestrid_Byrne_-_01_-_Preface.mp3">archivo
 	MP3</a> para pruebas.
       </p>
       <p>
@@ -305,6 +338,7 @@ Pipeline elements:
 	en este caso, de modo que no es necesario realizar ningún enlace
 	dinámicamente.
       </p>
+      <!--
       <p>
 	Programa el manejador de los mensajes del bus de modo que:
 	<ul>
@@ -316,6 +350,7 @@ Pipeline elements:
 	  elemento que la ha generado y el tipo de mensaje. </li>
 	</ul>
       </p>
+      -->
 
     </section>
 
@@ -344,12 +379,13 @@ Pipeline elements:
 
       <p>
 	Modifica el
-	programa <a href="https://aulaglobal2.uc3m.es/file.php/29384/Tema_8/oggplayer.c">oggplayer.c</a>
+	programa <a href="src/oggplayer.c">oggplayer.c</a>
 	para que visualice la imagen del vídeo en vez de reproducir el audio.
 	Puedes utilizar
 	el <a href="http://download.blender.org/peach/trailer/trailer_400p.ogg">trailer
 	de Big Buck Bunny</a> para las pruebas.
       </p>
+      <!--
       <p>
 	Agrega el código programado en el paso 4 para el manejador del bus, de
 	modo que se presente por pantalla un mensaje cada vez que se recibe una
@@ -359,6 +395,7 @@ Pipeline elements:
 	¿Qué mensaje se recibe si se cierra la ventana de visualización antes de
 	completar la reproducción?
       </p>
+      -->
 
     </section>
 
@@ -367,7 +404,7 @@ Pipeline elements:
 
       <p>
 	Modifica el
-	programa <a href="https://aulaglobal2.uc3m.es/file.php/29384/Tema_8/oggplayer.c">oggplayer.c</a>
+	programa <a href="src/oggplayer.c">oggplayer.c</a>
 	agregando los elementos necesarios para aplicar efectos de envejecimimento a la imagen:
       </p>
       <ul>
@@ -388,7 +425,7 @@ Pipeline elements:
 
       <p>
   Observa que se necesitan dos elementos queue distintos (aunque sean del
-  mismo tipo): uno para el flujo de audio y otro para el de vídeo.
+  mismo tipo): uno para el flujo de audio y otro para el de vídeo. El elemento queue evita que se entre en situaciones de bloqueo cuando se procesan varios flujos en paralelo. 
       </p>
 
       <p>
@@ -515,7 +552,7 @@ Pipeline elements:
         Reconocimiento-CompartirIgual 3.0 España</a>.</figcaption>
       </figure>
       <details>
-        <summary>Recurso desarollado por Raquel M. Crespo (<a href="www.it.uc3m.es/rcrespo/">www.it.uc3m.es/rcrespo/</a>), data de <time datetime="2012-02-06">2012-02-06</time>.</summary>
+        <summary>Recurso desarollado por Raquel M. Crespo (<a href="www.it.uc3m.es/rcrespo/">www.it.uc3m.es/rcrespo/</a>), data de <time datetime="2012-02-06">2012-02-06</time>, última modificación <time datetime="2013-04-17">2013-04-17</time>.</summary>
       </details>
       <br /><br /><br />
     </footer>
