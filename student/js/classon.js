@@ -168,7 +168,7 @@ function show_questions(){
 	});
 	for(var i=0; i<questions.length;i++){
 		var voted = questions[i].votes.indexOf(user[0])!=-1;
-		var answer = questions[i].answer?('. Respuesta: '+questions[i].answer):'';
+		var answer = questions[i].answer?('. Respuesta: '+questions[i].answer.description):'';
 		sHTML+="<li>"+questions[i].description+" (<span><strong>"+questions[i].votes.length+
 			" votos</strong></span>)"+answer+" <input type='button' value='+1' onclick='vote("+i+")' "+
 			(voted?"disabled='disabled'":"")+" /></li>";
