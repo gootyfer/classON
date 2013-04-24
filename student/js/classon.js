@@ -168,8 +168,9 @@ function show_questions(){
 	});
 	for(var i=0; i<questions.length;i++){
 		var voted = questions[i].votes.indexOf(user[0])!=-1;
+		var answer = questions[i].answer?('. Respuesta: '+questions[i].answer):'';
 		sHTML+="<li>"+questions[i].description+" (<span><strong>"+questions[i].votes.length+
-			" votos</strong></span>) <input type='button' value='+1' onclick='vote("+i+")' "+
+			" votos</strong></span>)"+answer+" <input type='button' value='+1' onclick='vote("+i+")' "+
 			(voted?"disabled='disabled'":"")+" /></li>";
 	}
 	sHTML += "</ul><br><input type='button' value='VOLVER' onclick='back()' style='width: 100%; margin: 20px 0;' />";

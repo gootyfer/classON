@@ -226,6 +226,15 @@ function sendQuestions(event, sessionType){
 	}
 }
 
+function findLastQuestion(questions, username){
+	for(var i=questions.length-1; i>0;i--){
+		if(questions[i].votes[0]==username){
+			return i;
+		}
+	}
+	return -1;
+}
+
 //Connection of the new websocket client
 io.sockets.on('connection', function (socket) {
 	
@@ -302,6 +311,13 @@ io.sockets.on('connection', function (socket) {
 								socket.emit("update queue", my_queue.length);
 								break;
 							case "solved":
+								var my_questions = getQuestions(event.session);
+								var qid = findLastQuestion(my_questions, event.user[0]);
+								if(qid!=-1){
+									my_questions[qid].answer = {description: event.description};
+								}
+								sendQuestions(event, "sessionStudent");
+								sendQuestions(event, "sessionTeacher");
 								my_session[j].help = false;
 								if(my_queue.indexOf(event.IP)!=-1){
 									my_queue.splice(my_queue.indexOf(event.IP),1);
