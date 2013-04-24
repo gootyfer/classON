@@ -227,11 +227,13 @@ function sendQuestions(event, sessionType){
 }
 
 function findLastQuestion(questions, username){
-	for(var i=questions.length-1; i>0;i--){
+	for(var i=questions.length; i>0;i--){
 		if(questions[i].votes[0]==username){
+			//console.log('found user question in position '+i);
 			return i;
 		}
 	}
+	//console.log('user question not found');
 	return -1;
 }
 
@@ -311,6 +313,7 @@ io.sockets.on('connection', function (socket) {
 								socket.emit("update queue", my_queue.length);
 								break;
 							case "solved":
+								//update question to add answer
 								var my_questions = getQuestions(event.session);
 								var qid = findLastQuestion(my_questions, event.user[0]);
 								if(qid!=-1){
@@ -319,6 +322,7 @@ io.sockets.on('connection', function (socket) {
 								event.questions = my_questions;
 								sendQuestions(event, "sessionStudent");
 								sendQuestions(event, "sessionTeacher");
+								//Update the rest
 								my_session[j].help = false;
 								if(my_queue.indexOf(event.IP)!=-1){
 									my_queue.splice(my_queue.indexOf(event.IP),1);
