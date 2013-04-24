@@ -227,7 +227,7 @@ function sendQuestions(event, sessionType){
 }
 
 function findLastQuestion(questions, username){
-	for(var i=questions.length; i>0;i--){
+	for(var i=questions.length-1; i>=0;i--){
 		if(questions[i].votes[0]==username){
 			//console.log('found user question in position '+i);
 			return i;
