@@ -316,6 +316,7 @@ io.sockets.on('connection', function (socket) {
 								if(qid!=-1){
 									my_questions[qid].answer = {description: event.description};
 								}
+								event.questions = my_questions;
 								sendQuestions(event, "sessionStudent");
 								sendQuestions(event, "sessionTeacher");
 								my_session[j].help = false;
