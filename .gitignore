@@ -6,6 +6,10 @@ users_old
 .settings
 *~
 
+
 classon.sublime-project
 
 classon.sublime-workspace
+
+Procfile
+public/photos/

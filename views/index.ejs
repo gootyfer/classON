@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>classON student interface</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" media="screen" href="../designs/bootstrap/css/bootstrap.css" />
+		<link rel="stylesheet" media="screen" href="../designs/bootstrap/css/bootstrap-responsive.css" />
+		<link rel="stylesheet" media="screen" href="../designs/css/classon.css" />
+	</head>
+	<body>
+		<div class="container-fluid">
+		  <div class="row-fluid">
+		    <div class="span2">
+		      <!--Sidebar content-->
+		      	<img src="../designs/img/classon.png" class="logo" alt="classON logo">
+			    <ul class="nav nav-list bs-docs-sidenav">
+				  <li class="nav-header">Índice de la sesión</li>
+				</ul>
+
+				<a href="#helpModal" role="button" data-toggle="modal" class="btn btn-large btn-block btn-danger" id="help">¡Ayuda!</a>
+
+				<!-- Help Modal -->
+				<div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="helpModal" aria-hidden="true">
+				  <div class="modal-header">
+				    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				    <h3 id="myModalLabel"></h3>
+				  </div>
+				  <div class="modal-body">
+				  </div>
+				  <div class="modal-footer">
+				    <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+				    <button class="btn btn-primary" id="newQuestion">Nueva pregunta</button>
+				  </div>
+				</div>
+
+				<!--Question modal-->
+				<div id="questionModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="questionModal" aria-hidden="true">
+				  <div class="modal-header">
+				    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				    <h3 id="myModalLabel"></h3>
+				  </div>
+				  <div class="modal-body">
+					<div class="media">
+					    <img class="media-object pull-left" src="../photos/<%= userInfo[0].img %>" width="64px">
+					    <div class="media-body">
+					      <textarea rows="3" maxlength="300" id="questionText"></textarea>
+					  	</div>
+					</div>
+				  </div>
+				  <div class="modal-footer">
+				    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+				    <button class="btn btn-primary" id="question">Preguntar</a>
+				  </div>
+				</div>
+
+				<!--Answer modal-->
+				<div id="answerModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="answerModal" aria-hidden="true">
+				  <div class="modal-header">
+				    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				    <h3 id="myModalLabel"></h3>
+				  </div>
+				  <div class="modal-body">
+				  	<div id="questionToAnswer" data-qid="" class="media">
+					</div>
+					<div class="media">
+					    <img class="media-object pull-left" src="../photos/<%= userInfo[0].img %>" width="64px">
+					    <div class="media-body">
+					      <textarea rows="3" maxlength="300" id="answerText"></textarea>
+					  	</div>
+					</div>
+				  </div>
+				  <div class="modal-footer">
+				    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+				    <button class="btn btn-primary" id="answer">Responder</a>
+				  </div>
+				</div>
+				
+				<!-- Progress Modal -->
+				<div id="progressModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="helpModal" aria-hidden="true">
+				  <div class="modal-header">
+				    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				    <h3 id="myModalLabel">Progreso</h3>
+				  </div>
+				  <div class="modal-body">
+				  	¿Seguro que has terminado el apartado actual y quieres pasar al siguiente?
+				  </div>
+				  <div class="modal-footer">
+				    <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+				    <button class="btn btn-primary" id="progress">Continuar</button>
+				  </div>
+				</div>
+
+				<!-- Finish Modal -->
+				<div id="finishModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="helpModal" aria-hidden="true">
+				  <div class="modal-header">
+				    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				    <h3 id="myModalLabel">Final</h3>
+				  </div>
+				  <div class="modal-body">
+				  	¿Seguro que has terminado el apartado actual y quieres finalizar la práctica?
+				  </div>
+				  <div class="modal-footer">
+				    <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+				    <button class="btn btn-primary" id="finish">Finalizar</button>
+				  </div>
+				</div>
+
+				<!--thumbnails-->
+				<ul class="thumbnails">
+				  <li class="span6">
+				    <div class="thumbnail">
+				      <img src="../photos/<%= userInfo[0].img %>" width="150px">
+				      <p><%= userInfo[0].surname %> <%= userInfo[0].name %></p>
+				    </div>
+				  </li>
+				<% if(userInfo[1]){ %>
+				  <li class="span6">
+				    <div class="thumbnail">
+				      <img src="../photos/<%= userInfo[1].img %>" width="150px">
+				      <p><%= userInfo[1].surname %> <%= userInfo[1].name %></p>
+				    </div>
+				  </li>
+				<% } %>
+				</ul>
+				<a type="button" href="/login" class="btn btn-block" id="logout">Log out</a>
+		    </div>
+		    <div class="span10 all_height">
+		      <!--Body content-->
+		      <iframe width="100%" height="100%" name="assignment" src="../student/<%= assignment %>/index.html"></iframe>
+		    </div>
+		  </div>
+		</div>
+		<script src="http://code.jquery.com/jquery.js"></script>
+		<script src="../designs/bootstrap/js/bootstrap.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript">
+			var subject = '<%= subject %>';
+			var group = '<%= group %>';
+			var assignment = '<%= assignment %>';
+
+			var station = <%= station %>;
+			var currentUsers = [];
+			currentUsers.push('<%= userInfo[0].username %>');
+			<% if(userInfo[1]){ %>
+				currentUsers.push('<%= userInfo[1].username %>');
+			<% } %>
+
+			var server = '<%= server.url %>';
+			var port = '<%= server.port %>';
+			var photo = '<%= userInfo[0].img %>';
+			var currentQuestion = <%= currentQuestion %>;
+		</script>
+		<script src="../designs/js/connection.js"></script>
+		<script src="../designs/js/classon.js"></script>
+	</body>
+</html>

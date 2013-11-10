@@ -1,0 +1,34 @@
+.all_height{
+	height: 100%;
+}
+
+.logo{
+	margin: 10px 0;
+}
+
+#help{
+	margin: 10px 0;
+}
+
+#logout{
+	margin-bottom: 5px;
+}
+
+.bs-docs-sidenav {
+  padding: 0;
+}
+
+.bs-docs-sidenav > li > a {
+  margin: 0 0 -1px;
+  padding: 8px 14px;
+  border: 1px solid #e5e5e5;
+}
+
+.question{
+	border: 1px solid #e5e5e5;
+	padding: 5px;
+}
+
+textarea{
+	width: 97%;
+}

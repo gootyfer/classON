@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+	<title>classON login</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" media="screen" href="../designs/bootstrap/css/bootstrap.css" />
+	<link rel="stylesheet" media="screen" href="../designs/bootstrap/css/bootstrap-responsive.css" />
+	<link rel="stylesheet" media="screen" href="../designs/css/login.css" />
+</head>
+<body>
+	<div class="container">
+      <form class="form-signin" action="/go">
+        <h3 class="form-signin-heading">Por favor, introduce tus datos para acceder al enunciado</h3>
+        <input name="nia1" type="text" class="span3" placeholder="NIA (9 cifras)" required>
+        <input name="nia2" type="text" class="span3" placeholder="NIA (9 cifras)">
+        <!--
+        <div class="alert alert-error span4 fade">
+        	<button type="button" class="close">&times;</button>
+        	<strong>Error:</strong> Selecciona un puesto del laboratorio.
+        </div>
+    	-->
+        <h4 class="form-signin-heading">Selecciona un puesto en el aula</h4>
+        <div class="span6" id="classroom"></div>
+        <input name="station" type="hidden">
+        <input name="subject" type="hidden" value="<%= subject %>">
+        <input name="assignment" type="hidden" value="<%= assignment %>">
+        <button class="btn btn-large btn-primary" type="submit">Acceder</button>
+      </form>
+    </div>
+    <div id="errorModal" class="modal hide fade">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	    <h3>Error</h3>
+	  </div>
+	  <div class="modal-body">
+	    <p></p>
+	  </div>
+	  <div class="modal-footer">
+	    <a href="#" data-dismiss="modal" class="btn">Close</a>
+	  </div>
+	</div>
+    <script src="http://code.jquery.com/jquery.js"></script>
+	<script src="../designs/bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript">
+		var nRows = <%= nRows %>,
+		 	nColumns = <%= nColumns %>;
+	</script>
+	<script src="../designs/js/login.js"></script>
+</body>
+</html>

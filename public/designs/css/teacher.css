@@ -1,0 +1,49 @@
+.status{
+	height: 22px;
+	text-align: center;
+	font-size: 14px;
+	border-radius: 4px;
+	line-height: 22px;
+	text-decoration: none;
+}
+
+.waiting{
+	background-color: red;
+	color: white;
+}
+
+.working{
+	background-color: blue;
+	color: white;
+}
+
+.free{
+	background-color: grey;
+	color: white;
+}
+
+.waitLong{
+	background-color: red;
+}
+
+.show-grid [class*="thumbnail"] {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.main{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+#stopwatch{
+	font-size: 60px;
+}
+
+.modal-body {
+	max-height: 800px;
+}
+
+.caption{
+	text-align: center;
+}

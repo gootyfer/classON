@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>classON teacher interface</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<link rel="stylesheet" media="screen" href="../designs/bootstrap/css/bootstrap.css" />
+		<link rel="stylesheet" media="screen" href="../designs/bootstrap/css/bootstrap-responsive.css" />
+		<link rel="stylesheet" media="screen" href="../designs/css/teacher.css" />
+	</head>
+	<body>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+	      <div class="navbar-inner">
+	        <div class="container">
+				
+	        	
+	          <a class="brand" href="#">Práctica 8: Programación con GStreamer</a>
+
+	          <div class="nav-collapse collapse">
+	            <ul class="nav">
+	              <li class="pull-left"><a href="#about">Preguntas</a></li>
+
+	              <li class="pull-right"><a href="#about">Enunciado</a></li>
+	            </ul>
+	          </div><!--/.nav-collapse -->
+	        </div>
+	      </div>
+	    </div>
+
+		<div class="container-fluid main">
+
+			<!-- Help Modal -->
+			<div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="helpModal" aria-hidden="true">
+			  <div class="modal-header">
+			    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			    <h3 id="myModalLabel">Ayudando al grupo</h3>
+			  </div>
+			  <div class="modal-body">
+
+					<div class="row">
+						<div class="span4 thumbnail">
+							<img src="../photos/arcarrio.png" width="150px">
+							<div class="caption">
+								<strong>Alicia Rodríguez</strong>
+							</div>
+						</div>
+						<div class="span4 thumbnail">
+				      		<img src="../photos/noriega.jpeg" width="150px">
+				      		<div class="caption">
+								<strong>Patricia de Noriega</strong>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="span8">
+							<h4>Progreso</h4>
+							<div class="progress progress-success progress-striped">
+							    <div class="bar" style="width: 40%;"></div>
+							</div>
+							<h4>Pregunta</h4>
+							<div>
+							    En código c cómo definir las propiedades de un elemento.
+							</div>
+							<h4>Tiempo dedicado</h4>
+							<br>
+							<span id="stopwatch">00:00:00</span>
+						</div>
+					</div>
+
+			  </div>
+			  <div class="modal-footer">
+			    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+			    <button class="btn btn-primary" data-dismiss="modal" id="newQuestion">Terminado</button>
+			  </div>
+			</div>
+
+			<div class="row show-grid">
+				<a href="#helpModal" data-toggle="modal">
+					<div class="span2 thumbnail">
+						<div class="row">
+							<div class="span1">
+								<img src="../photos/fabio.png" width="75px">
+							</div>
+							<div class="span1">
+					      		<img src="../photos/f1.png" width="75px">
+							</div>
+						</div>
+				      <div class="caption">
+				      	<div class="progress progress-success progress-striped">
+						    <div class="bar" style="width: 40%;"></div>
+						</div>
+						<div class="status waiting">esperando</div>
+				      </div>
+				    </div>
+			    </a>
+			    <a href="#helpModal" data-toggle="modal">
+			    <div class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/felipe.jpeg" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/uriol.jpeg" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 50%;"></div>
+					</div>
+					<div class="status working">trabajando</div>
+			      </div>
+			    </div>
+			    </a>
+			    <a href="#helpModal" data-toggle="modal">
+			    <div class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/mar.jpeg" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/f1.png" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 80%;"></div>
+					</div>
+					<div class="status waiting">esperando</div>
+			      </div>
+			    </div>
+			    </a>
+			    <a href="#helpModal" data-toggle="modal">
+			    <div class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/f1.png" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/f1.png" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 0%;"></div>
+					</div>
+					<div class="status free">libre</div>
+			      </div>
+			    </div>
+			    </a>
+			    <a href="#helpModal" data-toggle="modal">
+			    <div class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/f1.png" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/f1.png" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 0%;"></div>
+					</div>
+					<div class="status free">libre</div>
+			      </div>
+			    </div>
+			    </a>
+			</div>
+
+			<!-- fila4 -->
+			<div class="row show-grid">
+			    <a href="#helpModal" data-toggle="modal">
+				<div class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/hugo.png" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/damaris.jpeg" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 40%;"></div>
+					</div>
+					<div class="status working">trabajando</div>
+			      </div>
+			    </div>
+			    </a>
+			    <a href="#helpModal" data-toggle="modal">
+			    <div id="newStudent" class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/f1.png" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/f1.png" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 0%;"></div>
+					</div>
+					<div class="status free">libre</div>
+			      </div>
+			    </div>
+			    </a>
+			    <a href="#helpModal" data-toggle="modal">
+			    <div class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/iago.jpeg" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/f1.png" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 40%;"></div>
+					</div>
+					<div class="status working">trabajando</div>
+			      </div>
+			    </div>
+			    </a>
+			    <a href="#helpModal" data-toggle="modal">
+			    <div class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/derick.png" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/fran.png" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 40%;"></div>
+					</div>
+					<div class="status working">trabajando</div>
+			      </div>
+			    </div>
+			    </a>
+			    <a href="#helpModal" data-toggle="modal">
+			    <div class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/patri.jpeg" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/estrella.jpeg" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 10%;"></div>
+					</div>
+					<div class="status working">trabajando</div>
+			      </div>
+			    </div>
+			    </a>
+			</div>
+			<!-- fila3 -->
+			<div class="row show-grid">
+			    <a href="#helpModal" data-toggle="modal">
+				<div class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/patri.jpeg" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/estrella.jpeg" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 70%;"></div>
+					</div>
+					<div class="status working">trabajando</div>
+			      </div>
+			    </div>
+			    </a>
+			    <a href="#helpModal" data-toggle="modal">
+			    <div class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/arcarrio.png" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/noriega.jpeg" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 40%;"></div>
+					</div>
+					<div class="status working">trabajando</div>
+			      </div>
+			    </div>
+			    </a>
+			    <a href="#helpModal" data-toggle="modal">
+			    <div class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/david-maroto.jpg" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/dmorillo.jpeg" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 30%;"></div>
+					</div>
+					<div class="status working">trabajando</div>
+			      </div>
+			    </div>
+			    </a>
+			    <a href="#helpModal" data-toggle="modal">
+			    <div class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/felipe.jpeg" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/uriol.jpeg" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 40%;"></div>
+					</div>
+					<div class="status waiting">esperando</div>
+			      </div>
+			    </div>
+			    </a>
+			    <a href="#helpModal" data-toggle="modal">
+			    <div class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/mar.jpeg" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/f1.png" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 80%;"></div>
+					</div>
+					<div class="status working">trabajando</div>
+			      </div>
+			    </div>
+			    </a>
+			</div>
+			<!-- fila2 -->
+			<div class="row show-grid">
+			    <a href="#helpModal" data-toggle="modal">
+				<div class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/hugo.png" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/damaris.jpeg" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 40%;"></div>
+					</div>
+					<div class="status working">trabajando</div>
+			      </div>
+			    </div>
+			    </a>
+			    <a href="#helpModal" data-toggle="modal">
+			    <div class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/fabio.png" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/f1.png" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 40%;"></div>
+					</div>
+					<div class="status working">trabajando</div>
+			      </div>
+			    </div>
+			    </a>
+			    <a href="#helpModal" data-toggle="modal">
+			    <div class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/f1.png" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/f1.png" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 0%;"></div>
+					</div>
+					<div class="status free">libre</div>
+			      </div>
+			    </div>
+			    </a>
+			    <a href="#helpModal" data-toggle="modal">
+			    <div class="span2 thumbnail waitLong">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/arcarrio.png" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/noriega.jpeg" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 40%;"></div>
+					</div>
+					<div class="status waiting">esperando</div>
+			      </div>
+			    </div>
+			    </a>
+			    <a href="#helpModal" data-toggle="modal">
+			    <div class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/david-maroto.jpg" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/dmorillo.jpeg" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 20%;"></div>
+					</div>
+					<div class="status waiting">esperando</div>
+			      </div>
+			    </div>
+			    </a>
+			</div>
+			<!-- fila 1 -->
+			<div class="row show-grid">
+			    <a href="#helpModal" data-toggle="modal">
+				<div class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/igrojas.png" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/rcrespo.png" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 70%;"></div>
+					</div>
+					<div class="status working">trabajando</div>
+			      </div>
+			    </div>
+			    </a>
+			    <a href="#helpModal" data-toggle="modal">
+			    <div class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/f1.png" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/f1.png" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 0%;"></div>
+					</div>
+					<div class="status free">libre</div>
+			      </div>
+			    </div>
+			    </a>
+			    <a href="#helpModal" data-toggle="modal">
+			    <div class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/derick.png" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/fran.png" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 40%;"></div>
+					</div>
+					<div class="status working">trabajando</div>
+			      </div>
+			    </div>
+			    </a>
+			    <a href="#helpModal" data-toggle="modal">
+			    <div class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/f1.png" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/f1.png" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 0%;"></div>
+					</div>
+					<div class="status free">libre</div>
+			      </div>
+			    </div>
+			    </a>
+			    <a href="#helpModal" data-toggle="modal">
+			    <div class="span2 thumbnail">
+					<div class="row">
+						<div class="span1">
+							<img src="../photos/f1.png" width="75px">
+						</div>
+						<div class="span1">
+				      		<img src="../photos/f1.png" width="75px">
+						</div>
+					</div>
+			      
+			      <div class="caption">
+			      	<div class="progress progress-success progress-striped">
+					    <div class="bar" style="width: 0%;"></div>
+					</div>
+					<div class="status free">libre</div>
+			      </div>
+			    </div>
+			    </a>
+			</div>
+			
+		</div>
+
+		<div id="footer">
+	      <div class="container">
+	        <p class="muted credit">Conoce classON en <a href="http://www.class-on.org">http://www.class-on.org</a></p>
+	      </div>
+    	</div>
+
+		<script src="http://code.jquery.com/jquery.js"></script>
+		<script src="js/jquery.timer.js"></script>
+		<script src="bootstrap/js/bootstrap.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="js/teacher-connection.js"></script>
+		<script src="js/teacher.js"></script>
+	</body>
+</html>

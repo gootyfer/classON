@@ -4,13 +4,18 @@ var app = express()
   , http = require('http')
   , server = http.createServer(app)
   , io = require('socket.io').listen(server);
+  
 //Socket IO: silent log
 io.set('log level', 1);
-//Use express config
+
+//Use express config to serve static content
 app.configure(function(){
+	app.use(express.static(__dirname + '/public'));
     app.use(express.methodOverride());
     app.use(express.bodyParser());
     app.use(app.router);
+    app.set('view engine', 'ejs');
+	app.set('view options', {layout: false});
 });
 
 //File and path modules
@@ -19,105 +24,130 @@ var fs = require('fs');
 
 //Load configuration
 var config = require('./config.json');
-var rooms = require('./rooms.json');
+//var rooms = require('./rooms.json');
 
 //Use own modules
-var EventManager = require('./eventmanager').EventManager;
-var UserManager = require('./usermanager').UserManager;
-var SessionManager = require('./sessionmanager').SessionManager;
+var EventManager = require('./models/eventmanager').EventManager;
+var UserManager = require('./models/usermanager').UserManager;
+var SessionManager = require('./models/sessionmanager').SessionManager;
 //Database connections
 var eventManager = new EventManager(config.database.url, config.database.port);
 var userManager = new UserManager(config.database.url, config.database.port);
 var sessionManager = new SessionManager(config.database.url, config.database.port);
 
-
-/*
- * HTTP server init
- */
-var serve_http = function(request, response){
-//console.log('requester IP:'+request.connection.remoteAddress);
-//console.log('requesting file:'+request.url);
-
-
-	var filePath = '.' + request.url;
-	if(filePath.indexOf('?')!=-1) filePath = filePath.substr(0,filePath.indexOf('?'));
-	if (filePath.substr(-1)==('/')) filePath += 'index.html';
-	
-    var extname = path.extname(filePath);
-    var contentType = 'text/html';
-    switch (extname) {
-        case '.js':
-            contentType = 'text/javascript';
-            break;
-        case '.css':
-            contentType = 'text/css';
-            break;
-        case '.png':
-            contentType = 'image/png';
-            break;
-        case '.gif':
-            contentType = 'imge/gif';
-            break;
-        case '.jpg':
-            contentType = 'image/jpeg';
-            break;
-        case '.ico':
-        	contentType = 'image/x-icon';
-        	break;
-		case '.svg':
-        	contentType = 'image/svg+xml';
-        	break;
-		case '.swf':
-			contentType = 'application/x-shockwave-flash';
-			break;
-		case '.ogg':
-			contentType = 'application/ogg';
-			break;
-			
-    }
-    
-    fs.exists(filePath, function(exists) {
-    	if (exists) {
-            fs.readFile(filePath, function(error, content) {
-                if (error) {
-                    response.writeHead(500);
-                    response.end();
-                }  else {
-                    response.writeHead(200, { 'Content-Type': contentType });
-                    response.end(content, 'utf-8');
-                }
-            });
-        } else {
-            response.writeHead(404);
-            response.end();
-        }
-    });
-};
-
-
-app.get('/student/*', function (request, response) {
-	serve_http(request, response);
+//TODO: use dynamic data for classroom templates, subject, assingment and group
+app.get('/login', function(req, res){
+	res.render('login.ejs', {nRows : 6, nColumns : 5, subject: 'amm', assignment:'p11'});
 });
 
-app.get('/teacher/*', function (request, response) {
-	serve_http(request, response);
+app.get('/', function(req, res){
+	res.redirect('/login');
 });
 
-app.get('/users/photos/*', function (request, response) {
-	serve_http(request, response);
+app.get('/go', function(req, res){
+	var session = {};
+	session.userNames = [];
+	if(req.query['nia1']) session.userNames.push(req.query['nia1']);
+	if(req.query['nia2']) session.userNames.push(req.query['nia2']);
+	session.station = req.query['station'];
+	session.subject = req.query['subject'];
+	session.assignment = req.query['assignment'];
+	newStudent(session, res);
 });
 
 /*
- * HTTP server end
- */
-
-function getStation(room, IP){
-	for(var i=0; i<rooms.length; i++){
-		if(rooms[i].name === room){
-			return rooms[i].ips.indexOf(IP) +1;
+Student login
+	1. check user in the database
+	2. find/create current session
+	3. if user not in session, save to the session
+*/
+function newStudent(session, res){
+	//Check info of the first student, suppose the second is in the same group
+	userManager.findByUsername(session.userNames, function(error, userInfoArray){
+		if(error){
+			console.log('student registered: error emitted');
+			res.redirect('/login?error=99');
+			return;
 		}
-	}
-	return null;
+		if(userInfoArray.length==0){
+			console.log('student not found: error emitted');
+			res.redirect('/login?error=1');
+			return;
+		}
+		//Take first user group
+		session.group = userInfoArray[0].group;
+		var sessionParams = {
+			subject:session.subject, 
+			group:session.group, 
+			assignment:session.assignment
+		};
+		sessionManager.findOrCreate(sessionParams, function(error, currentSession){
+			if(error){
+				console.log('error occured when findOrCreate session');
+				res.redirect('/login?error=99');
+				return;
+			}
+			//console.log(currentSession);
+			var users = currentSession.sessionData.users;
+			var station = session.station;
+			var user = users[station];
+			//Check station not in use
+			if(user){//current station occupied
+				//console.log('check the same:');
+				//console.log(users[station].username);
+				//console.log(session.userNames);
+				 if(user.username[0] != session.userNames[0]){//station occupied by others
+					console.log('station not free: error emitted');
+					res.redirect('/login?error=2');
+					return;
+				}
+			}else{//Current station free
+				//Check if students registered in a previous station
+				for(var i=0;i<users.length;i++){
+					// if(users[i])
+					// 	console.log('Check *'+users[i].username[0]+'* and *'+session.userNames[0]+'*');
+					if(users[i] && users[i].username[0] == session.userNames[0]){
+						//Users were in 
+						//Save progress
+						user = { 
+							username: session.userNames,
+							exercise: users[i].exercise,
+							currentQuestion: users[i].currentQuestion,
+							station: station
+						};
+						//Remove duplicates
+						users[station] = user;
+						users[i] = null;
+						//Save
+						sessionManager.update(currentSession._id, currentSession.sessionData, function(){
+							console.log('students '+session.userNames.join(',')+' changed position on session');
+						});
+						break;
+					}
+				}
+			}
+			
+			if(!user){//New user
+				user = { 
+					username: session.userNames,
+					exercise: 0,
+					currentQuestion: null,
+					station: station
+				};
+				users[station] = user;
+				sessionManager.update(currentSession._id, currentSession.sessionData, function(){
+					console.log('new student '+session.userNames.join(',')+' registered on session');
+				});
+			}
+			session.userInfo = userInfoArray;
+			session.server = config.server;
+			session.currentQuestion = user.currentQuestion;
+			//console.log('session');
+			//console.log(session);
+			res.render('index.ejs', session);
+		});
+	});
+
 }
 
 //Connection of the new websocket client
@@ -150,69 +180,30 @@ io.sockets.on('connection', function (socket) {
 
 	//New student event (STUDENT)
 	/*
-		1. check user in the database
-		2. find/create current session
-		3. if user not in session, save to the session
-		4. broadcast data
+		1. find/create current session
+		2. broadcast data
 	*/
-	socket.on("new student", function(session){
-		//Check info of the first student, suppose the second is in the same group
-		userManager.findByUsername(session.userNames, function(error, userInfoArray){
-			if(error){
-				console.log('student registered: error emitted');
-				socket.emit('student registered',{error:error});
-				return;
-			}
-			if(userInfoArray.length==0){
-				console.log('student not found: error emitted');
-				socket.emit('student registered',{error:'not found'});
-				return;
-			}
-			var sessionParams = {
-				subject:session.subject, 
-				group:userInfoArray[0].group, 
-				assignment:session.assignment
-			};
-			sessionManager.findOrCreate(sessionParams, function(error, currentSession){
-				var users = currentSession.sessionData.users;
-				var station = session.station || getStation(currentSession.room, socket.handshake.address.address);
-				if(!station){
-					console.log('IP not found: error emitted');
-					socket.emit('student registered',{error:'not station'});
-					return;
-				}
-				//Add user to room
-				socket.join(currentSession._id);
-				//TODO: check if students registered in a previous station
-				var user = users[station];
-				if(!user){//New user
-					user = { 
-						username: session.userNames,
-						exercise: 0,
-						currentQuestion: null,
-						station: station
-					};
-					users[station] = user;
-					sessionManager.update(currentSession._id, currentSession.sessionData, function(){
-						console.log('new student '+session.userNames.join(',')+' registered on session');
-					});
-				}
-				//Answer back: registration OK
-				socket.emit('student registered', {
-					currentUser : users[i],
-					queue: currentSession.sessionData.users, 
-					questions: currentSession.sessionData.questions,
-					session: sessionParams
-				});
+	socket.on('new student', function(sessionParams){
+		sessionManager.findOrCreate(sessionParams.context, function(error, currentSession){
+			var users = currentSession.sessionData.users;
+			//Add user to room
+			socket.join(currentSession._id);
 
-				//Broadcast updated users
-				io.socket.in(currentSession._id).emit('update users', users);
+			//Answer back: registration OK
+			socket.emit('student registered', {
+				queue: currentSession.sessionData.queue, 
+				questions: currentSession.sessionData.questions,
+				currentUserInfo: users[sessionParams.station]
 			});
+
+			//Broadcast updated users
+			io.sockets.in(currentSession._id).emit('update users', users);
 		});
 	});
 
 	//Init help event (TEACHER)
 	socket.on('init help', function(event){
+		//TODO: log student question being solved
 		eventManager.save(event, function(error, events){
 			console.log('teacher init help '+JSON.stringify(events[0]));
 		});
@@ -220,6 +211,7 @@ io.sockets.on('connection', function (socket) {
 
 	//End help event (TEACHER)
 	socket.on('end help', function(event){
+		//TODO: log student question being solved
 		eventManager.save(event, function(error, events){
 			console.log('teacher end help '+JSON.stringify(events[0]));
 		});
@@ -231,8 +223,8 @@ io.sockets.on('connection', function (socket) {
 			if(queue.indexOf(station)!=-1){
 				queue.splice(queue.indexOf(station),1);
 			}
-			//io.socket.in(currentSession._id).emit('update users', currentSession.sessionData.users);
-			io.socket.in(currentSession._id).emit('update queue', queue);
+			//io.sockets.in(currentSession._id).emit('update users', currentSession.sessionData.users);
+			io.sockets.in(currentSession._id).emit('update queue', queue);
 
 			sessionManager.update(currentSession._id, currentSession.sessionData, function(){});
 		});
@@ -244,54 +236,57 @@ io.sockets.on('connection', function (socket) {
 			console.log('new event:'+JSON.stringify(event));
 		});
 
-		sessionManager.findOrCreate(event.session, function(error, currentSession){
+		sessionManager.findOrCreate(event.context, function(error, currentSession){
 			switch(event.type){
-				case "new vote":
-					currentSession.sessionData.questions[event.qid].votes.push(event.userNames[0]);
-					io.socket.in(currentSession._id).emit('update questions', currentSession.sessionData.questions);
+				case "question vote":
+					currentSession.sessionData.questions[event.qid].votes.push(event.users[0]);
+					io.sockets.in(currentSession._id).emit('update questions', currentSession.sessionData.questions);
+					break;
+				case "answer vote":
+					currentSession.sessionData.questions[event.qid].answers[event.aid].votes.push(event.users[0]);
+					io.sockets.in(currentSession._id).emit('update questions', currentSession.sessionData.questions);
 					break;
 				case "new question":
 					var question = {
-						description: event.description,
-						votes: [event.userNames[0]],
+						author: {photo: event.photo},
+						desc: event.description,
+						votes: [event.users[0]],
 						answers: [],
 						exercise: event.exercise
 					};
 					currentSession.sessionData.questions.push(question);
 					currentSession.sessionData.queue.push(event.station);
+					console.log('station:'+event.station+' and users array:'+currentSession.sessionData.users);
 					currentSession.sessionData.users[event.station].currentQuestion = currentSession.sessionData.questions.length -1;
-					io.socket.in(currentSession._id).emit('update questions', currentSession.sessionData.questions);
-					io.socket.in(currentSession._id).emit('update queue', currentSession.sessionData.queue);
-					io.socket.in(currentSession._id).emit('update users', currentSession.sessionData.users);
+					io.sockets.in(currentSession._id).emit('update questions', currentSession.sessionData.questions);
+					io.sockets.in(currentSession._id).emit('update queue', currentSession.sessionData.queue);
+					io.sockets.in(currentSession._id).emit('update users', currentSession.sessionData.users);
 					break;
 				case "new answer":
 					var answer = {
-						description: event.description,
-						votes: [event.userName[0]]
+						author: {photo: event.photo},
+						desc: event.description,
+						votes: [event.users[0]]
 					}
 					var question = currentSession.sessionData.questions[event.qid];
 					question.answers.push(answer);
-					io.socket.in(currentSession._id).emit('update questions', currentSession.sessionData.questions);
+					io.sockets.in(currentSession._id).emit('update questions', currentSession.sessionData.questions);
 					var user = currentSession.sessionData.users[event.station];
+					//If the same user answers his own current question, means it's solved!
 					if(user.currentQuestion == event.qid){
 						user.currentQuestion = null;
 						var queue = currentSession.sessionData.queue;
 						if(queue.indexOf(event.station)!=-1){
 							queue.splice(queue.indexOf(event.station),1);
 						}
-						io.socket.in(currentSession._id).emit('update users', currentSession.sessionData.users);
-						io.socket.in(currentSession._id).emit('update queue', queue);
+						io.sockets.in(currentSession._id).emit('update users', currentSession.sessionData.users);
+						io.sockets.in(currentSession._id).emit('update queue', queue);
 					}
 					break;
 				case "progression":
 					var user = currentSession.sessionData.users[event.station];
 					user.exercise +=1;
-					io.socket.in(currentSession._id).emit('update users', currentSession.sessionData.users);
-					break;
-				case "regression":
-					var user = currentSession.sessionData.users[event.station];
-					user.exercise -=1;
-					io.socket.in(currentSession._id).emit('update users', currentSession.sessionData.users);
+					io.sockets.in(currentSession._id).emit('update users', currentSession.sessionData.users);
 					break;
 			}
 			sessionManager.update(currentSession._id, currentSession.sessionData, function(){});

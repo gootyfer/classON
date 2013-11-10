@@ -3,7 +3,6 @@
 
 ### The project
 The *classON* project aims at improving the experience of teacher and students at lab sessions.
-![classON](http://gootyfer.github.com/classON/images/classON_2.png)
 
 ### Dependencies
 * node packages:

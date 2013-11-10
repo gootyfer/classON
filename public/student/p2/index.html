@@ -1,0 +1,238 @@
+<html>
+	<head>
+		<title>Aplicaciones Multimedia: Pr?ctica 2</title>
+		<link rel="SHORTCUT ICON" href="http://www.uc3m.es/favicon.ico" /> 
+		<link href="http://www.it.uc3m.es/rcrespo/docencia/asignatura.css" rel="stylesheet" type="text/css" />
+		<link href="http://www.it.uc3m.es/estilo.css" rel="stylesheet" type="text/css" />
+		<link href="http://www.it.uc3m.es/rcrespo/docencia/amm/1112/p3/css/amm.css" rel="stylesheet" type="text/css" />
+		<link href="../css/classon.css" rel="stylesheet" type="text/css" />
+		<link href="../css/jquery-ui.css" rel="stylesheet" type="text/css" />
+		
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/jquery.blockUI.js"></script>
+	</head>
+	<body>
+		
+		<!-- BEGIN ADD, 21/05/09; to comply with UC3M corporate image requirements -->
+		<div class="headerBorderUc3mblue"></div>
+		<div class="header white">
+		  <a href="http://www.uc3m.es/">
+		  	<img class="logos logoleft" src="http://www.it.uc3m.es/imag/EscudoLogoCorporativo.png" alt="Universidad Carlos III de Madrid" />
+		  </a>
+	      <a href="http://www.it.uc3m.es">
+	      	<img class="logos logoright" src="http://www.it.uc3m.es/imag/SpanishLogoIT.png" alt="Departamento de Ingenier?a Telem?tica" />
+	      </a>
+		</div>
+		<div class="headerBorderUc3mblue"></div>
+		<!-- END ADD 21/05/09 -->
+		
+		
+		<!-- Tabla encabezado departamento -->
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+		  <tr>
+		    <td>
+		      <table width="100%" border="0" cellspacing="1" cellpadding="0">  	
+		        <tr>
+		          <td bgcolor="#CCD0D6" width="2000" height="22">
+		            <div align="right"><a href="http://www.it.uc3m.es/localizacion/localizacion.htm" class="azul">Localizaci&oacute;n</a>
+		              | <a href="#"></a><a href="http://www.it.uc3m.es/personal/directorio.htm"><span class="rojo">Personal</span></a>
+		              | <a href="http://www.it.uc3m.es/docencia/docencia.htm" class="azul">Docencia</a>
+		              | <a href="http://www.it.uc3m.es/investigacion/investigacion.htm" class="azul">Investigaci&oacute;n</a>
+		              | <a href="http://www.it.uc3m.es/novedades/novedades.htm" class="azul">Novedades</a>
+		              | <a href="http://www.it.uc3m.es/intranet/intranet.htm" class="azul">Intranet</a>
+		              &nbsp;&nbsp;</div>
+		          </td>
+		        </tr>
+		      </table>
+		    </td>
+		  </tr>
+		</table>
+		<!-- Tabla encabezado departamento (fin) -->
+		
+		<!-- Navegaci?n -->
+		<nav>
+			<p class="nav"><a class="azul"
+			href="http://www.it.uc3m.es/index.html">Home</a> / <a class="azul"
+			href="http://www.it.uc3m.es/docencia/docencia.htm">Docencia</a> / <a
+			class="azul" href="http://www.it.uc3m.es/docencia/grado-audiovisuales.html">Grado en Ingenier?a de Sistemas Audiovisuales</a> / 
+			<a class="azul" href="http://www.it.uc3m.es/rcrespo/docencia/amm/1112/">Aplicaciones Multimedia</a>
+			</p>
+		</nav>
+		<!-- Navegaci?n (fin) -->
+		
+		<header>
+			<h1>Pr&aacute;ctica 2: Introducción a JavaScript</h1>
+		</header>
+		
+		<section id="intro">
+			<h2>Introducción</h2>
+			<p>
+				En esta segunda práctica vamos a introducir el uso de JavaScript (JS) para dotar de dinamismo e interacci?n a nuestra p?gina web. 
+				Se pretenden establecer las bases de conocimiento que nos permitir?n manejar objetos multimedia en el navegador, así como las interacciones del usuario con ellos.
+			</p>
+			<p>
+			Se har? uso de los siguientes conceptos estudiados en las clases te?ricas:</p>
+			<ul>
+				<li>Manipulaci?n del ?rbol de objetos de la p?gina (DOM)</li>
+				<li>Manejo de eventos</li>
+			</ul>
+			<p>
+				Se pretende desarrollar la página web de una empresa, que har? uso del conocido diseño con pesta?as. Es decir, la web constar? de varias secciones 
+				a las que podremos acceder clickando la pesta?a correspondiente. El objetivo de esta pr?ctica es el desarrollo de esta web, tanto su interfaz de usuario 
+				como la navegación por la misma mediante pesta?as. Para ello, tendremos que hacer uso de un script JavaScript que capture la interacci?n del usuario 
+				con las pesta?as y realice las acciones necesarias para visualizar el contenido de esa secci?n de la p?gina web.
+
+			</p>
+			<figure>
+				<div class="bordeNegro">
+					<img src="images/screenshot.png" />
+				</div>
+				<figcaption><p><em>Figura 1</em>: Ejemplo de una p?gina web con pesta?as</p></figcaption>
+			</figure>
+			
+			<p class="minititulo">Recomendaciones</p>
+			<ul>
+				<li>
+					Durante el desarrollo de esta pr?ctica y las siguientes se recomienda el uso de las herramientas para desarrolladores de Google Chrome, 
+					accesibles desde el men&uacute; Herramientas, principalmente de la consola JavaScript y el explorador de elementos.
+				</li>
+			</ul>
+		</section>
+		
+		<section id="step1">
+			<h2>Paso 1: HTML</h2>
+			<p>
+				En primer lugar deber? crearse la estructura HTML correspondiante a la web de la empresa. Esta estructura debe usar los elementos:
+			</p>
+			<ul>
+				<li><code>header</code> para la cabecera de la p?gina</li>
+				<li><code>nav</code> para las pesta?as, que son usadas para la navegaci?n en el documento; para cada opci?n usaremos un elemento contenedor, por ejemplo <code>span</code></li>
+				<li><code>section</code> para las secciones (contenidos) de las distintas pesta?as</li>
+				<li><code>footer</code> para el pie de p?gina</li>
+			</ul>
+			<p>
+				El resultado ser? una web con todas las secciones, una a continuaci?n de la siguiente. Dise?aremos la navegaci?n por pesta?asa partir del siguiente paso.
+			</p>
+		</section>
+		
+		<section id="step2">
+			<h2>Paso 2: Visualización</h2>
+			<p>
+				Existen distintas opciones para implementar la interacci?n de las pesta?as, cualquiera de ellas perfectamente v?lida. Una de estas opciones es el uso de 
+				propiedades CSS para mostrar/ocultar contenidos. 
+				Para mostrar el contenido de una secci?n, haremos uso de la propiedad CSS <code>display</code> aplicada sobre el elemento correspondiente a la secci?n. 
+				Esta propiedad tomar? el valor <code>block</code> en la secci?n con contenido a mostrar, y el valor <code>none</code> en las secciones con contenido oculto. 
+				Por tanto, crearemos dos estilos CSS para las secciones, uno para mostrar la secci?n visible y otro para ocultar el resto de secciones. 
+			</p>
+			<p>
+				A continuaci?n, crearemos dos estilos CSS para las pesta?as, uno usado para la pesta?a activa y otro para el resto. Por ejemplo, puede cambiarse el color de fondo 
+				de la misma (<code>background</code>), el borde (<code>border</code>), cambiar el tipo de letra (<code>font</code>), etc.
+			</p>
+			<p>
+				Finalmente, podemos mejorar la experiencia de usuario mediante el uso de otros recursos CSS:
+			</p>
+			<ul>
+				<li>Poniendo las esquinas de las pesta?as redondeadas con las propiedades <code>-webkit-border-radius</code> / <code>-moz-border-radius</code>, 
+				?nicas para cada navegador (si queremos que funcione en varios navegadores deberan usarse todas ellas)</li>
+				<li>Cambiando el comportamiento del cursor al pasar sobre una pesta?as (cursor)</li>
+				<li>Aplicando otras mejoras visuales que nos parezcan apropiadas</li>
+			</ul>
+			
+		</section>
+		
+		<section id="step3">
+			<h2>Paso 3: Eventos</h2>
+			<p>
+				Se desarrollar? un script que implemente la nevegaci?n por pesta?as en nuestra p?gina. Para ello, haremos uso del elemento <code>script</code>. 
+				Para evitar problemas de concurrencia en la ejecuci?n de scripts, se recomienda insertar ?stos al final del <code>body</code>.
+			</p>
+			<p>
+				El script desarrollado deber? asignar al elemento que compone la pesta?a (en el ejemplo, el elemento <code>span</code>) un manejador de eventos que se 
+				ejecute con el evento click del rat?n. Este manejador ser? una funci?n JavaScript que definiremos a continuaci?n. Recuerda que en el c?digo de esa funci?n podremos 
+				acceder al elemento de la pesta?a mediante la palabra reservada <code>this</code>. La funci?n que programaremos realizar? las siguientes acciones:
+			</p>
+			<ul>
+				<li>Resaltar? la nueva pesta?a activa y desactivar? el resto.</li>
+				<li>Ocultar? las secciones del documento excepto la seleccionada.</li>	
+			</ul>
+			<p>
+				Para ello, podremos hacer uso de la nueva propiedad HTML5 <code>classList</code> que para un elemento devuelve otro elemento con el que podremos manipular 
+				su atributo <code>class</code> (estilos). 
+				Por ejemplo, <code>var lista = element.classList;</code> devuelve el elemento en la variable <code>lista</code>, sobre la que podremos ejecutar acciones 
+				para a?adir estilos <code>add</code>, eliminarlos <code>remove</code> o cambiar de estado <code>toggle</code>.
+			</p>
+		</section>
+		
+		<section id="step4">
+			<h2>Paso 4: Contenido dinámico</h2>
+			<p>
+				El contenido de una web puede ser din?mico, es decir, que el n?mero de pesta?as y su contenido pueden variar en funci?n de algunos par?metros (por ejemplo, de los 
+				permisos del usuario de un servicio). Por tanto, esta informaci?n puede venir dada desde el servidor de la p?gina, y por tanto va a ser dependiente de una 
+				ejecuci?n concreta. Vamos a simular este hecho definiendo dos arrays en el script desarrollado anteriormente: uno que 
+				contiene cadenas de texto correspondientes al nombre de las pesta?as; y otro del mismo tama?o con el contenido de las mismas (que puede ser c?digo HTML). 
+				Debemos, por tanto, construir toda la estrucutra de la p?gina de forma din?mica, ya que tendremos un n?mero variable de pesta?as. 
+				Un ejemplo de los arrays anteriores es (atenci?n al uso de comillas en cadenas de texto con HTML):
+			</p>
+			<p>
+				<code>var tabNames = ["Inicio", "Noticias", "Acerca de"];</code><br />
+				<code>var tabValues = ["&lt;p&gt;Esta es la p?gina de inicio de la web de nuestra empresa&lt;/p&gt;", "&lt;img border='0' src='http://www.w3.org/html/logo/downloads/HTML5_Logo_64.png' alt='HTML5 logo' /&gt;", 
+				"&lt;p&gt;Este ejemplo ha sido realizado por los profesores de Aplicaciones Multimedia&lt;/p&gt;"];</code>
+			</p>
+			<p>
+				Para implementar esta funcionalidad puede hacerse uso de funciones JavaScript para la manipulaci?n del DOM, como 
+				<code>createElement</code>, <code>appendChild</code>, <code>parentNode</code>, etc. o la propiedad <code>innerHTML</code>.
+			</p>
+		</section>
+		
+		<section id="self-assessment">
+			<h2>Preguntas de Autoevaluaci&oacute;n</h2>
+			<p>Tras la finalizaci&oacute;n de la pr&aacute;ctica, deber&iacute;ais ser capaces de 
+			contestar a estas preguntas:</p>
+			<ul>
+				<li>Describe el uso de los siguientes elementos HTML en la p?gina de vuestra empresa:
+					<ul class="level2">
+						<li><code>header</code>, <code>nav</code>, <code>section</code>, <code>span</code>, <code>footer</code></li>
+					</ul>
+				</li>
+				<li>Describe el proceso elegido para mostrar/ocultar las pesta?as. ?Puedes pensar en otro procedimiento distinto a usar display? 
+				Toma como punto de partida el trabajo realizado en el paso 4.</li>
+				
+				<li>
+					Explica paso a paso c?mo has implementado la interacci?n con las pesta?as. ?Qu? eventos has tenido en cuenta? ?C?mo has asignado un manejador a los eventos? 
+					?Cu?ndo se ejecuta el manejador? ?C?mo accedes los elementos de la pesta?as y de su contenido? ?C?mo accedes/modificas los estilos de un elemento?
+				</li>
+				<li>
+					?Qu? funciones puedes usar para manejar la estructura del documento? ?C?mo has creado elementos nuevos en el documento? 
+					?C?mo los has colocado en la posici?n que quer?as? ?Sabr?as asignarles atributos? ?Y cambiar su estilo?
+				</li>
+			</ul>
+		</section>
+		
+		<section id="refs">
+			<h2>Referencias</h2>
+			<ul>
+				<li><a href="http://www.librosweb.es/javascript/">Introducci&oacute;n a Javascript</a></li>
+				<li><a href="http://www.librosweb.es/javascript/capitulo6/modelo_basico_de_eventos1.html">
+				Modelo de eventos b&aacute;sico en Javascript</a></li>
+				<li><a href="http://www.w3schools.com/jsref/default.asp">Referencia de JavaScript en W3Schools</a></li>
+			</ul>
+		</section>
+		
+		<footer>
+			<figure>
+				<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/es/">
+				<img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/es/88x31.png" /></a>
+				<figcaption>Este <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text" rel="dct:type">obra</span> 
+				est? bajo una <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/es/">licencia Creative Commons 
+				Reconocimiento-CompartirIgual 3.0 Espa?a</a>.</figcaption>
+			</figure>
+			<details>
+				<summary>Recurso desarollado por Israel Guti?rrez (<a href="mailto:igrojas@it.uc3m.es">igrojas@it.uc3m.es</a>), data de <time datetime="2012-01-31">2012-01-31</time>.</summary>
+			</details>
+			<br /><br /><br />
+		</footer>
+		<script type="text/javascript" src="../js/socket.io.min.js"></script>
+		<script type="text/javascript" src="../js/classon.js?session=p2"></script>
+		
+	</body>
+</html>
