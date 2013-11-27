@@ -170,7 +170,7 @@ io.sockets.on('connection', function (socket) {
 	//New teacher event (TEACHER)
 	socket.on('new teacher', function(session){
 		sessionManager.findOrCreate(session, function(error, currentSession){
-			if(!error && results.length > 0){
+			if(!error && currentSession){
 				socket.join(currentSession._id);
 				socket.emit('init', currentSession.sessionData);
 				console.log('new teacher: at session '+session.subject+' '+session.group+' '+session.assignment);
